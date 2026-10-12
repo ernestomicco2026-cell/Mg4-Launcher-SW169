@@ -144,9 +144,7 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 ### Versioni
 
 #### 0.1.3 — 12 ottobre 2026
-- Aggiornamenti: il launcher legge la nuova versione e scarica l'APK da raw.githubusercontent.com, che non ha limiti
-  di richieste; le API di GitHub (60 richieste all'ora senza token, poi errore "GitHub ha rifiutato la richiesta")
-  restano solo come riserva.
+- Aggiornamenti: il launcher legge la nuova versione e scarica l'APK da raw.githubusercontent.com.
 
 #### 0.1.2 — 12 ottobre 2026
 - Riquadro navigazione ridisegnato: scheda centrale con lo stato del telefono e pulsante per aprire CarPlay /
@@ -318,8 +316,7 @@ without testing on a car, so the saved log is the quickest way to fix anything t
 ### Changelog
 
 #### 0.1.3 — 12 October 2026
-- Updates: the new version and the APK are read from raw.githubusercontent.com (no rate limit); the GitHub API
-  (60 requests per hour without a token) is only a fallback.
+- Updates: the new version and the APK are read from raw.githubusercontent.com.
 
 #### 0.1.2 — 12 October 2026
 - Redesigned navigation card with phone status and an Open CarPlay / Android Auto button.
