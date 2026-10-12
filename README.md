@@ -14,6 +14,8 @@
 > The MG / MG4 names only identify the compatible car (SW169 infotainment). Install and use it at your own risk.
 
 ---
+<img width="1179" height="444" alt="Senza nome" src="https://github.com/user-attachments/assets/c0b5f5ba-1c4c-48cd-a238-18fd6ab0b0bc" />
+---
 
 ## Italiano
 
