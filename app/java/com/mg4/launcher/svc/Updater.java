@@ -166,13 +166,16 @@ public final class Updater {
     }
 
     /** Prima l'API di GitHub, poi (per i file del repository) raw.githubusercontent.com. */
+    /** File del repository: prima raw.githubusercontent.com (senza limiti), poi l'API di GitHub. */
     private byte[] downloadWithFallback(Release r, String token) throws Exception {
+        if (!r.raw || r.repo.isEmpty()) {
+            return download(r.apkUrl, r, token, "application/octet-stream");
+        }
         try {
-            return download(r.apkUrl, r, token, r.raw ? "application/vnd.github.raw" : "application/octet-stream");
-        } catch (Exception first) {
-            if (!r.raw || r.repo.isEmpty()) throw first;
-            Diag.error("aggiornamenti.download", "API GitHub: " + describe(first) + " → provo raw.githubusercontent.com");
             return download("https://raw.githubusercontent.com/" + r.repo + "/" + BRANCH + "/" + r.path, r, "", "application/octet-stream");
+        } catch (Exception first) {
+            Diag.error("aggiornamenti.download", "raw.githubusercontent.com: " + describe(first) + " → provo l'API di GitHub");
+            return download(r.apkUrl, r, token, "application/vnd.github.raw");
         }
     }
 
@@ -216,6 +219,14 @@ public final class Updater {
      * poi le Release di GitHub.
      */
     private Release latest(String repo, String token) throws Exception {
+        // 1) raw.githubusercontent.com: nessun limite di richieste (le API di GitHub senza token ne hanno 60 all'ora)
+        try {
+            Release raw = latestFromRaw(repo);
+            if (raw != null) return raw;
+        } catch (Exception e) {
+            Diag.error("aggiornamenti.raw", describe(e));
+        }
+        // 2) API di GitHub: cartella releases/ e Release con APK allegato
         Release fromRepo = null;
         HttpError err = null;
         try {
@@ -233,6 +244,36 @@ public final class Updater {
                 || compare(fromRepo.tag, fromReleases.tag) >= 0)) return fromRepo;
         if (fromReleases != null) return fromReleases;
         throw err != null ? err : new HttpError(tr(R.string.upd_not_found_repo, repo));
+    }
+
+    /** latest.json letto da raw.githubusercontent.com (CDN di GitHub, senza limite di richieste). */
+    private Release latestFromRaw(String repo) throws Exception {
+        String base = "https://raw.githubusercontent.com/" + repo + "/" + BRANCH + "/";
+        HttpURLConnection c = open(base + CHANNEL_DIR + "latest.json?t=" + System.currentTimeMillis(), "", "application/json");
+        int code = c.getResponseCode();
+        if (code != 200) {
+            c.disconnect();
+            Diag.put("aggiornamenti.raw", "HTTP " + code);
+            return null;
+        }
+        JSONObject o = new JSONObject(readAll(c.getInputStream()));
+        c.disconnect();
+        Release r = new Release();
+        r.tag = o.optString("version", "");
+        r.name = "MG4 Launcher " + r.tag;
+        r.notes = o.optString("notes", "");
+        String apk = o.optString("apk", "");
+        if (!apk.isEmpty()) {
+            r.apkUrl = "https://api.github.com/repos/" + repo + "/contents/" + apk + "?ref=" + BRANCH;
+            r.apkName = apk.substring(apk.lastIndexOf('/') + 1);
+            r.apkSize = o.optLong("size");
+            r.raw = true;
+            r.repo = repo;
+            r.path = apk;
+        }
+        r.newer = compare(r.tag, currentVersion()) > 0;
+        Diag.put("aggiornamenti.raw", "ok, ultima " + r.tag);
+        return r;
     }
 
     private Release latestFromRepo(String repo, String token) throws Exception {

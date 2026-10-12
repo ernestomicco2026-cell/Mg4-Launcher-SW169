@@ -2,7 +2,7 @@
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.1.2](releases/MG4Launcher-SW169-0.1.2.apk)**
+**Ultima versione / Latest version: [0.1.3](releases/MG4Launcher-SW169-0.1.3.apk)**
 
 > ⚠️ **Compatibilità / Compatibility:** solo infotainment **SW169 Color Radio** · only **SW169 Color Radio** infotainment.
 > Per **SW168 SAIC 1.0+** usa [mg4-launcher](https://github.com/ernestomicco2026-cell/mg4-launcher) · for **SW168 SAIC 1.0+** use [mg4-launcher](https://github.com/ernestomicco2026-cell/mg4-launcher).
@@ -63,7 +63,7 @@ Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file 
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SW169-0.1.2.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SW169-0.1.3.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -80,7 +80,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SW169-0.1.2.apk
+   adb install -r -f MG4Launcher-SW169-0.1.3.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -137,6 +137,11 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 `media.radio.sessione` e `radio.corrente`, poi manda il log salvato.
 
 ### Versioni
+
+#### 0.1.3 — 12 ottobre 2026
+- Aggiornamenti: il launcher legge la nuova versione e scarica l'APK da raw.githubusercontent.com, che non ha limiti
+  di richieste; le API di GitHub (60 richieste all'ora senza token, poi errore "GitHub ha rifiutato la richiesta")
+  restano solo come riserva.
 
 #### 0.1.2 — 12 ottobre 2026
 - Riquadro navigazione ridisegnato: scheda centrale con lo stato del telefono e pulsante per aprire CarPlay /
@@ -254,7 +259,7 @@ There are two ways to install it: from a USB stick, if you can open a file manag
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SW169-0.1.2.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SW169-0.1.3.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -270,7 +275,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SW169-0.1.2.apk
+   adb install -r -f MG4Launcher-SW169-0.1.3.apk
    ```
 2. Make it the default home:
    ```bash
@@ -303,6 +308,10 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 without testing on a car, so the saved log is the quickest way to fix anything that does not work.
 
 ### Changelog
+
+#### 0.1.3 — 12 October 2026
+- Updates: the new version and the APK are read from raw.githubusercontent.com (no rate limit); the GitHub API
+  (60 requests per hour without a token) is only a fallback.
 
 #### 0.1.2 — 12 October 2026
 - Redesigned navigation card with phone status and an Open CarPlay / Android Auto button.
