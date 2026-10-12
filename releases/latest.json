@@ -1,6 +1,6 @@
 {
-  "version": "0.1.1",
-  "apk": "releases/MG4Launcher-SW169-0.1.1.apk",
-  "size": 339704,
-  "notes": "Tolto il pulsante Telecamere (niente telecamera 360° su SW169). Navigatore solo da CarPlay / Android Auto: tolti Casa, Lavoro, il pulsante MG e la scelta del navigatore predefinito."
+  "version": "0.1.2",
+  "apk": "releases/MG4Launcher-SW169-0.1.2.apk",
+  "size": 397048,
+  "notes": "Riquadro navigazione ridisegnato; radio con elenco delle stazioni (FM/DAB) e layout adattato; multilingua (IT, EN, ES, DE, PT, FR, TR) con lingua scelta nelle impostazioni o uguale a quella dell'auto."
 }

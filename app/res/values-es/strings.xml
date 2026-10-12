@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generato da tools/gen_strings.py: non modificare a mano, modifica tools/strings.py -->
+<resources>
+    <string name="vehicle_connecting" formatted="false">Conectando con el vehículo…</string>
+    <string name="vehicle_unavailable" formatted="false">Servicio del vehículo no disponible</string>
+    <string name="chip_consumption" formatted="false">Consumo medio</string>
+    <string name="chip_limit" formatted="false">Carga hasta</string>
+    <string name="v2l_desc" formatted="false">V2L, abrir la gestión de energía</string>
+    <string name="v2l_on" formatted="false">Activo</string>
+    <string name="v2l_off" formatted="false">Apagado</string>
+    <string name="outside_temp">%1$s° fuera</string>
+    <string name="charge_full_at">llena a las %1$s</string>
+    <string name="chg_charging" formatted="false">Cargando</string>
+    <string name="chg_fast" formatted="false">Carga rápida</string>
+    <string name="chg_wireless" formatted="false">Carga inalámbrica</string>
+    <string name="chg_done" formatted="false">Carga completada</string>
+    <string name="chg_balancing" formatted="false">Equilibrando batería</string>
+    <string name="chg_error" formatted="false">Error de carga</string>
+    <string name="chg_connecting" formatted="false">Conectando…</string>
+    <string name="chg_not_recognized" formatted="false">Conectado · no reconocido</string>
+    <string name="chg_not_charging" formatted="false">Conectado · sin cargar</string>
+    <string name="chg_stopped" formatted="false">Carga interrumpida</string>
+    <string name="chg_scheduled" formatted="false">Carga programada</string>
+    <string name="chg_multiple" formatted="false">Carga múltiple</string>
+    <string name="v2l_active" formatted="false">V2L activo · alimentación externa</string>
+    <string name="v2l_stopped" formatted="false">V2L interrumpido</string>
+    <string name="v2l_done" formatted="false">V2L terminado</string>
+    <string name="chg_ready" formatted="false">Lista</string>
+    <string name="tab_map" formatted="false">Mapa</string>
+    <string name="tab_media" formatted="false">Multimedia</string>
+    <string name="nav_title" formatted="false">Navegación</string>
+    <string name="nav_sub_nophone" formatted="false">Conecta el teléfono para navegar con CarPlay o Android Auto</string>
+    <string name="nav_sub_phone">%1$s está conectado: la navegación llega del teléfono</string>
+    <string name="nav_open_on">Abrir %1$s</string>
+    <string name="nav_waiting" formatted="false">Esperando el teléfono</string>
+    <string name="nav_other_apps" formatted="false">Otros navegadores</string>
+    <string name="nav_from_phone" formatted="false">Navegación desde el teléfono</string>
+    <string name="nav_next" formatted="false">Próxima maniobra</string>
+    <string name="nav_in_progress" formatted="false">Navegando</string>
+    <string name="nav_remaining">Faltan %1$s</string>
+    <string name="nav_tap_open" formatted="false">Toca para abrir el navegador</string>
+    <string name="nav_arrival">llegada %1$s</string>
+    <string name="art_desc" formatted="false">Abrir la app de la fuente</string>
+    <string name="st_not_ready" formatted="false">Emisora aún no lista</string>
+    <string name="fav_added" formatted="false">Añadida a favoritos</string>
+    <string name="fav_removed" formatted="false">Quitada de favoritos</string>
+    <string name="prev" formatted="false">Anterior</string>
+    <string name="play_pause" formatted="false">Reproducir o pausar</string>
+    <string name="next" formatted="false">Siguiente</string>
+    <string name="src_radio" formatted="false">Radio</string>
+    <string name="src_online" formatted="false">Online</string>
+    <string name="name_radio" formatted="false">RADIO</string>
+    <string name="name_usb" formatted="false">MÚSICA USB</string>
+    <string name="name_online" formatted="false">MÚSICA ONLINE</string>
+    <string name="fav_hint" formatted="false">Mantén pulsado el recuadro de la emisora para añadirla a favoritos</string>
+    <string name="favorites" formatted="false">Favoritos</string>
+    <string name="usb_no_track" formatted="false">Ninguna canción</string>
+    <string name="usb_plug" formatted="false">Conecta una memoria USB</string>
+    <string name="bt_title" formatted="false">Música Bluetooth</string>
+    <string name="bt_start" formatted="false">Inicia la reproducción en el teléfono</string>
+    <string name="online_title" formatted="false">Música online</string>
+    <string name="from_phone" formatted="false">desde el teléfono</string>
+    <string name="list_stations" formatted="false">Emisoras</string>
+    <string name="list_search" formatted="false">Buscar</string>
+    <string name="list_refresh" formatted="false">Actualizar</string>
+    <string name="list_empty_fm" formatted="false">No hay emisoras FM: toca Buscar para encontrarlas</string>
+    <string name="list_empty_dab" formatted="false">No hay emisoras DAB: toca Actualizar</string>
+    <string name="list_searching" formatted="false">Buscando emisoras…</string>
+    <string name="list_found">%1$d emisoras encontradas</string>
+    <string name="radio_band_desc">Radio %1$s</string>
+    <string name="phone_connected" formatted="false">Teléfono conectado</string>
+    <string name="phone_ready">%1$s listo. Toca para abrir en pantalla completa.</string>
+    <string name="open" formatted="false">Abrir</string>
+    <string name="temp_down" formatted="false">Bajar temperatura</string>
+    <string name="temp_up" formatted="false">Subir temperatura</string>
+    <string name="fan_down" formatted="false">Menos ventilador</string>
+    <string name="fan_up" formatted="false">Más ventilador</string>
+    <string name="climate" formatted="false">Climatización</string>
+    <string name="phone" formatted="false">Teléfono</string>
+    <string name="settings" formatted="false">Ajustes</string>
+    <string name="set_title" formatted="false">Ajustes del launcher</string>
+    <string name="set_car_color" formatted="false">COLOR DEL COCHE</string>
+    <string name="set_black_roof" formatted="false">Techo negro</string>
+    <string name="set_theme" formatted="false">TEMA</string>
+    <string name="set_language" formatted="false">IDIOMA</string>
+    <string name="lang_auto" formatted="false">Como el coche</string>
+    <string name="set_open_original" formatted="false">Abrir la pantalla de inicio original de MG</string>
+    <string name="set_diag" formatted="false">DIAGNÓSTICO DE SERVICIOS</string>
+    <string name="save_log" formatted="false">Guardar registro</string>
+    <string name="close" formatted="false">Cerrar</string>
+    <string name="log_hint" formatted="false">Guardar registro: con una memoria USB conectada, el archivo también se copia ahí.</string>
+    <string name="set_updates" formatted="false">ACTUALIZACIONES</string>
+    <string name="upd_check_btn" formatted="false">Buscar actualizaciones</string>
+    <string name="upd_install_btn" formatted="false">Descargar e instalar</string>
+    <string name="upd_install_ver">Descargar e instalar %1$s</string>
+    <string name="upd_busy" formatted="false">En curso…</string>
+    <string name="upd_idle" formatted="false">Pulsa Buscar para comprobar si hay una versión nueva</string>
+    <string name="log_saving" formatted="false">Guardando registro…</string>
+    <string name="log_failed" formatted="false">No se pudo guardar el registro en ninguna carpeta.</string>
+    <string name="log_saved_usb" formatted="false">Registro guardado, también en la memoria USB:</string>
+    <string name="log_saved" formatted="false">Registro guardado:</string>
+    <string name="log_usb_hint" formatted="false">Para tenerlo en una memoria USB: conéctala y pulsa de nuevo Guardar registro.</string>
+    <string name="theme_auto" formatted="false">Automático</string>
+    <string name="theme_night" formatted="false">Noche</string>
+    <string name="theme_day" formatted="false">Día</string>
+    <string name="diag_waiting" formatted="false">Esperando los servicios del coche…</string>
+    <string name="apps_title" formatted="false">Apps</string>
+    <string name="edit" formatted="false">Editar</string>
+    <string name="done" formatted="false">Listo</string>
+    <string name="edit_desc" formatted="false">Elige qué apps instaladas mostrar</string>
+    <string name="launcher_settings" formatted="false">Ajustes del launcher</string>
+    <string name="sec_car" formatted="false">COCHE</string>
+    <string name="sec_installed" formatted="false">INSTALADAS POR TI</string>
+    <string name="tap_toggle" formatted="false">toca para mostrar u ocultar</string>
+    <string name="app_vehicle" formatted="false">Vehículo</string>
+    <string name="app_climate" formatted="false">Climatización</string>
+    <string name="app_energy" formatted="false">Energía</string>
+    <string name="app_phone" formatted="false">Teléfono</string>
+    <string name="app_radio" formatted="false">Radio</string>
+    <string name="app_music" formatted="false">Música</string>
+    <string name="app_files" formatted="false">Archivos y vídeos</string>
+    <string name="app_settings" formatted="false">Ajustes</string>
+    <string name="app_sos" formatted="false">Llamada SOS</string>
+    <string name="upd_checking" formatted="false">Comprobando en GitHub…</string>
+    <string name="upd_no_apk">La última versión (%1$s) no contiene un APK</string>
+    <string name="upd_new">Nueva versión disponible: %1$s</string>
+    <string name="upd_uptodate">Estás actualizado (%1$s, última versión %2$s)</string>
+    <string name="upd_no_conn">Sin conexión con GitHub (%1$s)</string>
+    <string name="upd_downloading">Descargando %1$s…</string>
+    <string name="upd_dl_failed">Descarga fallida: %1$s</string>
+    <string name="upd_invalid">El archivo descargado no es un APK válido (%1$d bytes)</string>
+    <string name="upd_wrong_pkg" formatted="false">El archivo descargado no es una actualización del launcher</string>
+    <string name="upd_installing">Instalando %1$s… el launcher se reiniciará solo</string>
+    <string name="upd_install_failed">Instalación fallida: %1$s</string>
+    <string name="upd_new_version" formatted="false">nueva versión</string>
+    <string name="upd_progress">Descargando %1$d%%…</string>
+    <string name="upd_confirm" formatted="false">Confirma la instalación en la pantalla</string>
+    <string name="upd_installed" formatted="false">Actualización instalada</string>
+    <string name="upd_err_code">error %1$d</string>
+    <string name="upd_not_found" formatted="false">No se encontró ninguna versión en GitHub</string>
+    <string name="upd_not_found_repo">No se encontró ninguna versión en %1$s</string>
+    <string name="upd_token" formatted="false">Token de GitHub no válido o caducado</string>
+    <string name="upd_refused" formatted="false">GitHub rechazó la solicitud (límite de peticiones)</string>
+    <string name="upd_unexpected">Respuesta inesperada de GitHub: %1$d</string>
+    <string name="upd_no_release_apk">Ninguna versión con APK en %1$s</string>
+    <string name="upd_dl_http">Descarga fallida: respuesta de GitHub %1$d</string>
+</resources>

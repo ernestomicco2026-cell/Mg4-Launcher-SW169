@@ -36,6 +36,7 @@ public final class SettingsView extends FrameLayout {
     private final Handler main = new Handler(Looper.getMainLooper());
     private TextView diag;
     private final LinearLayout colorRow, themeRow, navRow;
+    private LinearLayout langRow;
     private final TextView colorName;
     private TextView updStatus, updInstall, updCheck, logBtn, logStatus;
     private Updater.Release found;
@@ -64,17 +65,17 @@ public final class SettingsView extends FrameLayout {
         card.addView(left, Ui.lpWeight(0, -1, 1.15f));
 
         LinearLayout titleRow = Ui.row(c);
-        titleRow.addView(Ui.text(c, "Impostazioni launcher", 30, t.text, Ui.MEDIUM));
+        titleRow.addView(Ui.text(c, c.getString(R.string.set_title), 30, t.text, Ui.MEDIUM));
         col.addView(titleRow);
 
-        col.addView(label(c, "COLORE AUTO"), top(22));
+        col.addView(label(c, c.getString(R.string.set_car_color)), top(22));
         colorRow = Ui.row(c);
         col.addView(colorRow, top(10));
         colorName = Ui.text(c, "", 18, t.sub, Ui.REGULAR);
         col.addView(colorName, top(8));
 
         LinearLayout roof = Ui.row(c);
-        roof.addView(Ui.text(c, "Tetto nero", 20, t.text, Ui.REGULAR), Ui.lpWeight(0, -2, 1));
+        roof.addView(Ui.text(c, c.getString(R.string.set_black_roof), 20, t.text, Ui.REGULAR), Ui.lpWeight(0, -2, 1));
         Switch sw = new Switch(c);
         sw.setChecked(prefs.blackRoof());
         sw.setOnCheckedChangeListener((b, on) -> {
@@ -84,15 +85,23 @@ public final class SettingsView extends FrameLayout {
         roof.addView(sw);
         col.addView(roof, top(18));
 
-        col.addView(label(c, "TEMA"), top(24));
+        col.addView(label(c, c.getString(R.string.set_theme)), top(24));
         themeRow = Ui.row(c);
         col.addView(themeRow, top(10));
+
+        // lingua: "Come l'auto" segue la lingua di sistema, oppure una delle lingue tradotte
+        col.addView(label(c, c.getString(R.string.set_language)), top(24));
+        android.widget.HorizontalScrollView ls = new android.widget.HorizontalScrollView(c);
+        ls.setHorizontalScrollBarEnabled(false);
+        langRow = Ui.row(c);
+        ls.addView(langRow);
+        col.addView(ls, Ui.margins(new LinearLayout.LayoutParams(-1, -2), 0, dp(10), 0, 0));
 
         // SW169: niente navigatore MG, si usa sempre quello del telefono (CarPlay / Android Auto):
         // la scelta del navigatore predefinito non serve e non si mostra
         navRow = Ui.row(c);
 
-        TextView original = Ui.text(c, "Apri la home originale MG", 19, t.text, Ui.MEDIUM);
+        TextView original = Ui.text(c, c.getString(R.string.set_open_original), 19, t.text, Ui.MEDIUM);
         original.setGravity(Gravity.CENTER_VERTICAL);
         original.setPadding(dp(22), 0, dp(22), 0);
         original.setMinHeight(dp(56));
@@ -106,11 +115,11 @@ public final class SettingsView extends FrameLayout {
         // --- colonna diagnostica ---
         LinearLayout right = Ui.column(c);
         LinearLayout rh = Ui.row(c);
-        rh.addView(label(c, "DIAGNOSTICA SERVIZI AUTO"), Ui.lpWeight(0, -2, 1));
-        logBtn = button(c, "Salva log", false, v -> saveLog());
+        rh.addView(label(c, c.getString(R.string.set_diag)), Ui.lpWeight(0, -2, 1));
+        logBtn = button(c, c.getString(R.string.save_log), false, v -> saveLog());
         logBtn.setMinHeight(dp(48));
         rh.addView(logBtn, Ui.margins(Ui.lp(-2, dp(48)), 0, 0, dp(10), 0));
-        rh.addView(Ui.iconButton(c, t, R.drawable.ic_close, t.text, t.chip, 56, 26, 28, "Chiudi", v -> host.closeSettings()));
+        rh.addView(Ui.iconButton(c, t, R.drawable.ic_close, t.text, t.chip, 56, 26, 28, c.getString(R.string.close), v -> host.closeSettings()));
         right.addView(rh);
         ScrollView ds = new ScrollView(c);
         ds.setBackground(Ui.round(t.bg, dp(16)));
@@ -119,7 +128,7 @@ public final class SettingsView extends FrameLayout {
         diag.setTextIsSelectable(true);
         ds.addView(diag);
         right.addView(ds, Ui.margins(Ui.lpWeight(-1, 0, 1), 0, dp(12), 0, 0));
-        logStatus = Ui.text(c, "Salva log: con una chiavetta USB inserita il file finisce anche lì.", 14, t.sub, Ui.REGULAR);
+        logStatus = Ui.text(c, c.getString(R.string.log_hint), 14, t.sub, Ui.REGULAR);
         right.addView(logStatus, Ui.margins(new LinearLayout.LayoutParams(-1, -2), 0, dp(10), 0, 0));
         card.addView(right, Ui.margins(Ui.lpWeight(0, -1, 1f), dp(32), 0, 0, 0));
 
@@ -130,13 +139,13 @@ public final class SettingsView extends FrameLayout {
 
     private void buildUpdates(Context c, LinearLayout col) {
         Updater up = host.updater();
-        col.addView(label(c, "AGGIORNAMENTI"), top(30));
+        col.addView(label(c, c.getString(R.string.set_updates)), top(30));
         col.addView(Ui.text(c, "MG4 Launcher " + up.currentVersion() + " · " + prefs.updateRepo(), 17, t.text, Ui.REGULAR), top(10));
 
         LinearLayout btns = Ui.row(c);
-        updCheck = button(c, "Controlla aggiornamenti", false, v -> up.check(prefs.updateRepo(), prefs.githubToken()));
+        updCheck = button(c, c.getString(R.string.upd_check_btn), false, v -> up.check(prefs.updateRepo(), prefs.githubToken()));
         btns.addView(updCheck, Ui.margins(Ui.lp(-2, dp(56)), 0, 0, dp(12), 0));
-        updInstall = button(c, "Scarica e installa", true, v -> up.install(found, prefs.githubToken()));
+        updInstall = button(c, c.getString(R.string.upd_install_btn), true, v -> up.install(found, prefs.githubToken()));
         updInstall.setVisibility(GONE);
         btns.addView(updInstall, Ui.lp(-2, dp(56)));
         col.addView(btns, top(12));
@@ -151,9 +160,9 @@ public final class SettingsView extends FrameLayout {
             updCheck.setAlpha(busy ? 0.5f : 1f);
             boolean canInstall = !busy && found != null && found.newer && found.apkUrl != null;
             updInstall.setVisibility(canInstall ? VISIBLE : GONE);
-            if (canInstall) updInstall.setText("Scarica e installa " + found.tag);
+            if (canInstall) updInstall.setText(getContext().getString(R.string.upd_install_ver, found.tag));
         });
-        updStatus.setText(up.isBusy() ? "Operazione in corso…" : "Premi Controlla per cercare una nuova versione");
+        updStatus.setText(c.getString(up.isBusy() ? R.string.upd_busy : R.string.upd_idle));
     }
 
     private TextView button(Context c, String text, boolean primary, View.OnClickListener l) {
@@ -171,7 +180,7 @@ public final class SettingsView extends FrameLayout {
     private void saveLog() {
         logBtn.setEnabled(false);
         logBtn.setAlpha(0.5f);
-        logStatus.setText("Salvataggio del log…");
+        logStatus.setText(getContext().getString(R.string.log_saving));
         Context app = getContext().getApplicationContext();
         new Thread(() -> {
             Diag.Saved r = Diag.saveLog(app);
@@ -179,12 +188,12 @@ public final class SettingsView extends FrameLayout {
                 logBtn.setEnabled(true);
                 logBtn.setAlpha(1f);
                 if (r.paths.isEmpty()) {
-                    logStatus.setText("Non sono riuscito a salvare il log in nessuna cartella.");
+                    logStatus.setText(app.getString(R.string.log_failed));
                     return;
                 }
-                StringBuilder sb = new StringBuilder(r.onUsb ? "Log salvato anche sulla chiavetta USB:\n" : "Log salvato:\n");
+                StringBuilder sb = new StringBuilder(app.getString(r.onUsb ? R.string.log_saved_usb : R.string.log_saved)).append('\n');
                 for (String path : r.paths) sb.append(path).append('\n');
-                if (!r.onUsb) sb.append("Per averlo su chiavetta: inseriscila e premi di nuovo Salva log.");
+                if (!r.onUsb) sb.append(app.getString(R.string.log_usb_hint));
                 logStatus.setText(sb.toString().trim());
             });
         }, "mg4-log").start();
@@ -227,7 +236,7 @@ public final class SettingsView extends FrameLayout {
 
         navRow.removeAllViews();
         String nav = prefs.navApp();
-        String[][] navs = {{Prefs.NAV_AUTO, "Automatico"}, {Prefs.NAV_PHONE, "Telefono"}};
+        String[][] navs = {{Prefs.NAV_AUTO, c.getString(R.string.theme_auto)}, {Prefs.NAV_PHONE, c.getString(R.string.phone)}};
         for (String[] m : navs) {
             boolean on = m[0].equals(nav);
             TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);
@@ -246,7 +255,7 @@ public final class SettingsView extends FrameLayout {
 
         themeRow.removeAllViews();
         String mode = prefs.themeMode();
-        String[][] modes = {{Prefs.THEME_AUTO, "Automatico"}, {Prefs.THEME_NIGHT, "Notte"}, {Prefs.THEME_DAY, "Giorno"}};
+        String[][] modes = {{Prefs.THEME_AUTO, c.getString(R.string.theme_auto)}, {Prefs.THEME_NIGHT, c.getString(R.string.theme_night)}, {Prefs.THEME_DAY, c.getString(R.string.theme_day)}};
         for (String[] m : modes) {
             boolean on = m[0].equals(mode);
             TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);
@@ -260,6 +269,31 @@ public final class SettingsView extends FrameLayout {
                 host.settingsChanged(true);
             });
             themeRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
+        }
+        buildLanguages(c);
+    }
+
+    /** Lingua: "Come l'auto (lingua attuale)" + le lingue tradotte, ognuna scritta nella propria lingua. */
+    private void buildLanguages(Context c) {
+        langRow.removeAllViews();
+        String cur = prefs.language();
+        java.util.List<String[]> opts = new java.util.ArrayList<>();
+        opts.add(new String[]{Lang.AUTO, c.getString(R.string.lang_auto) + " · " + Lang.systemName()});
+        for (int i = 0; i < Lang.CODES.length; i++) opts.add(new String[]{Lang.CODES[i], Lang.NAMES[i]});
+        for (String[] m : opts) {
+            boolean on = m[0].equals(cur);
+            TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);
+            b.setGravity(Gravity.CENTER);
+            b.setPadding(dp(20), 0, dp(20), 0);
+            b.setMinHeight(dp(52));
+            b.setBackground(on ? Ui.round(t.text, dp(14)) : Ui.pressable(c, t.chip, 14, t));
+            b.setClickable(true);
+            b.setOnClickListener(v -> {
+                if (m[0].equals(prefs.language())) return;
+                prefs.setLanguage(m[0]);
+                host.settingsChanged(true);   // riapplica la lingua e ricostruisce l'interfaccia
+            });
+            langRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
         }
     }
 
@@ -280,7 +314,7 @@ public final class SettingsView extends FrameLayout {
         @Override
         public void run() {
             String d = Diag.dump();
-            diag.setText(d.isEmpty() ? "In attesa dei servizi dell'auto…" : d);
+            diag.setText(d.isEmpty() ? getContext().getString(R.string.diag_waiting) : d);
             if (isAttachedToWindow()) main.postDelayed(this, 1000);
         }
     };

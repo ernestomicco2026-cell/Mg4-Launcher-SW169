@@ -19,6 +19,8 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.SystemClock;
 
+import com.mg4.launcher.R;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,11 +41,11 @@ public final class MediaClient {
     // --- sorgenti del launcher -------------------------------------------------------------
     public static final int SRC_RADIO = 1, SRC_USB = 2, SRC_ONLINE = 3, SRC_BT = 4, SRC_CARPLAY = 5, SRC_AAUTO = 6;
 
-    public static String sourceName(int s) {
+    public static String sourceName(Context c, int s) {
         switch (s) {
-            case SRC_RADIO: return "RADIO";
-            case SRC_USB: return "MUSICA USB";
-            case SRC_ONLINE: return "MUSICA ONLINE";
+            case SRC_RADIO: return c.getString(R.string.name_radio);
+            case SRC_USB: return c.getString(R.string.name_usb);
+            case SRC_ONLINE: return c.getString(R.string.name_online);
             case SRC_BT: return "BLUETOOTH";
             case SRC_CARPLAY: return "CARPLAY";
             case SRC_AAUTO: return "ANDROID AUTO";
@@ -58,7 +60,7 @@ public final class MediaClient {
     // --- radio: IRadioManager (com.android.car.radio.service) ----------------------------------
     private static final String RADIO_ACTION = "com.saicmotor.IRadioService";
     private static final String RAD = "com.android.car.radio.service.IRadioManager";
-    private static final int RAD_TUNE = 1, RAD_ADD_CB = 14, RAD_CURRENT = 16, RAD_ADD_DAB_CB = 37,
+    private static final int RAD_TUNE = 1, RAD_SCAN = 8, RAD_ADD_CB = 14, RAD_CURRENT = 16, RAD_ADD_DAB_CB = 37,
             RAD_DAB_TUNE = 41, RAD_DAB_QUERY_LIST = 46;
     private static final String RAD_CB = "com.android.car.radio.service.IRadioCallback";
     private static final String DAB_CB = "com.android.car.radio.service.IDabCallback";
@@ -84,7 +86,14 @@ public final class MediaClient {
         public String label() {
             if (!name.isEmpty()) return name;
             if (band == BAND_AM) return khz + " kHz";
-            return String.format(Locale.ITALY, "%.1f", khz / 1000f);
+            return String.format(Locale.getDefault(), "%.1f", khz / 1000f);
+        }
+
+        /** Seconda riga nell'elenco: frequenza (FM) o multiplex (DAB). */
+        public String detail() {
+            if (band == BAND_DAB) return ensemble.isEmpty() ? "DAB+" : "DAB+ · " + ensemble;
+            if (band == BAND_AM) return khz + " kHz";
+            return String.format(Locale.getDefault(), "%.1f MHz", khz / 1000f);
         }
 
         JSONObject toJson() throws Exception {
@@ -123,6 +132,9 @@ public final class MediaClient {
         public boolean stationIsFavorite;
         public Bitmap logo;                // logo della stazione in onda, se disponibile
         public List<Station> favorites = new ArrayList<>();
+        public List<Station> stations = new ArrayList<>();   // elenco della banda in onda (FM o DAB)
+        public boolean scanning;                              // ricerca stazioni in corso
+        public int radioKhz;                                  // frequenza FM in onda (per evidenziarla)
         public int deviceType;             // 0 nessuno, 1 CarPlay, 2 Android Auto
         public String deviceName = "";
         public final List<Integer> sources = new ArrayList<>();
@@ -250,6 +262,9 @@ public final class MediaClient {
     private volatile Station fmCurrent, dabCurrent;
     private volatile int bandFromCallback = -1;
     private volatile List<Station> dabList = new ArrayList<>();
+    private volatile List<Station> fmList = new ArrayList<>();
+    private volatile boolean scanning;
+    private volatile long scanUntil;
     private volatile String dabText = "";
     private boolean started, running;
 
@@ -268,6 +283,8 @@ public final class MediaClient {
         logos = new StationLogos(ctx);
         logos.setOnUpdate(this::refreshLogosSoon);
         loadFavorites();
+        fmList = loadList("radio_fm_elenco");
+        dabList = loadList("radio_dab_elenco");
     }
 
     public void setListener(Listener l) {
@@ -413,7 +430,7 @@ public final class MediaClient {
         else if (bt.isPlaying()) active = SRC_BT;
         else if (online.isPlaying()) active = SRC_ONLINE;
         else if (remote.isPlaying() && s.deviceType != 0) active = s.deviceType == DEV_AAUTO ? SRC_AAUTO : SRC_CARPLAY;
-        Diag.put("media.attiva", sourceName(active));
+        Diag.put("media.attiva", sourceName(ctx, active));
 
         // di default si vede la sorgente in riproduzione, altrimenti la radio
         int shown = chosen != 0 ? chosen : (active != 0 ? active : SRC_RADIO);
@@ -424,7 +441,7 @@ public final class MediaClient {
             if (shown == SRC_RADIO) fillRadio(s);
             else fillSession(s, shown);
         } catch (Exception e) {
-            Diag.error("media." + sourceName(shown), e.toString());
+            Diag.error("media." + sourceName(ctx, shown), e.toString());
         }
 
         Bundle t = tbt;
@@ -467,20 +484,20 @@ public final class MediaClient {
         }
         switch (src) {
             case SRC_USB:
-                if (s.title.isEmpty()) s.title = "Nessun brano";
-                if (s.subtitle.isEmpty()) s.subtitle = "Collega una chiavetta USB";
+                if (s.title.isEmpty()) s.title = ctx.getString(R.string.usb_no_track);
+                if (s.subtitle.isEmpty()) s.subtitle = ctx.getString(R.string.usb_plug);
                 break;
             case SRC_BT:
-                if (s.title.isEmpty()) s.title = "Musica Bluetooth";
-                if (s.subtitle.isEmpty()) s.subtitle = "Avvia la riproduzione dal telefono";
+                if (s.title.isEmpty()) s.title = ctx.getString(R.string.bt_title);
+                if (s.subtitle.isEmpty()) s.subtitle = ctx.getString(R.string.bt_start);
                 break;
             case SRC_ONLINE:
-                if (s.title.isEmpty()) s.title = "Musica online";
+                if (s.title.isEmpty()) s.title = ctx.getString(R.string.online_title);
                 break;
             case SRC_CARPLAY:
             case SRC_AAUTO:
                 if (s.title.isEmpty()) s.title = src == SRC_CARPLAY ? "CarPlay" : "Android Auto";
-                if (s.subtitle.isEmpty()) s.subtitle = s.deviceName.isEmpty() ? "dal telefono" : s.deviceName;
+                if (s.subtitle.isEmpty()) s.subtitle = s.deviceName.isEmpty() ? ctx.getString(R.string.from_phone) : s.deviceName;
                 break;
             default:
                 break;
@@ -534,7 +551,7 @@ public final class MediaClient {
                 s.radioFreq = khz > 0 ? String.valueOf(khz) : "";
                 s.radioUnit = "kHz";
             } else {
-                s.radioFreq = khz > 0 ? String.format(Locale.ITALY, "%.1f", khz / 1000f) : "";
+                s.radioFreq = khz > 0 ? String.format(Locale.getDefault(), "%.1f", khz / 1000f) : "";
                 s.radioUnit = "MHz";
             }
             // per l'FM la sessione usa il nome RDS come titolo; se è solo la frequenza non è un nome
@@ -542,7 +559,18 @@ public final class MediaClient {
             s.subtitle = artist;
             s.stationKey = StationLogos.key(band, 0, khz, s.title);
             s.logo = logos.get(s.stationKey, s.title);
+            s.radioKhz = khz;
+            if (band == BAND_FM && khz > 0) rememberFm(khz, s.title);
         }
+        // elenco delle stazioni della banda in onda
+        List<Station> list = band == BAND_DAB ? dabList : fmList;
+        for (Station st : list) {
+            if (st.key.isEmpty()) st.key = StationLogos.key(st.band, st.sid, st.khz, st.name);
+            if (st.logo == null) st.logo = logos.get(st.key, st.name);
+        }
+        s.stations = list;
+        if (scanning && SystemClock.uptimeMillis() > scanUntil) scanning = false;
+        s.scanning = scanning;
         Diag.put("radio.corrente", "banda " + band + ", " + s.radioFreq + " " + s.radioUnit + ", " + s.title
                 + (ps != null ? " (stato " + ps.getState() + ")" : ""));
 
@@ -552,7 +580,7 @@ public final class MediaClient {
             if (st.key.equals(s.stationKey)) s.stationIsFavorite = true;
         }
         s.favorites = fav;
-        if (s.title.isEmpty()) s.title = s.radioFreq.isEmpty() ? "Radio" : s.radioFreq + " " + s.radioUnit;
+        if (s.title.isEmpty()) s.title = s.radioFreq.isEmpty() ? ctx.getString(R.string.src_radio) : s.radioFreq + " " + s.radioUnit;
     }
 
     /** Stazione DAB in onda: dal callback, oppure cercata per nome nell'elenco DAB. */
@@ -618,6 +646,18 @@ public final class MediaClient {
                 data.enforceInterface(RAD_CB);
                 if (code == 1) {                   // onRadioStationChanged(RadioStation)
                     if (data.readInt() != 0) fmCurrent = readRadioStation(data);
+                } else if (code == 4) {            // onScanStarted(int banda)
+                    scanning = true;
+                    scanUntil = SystemClock.uptimeMillis() + 120_000;
+                    Diag.put("radio.ricerca", "avviata, banda " + data.readInt());
+                } else if (code == 5) {            // onScanFinished(int banda, List<RadioStation>)
+                    int band = data.readInt();
+                    int n = data.readInt();
+                    List<Station> found = new ArrayList<>();
+                    for (int i = 0; i < n && i < 200; i++) if (data.readInt() != 0) found.add(readRadioStation(data));
+                    scanning = false;
+                    Diag.put("radio.ricerca", "finita, banda " + band + ": " + found.size() + " stazioni");
+                    if (!found.isEmpty() && band != BAND_DAB) mergeFm(found, true);
                 } else if (code == 3) {            // onRadioBandChanged(int)
                     bandFromCallback = data.readInt();
                     Diag.put("radio.banda", bandFromCallback);
@@ -626,7 +666,7 @@ public final class MediaClient {
                 Diag.error("radio.callback", e.toString());
             }
             if (reply != null) reply.writeNoException();
-            if (code == 1 || code == 3) post(MediaClient.this::poll);   // non per segnale, RDS, ecc.
+            if (code == 1 || code == 3 || code == 4 || code == 5) post(MediaClient.this::poll);   // non per segnale, RDS…
             return true;
         }
     };
@@ -644,7 +684,11 @@ public final class MediaClient {
                     int n = data.readInt();
                     List<Station> out = new ArrayList<>();
                     for (int i = 0; i < n && i < 300; i++) if (data.readInt() != 0) out.add(readDabStation(data));
-                    dabList = out;
+                    if (!out.isEmpty()) {
+                        java.util.Collections.sort(out, (x, y) -> x.name.compareToIgnoreCase(y.name));
+                        dabList = out;
+                        saveList("radio_dab_elenco", out);
+                    }
                     Diag.put("radio.dab.elenco", out.size() + " stazioni");
                 } else if (code == 3) {            // notifyDabMainInfoChanged(RadioDabStation)
                     if (data.readInt() != 0) {
@@ -659,7 +703,7 @@ public final class MediaClient {
                 Diag.error("radio.dab.callback", e.toString());
             }
             if (reply != null) reply.writeNoException();
-            if (code == 3) post(MediaClient.this::poll);
+            if (code == 2 || code == 3) post(MediaClient.this::poll);
             return true;
         }
     };
@@ -706,10 +750,10 @@ public final class MediaClient {
                     Browser b = browserFor(src);
                     MediaController.TransportControls tc = b == null ? null : b.controls();
                     if (tc != null) tc.play();
-                    else Diag.put("media.avvio", sourceName(src) + ": sessione non collegata");
+                    else Diag.put("media.avvio", sourceName(ctx, src) + ": sessione non collegata");
                 }
             } catch (Exception e) {
-                Diag.error("media.avvio " + sourceName(src), e.toString());
+                Diag.error("media.avvio " + sourceName(ctx, src), e.toString());
             }
             poll();
         });
@@ -772,6 +816,141 @@ public final class MediaClient {
             }
             poll();
         });
+    }
+
+    // ---- elenco stazioni ---------------------------------------------------------------------
+
+    private List<Station> loadList(String key) {
+        List<Station> out = new ArrayList<>();
+        try {
+            JSONArray a = new JSONArray(sp.getString(key, "[]"));
+            for (int i = 0; i < a.length(); i++) {
+                Station st = Station.fromJson(a.getJSONObject(i));
+                st.key = StationLogos.key(st.band, st.sid, st.khz, st.name);
+                out.add(st);
+            }
+        } catch (Exception e) {
+            Diag.error("radio.elenco", e.toString());
+        }
+        return out;
+    }
+
+    private void saveList(String key, List<Station> list) {
+        JSONArray a = new JSONArray();
+        try {
+            for (Station st : list) a.put(st.toJson());
+        } catch (Exception e) {
+            Diag.error("radio.elenco.salva", e.toString());
+        }
+        sp.edit().putString(key, a.toString()).apply();
+    }
+
+    /** Unisce stazioni FM all'elenco (stessa frequenza = stessa stazione); replace = risultato di una ricerca completa. */
+    private void mergeFm(List<Station> found, boolean replace) {
+        java.util.Map<Integer, Station> byKhz = new java.util.TreeMap<>();
+        if (!replace) for (Station st : fmList) byKhz.put(st.khz, st);
+        for (Station st : found) {
+            if (st.khz <= 0 || st.band == BAND_DAB) continue;
+            Station old = byKhz.get(st.khz);
+            if (old != null && st.name.isEmpty()) st.name = old.name;
+            if (replace && old == null) {
+                for (Station prev : fmList) if (prev.khz == st.khz && st.name.isEmpty()) st.name = prev.name;
+            }
+            st.band = BAND_FM;
+            st.key = StationLogos.key(BAND_FM, 0, st.khz, st.name);
+            byKhz.put(st.khz, st);
+        }
+        List<Station> out = new ArrayList<>(byKhz.values());
+        fmList = out;
+        saveList("radio_fm_elenco", out);
+        Diag.put("radio.fm.elenco", out.size() + " stazioni");
+    }
+
+    /** Ogni stazione FM ascoltata con il suo nome RDS entra nell'elenco (anche senza ricerca). */
+    private void rememberFm(int khz, String name) {
+        for (Station st : fmList) {
+            if (st.khz == khz) {
+                if (st.name.isEmpty() && !name.isEmpty()) {
+                    st.name = name;
+                    st.key = StationLogos.key(BAND_FM, 0, khz, name);
+                    saveList("radio_fm_elenco", fmList);
+                }
+                return;
+            }
+        }
+        if (name.isEmpty()) return;
+        Station st = new Station();
+        st.band = BAND_FM;
+        st.khz = khz;
+        st.name = name;
+        List<Station> one = new ArrayList<>();
+        one.add(st);
+        mergeFm(one, false);
+    }
+
+    /** FM: ricerca completa delle stazioni (scan dell'app Radio). DAB: aggiorna l'elenco dal servizio. */
+    public void searchStations() {
+        int band = last.radioBand;
+        post(() -> {
+            try {
+                IBinder b = radio.binder();
+                if (b == null) throw new RemoteException("servizio radio non collegato");
+                if (band == BAND_DAB) {
+                    Rpc.call(b, RAD, RAD_DAB_QUERY_LIST, Rpc.NONE);
+                } else {
+                    scanning = true;
+                    scanUntil = SystemClock.uptimeMillis() + 120_000;
+                    Rpc.call(b, RAD, RAD_SCAN, Rpc.NONE);
+                }
+                Diag.put("radio.ricerca", "richiesta, banda " + band);
+            } catch (Exception e) {
+                scanning = false;
+                Diag.error("radio.ricerca", e.toString());
+            }
+            poll();
+        });
+    }
+
+    /** Aggiunge o toglie dai preferiti una stazione dell'elenco. @return true se ora è tra i preferiti */
+    public boolean toggleFavorite(Station st) {
+        List<Station> list = new ArrayList<>(favorites);
+        for (int i = 0; i < list.size(); i++) {
+            Station f = list.get(i);
+            boolean same = st.band == BAND_DAB ? f.band == BAND_DAB && (f.sid == st.sid || f.key.equals(st.key))
+                    : f.band != BAND_DAB && f.khz == st.khz;
+            if (same) {
+                list.remove(i);
+                saveFavorites(list);
+                post(this::poll);
+                return false;
+            }
+        }
+        Station c = new Station();
+        c.band = st.band;
+        c.khz = st.khz;
+        c.sid = st.sid;
+        c.eid = st.eid;
+        c.index = st.index;
+        c.pty = st.pty;
+        c.type = st.type;
+        c.channel = st.channel;
+        c.name = st.name;
+        c.ensemble = st.ensemble;
+        c.key = st.key;
+        c.logo = st.logo;
+        list.add(c);
+        saveFavorites(list);
+        post(this::poll);
+        return true;
+    }
+
+    /** true se la stazione dell'elenco è già tra i preferiti. */
+    public boolean isFavorite(Station st) {
+        for (Station f : favorites) {
+            if (st.band == BAND_DAB ? f.band == BAND_DAB && (f.sid == st.sid || f.key.equals(st.key))
+                    : f.band != BAND_DAB && f.khz == st.khz) return true;
+        }
+        return false;
     }
 
     // ---- preferiti radio del launcher ------------------------------------------------------

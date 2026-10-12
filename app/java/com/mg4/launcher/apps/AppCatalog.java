@@ -56,15 +56,15 @@ public final class AppCatalog {
 
     /** App dell'auto SW169 (EH32 Color Radio), nell'ordine del launcher MG; quelle assenti non compaiono. */
     private static final String[][] CAR_APPS = {
-            {"Veicolo", MgApps.VEHICLE_PKG, MgApps.VEHICLE_CLS, "car"},
-            {"Clima", MgApps.HVAC_PKG, MgApps.HVAC_CLS, "fan"},
-            {"Energia", MgApps.ENERGY_PKG, MgApps.ENERGY_CLS, "bolt"},
-            {"Telefono", MgApps.PHONE_PKG, MgApps.PHONE_CLS, "phone"},
-            {"Radio", MgApps.RADIO_PKG, MgApps.RADIO_CLS, "radio"},
-            {"Musica", MgApps.MEDIA_PKG, MgApps.MEDIA_CLS, "music"},
-            {"File e video", MgApps.FILES_PKG, MgApps.FILES_CLS, "video"},
-            {"Impostazioni", MgApps.SETTINGS_PKG, MgApps.SETTINGS_CLS, "gear"},
-            {"Chiamata SOS", MgApps.SOS_PKG, MgApps.SOS_CLS, "sos"},
+            {"@app_vehicle", MgApps.VEHICLE_PKG, MgApps.VEHICLE_CLS, "car"},
+            {"@app_climate", MgApps.HVAC_PKG, MgApps.HVAC_CLS, "fan"},
+            {"@app_energy", MgApps.ENERGY_PKG, MgApps.ENERGY_CLS, "bolt"},
+            {"@app_phone", MgApps.PHONE_PKG, MgApps.PHONE_CLS, "phone"},
+            {"@app_radio", MgApps.RADIO_PKG, MgApps.RADIO_CLS, "radio"},
+            {"@app_music", MgApps.MEDIA_PKG, MgApps.MEDIA_CLS, "music"},
+            {"@app_files", MgApps.FILES_PKG, MgApps.FILES_CLS, "video"},
+            {"@app_settings", MgApps.SETTINGS_PKG, MgApps.SETTINGS_CLS, "gear"},
+            {"@app_sos", MgApps.SOS_PKG, MgApps.SOS_CLS, "sos"},
     };
 
     /** Navigatori possibili (dall'originale: Telenav, iGo, SAIC). */
@@ -86,25 +86,33 @@ public final class AppCatalog {
         return c.getResources().getIdentifier("ic_" + name, "drawable", c.getPackageName());
     }
 
+    /** Nome dell'app: "@chiave" = testo tradotto nelle risorse strings.xml. */
+    private String label(String key) {
+        if (!key.startsWith("@")) return key;
+        int id = ctx.getResources().getIdentifier(key.substring(1), "string", ctx.getPackageName());
+        return id != 0 ? ctx.getString(id) : key.substring(1);
+    }
+
     public List<App> carApps(String navPackageHint) {
         List<App> out = new ArrayList<>();
         for (String[] a : CAR_APPS) {
             int icon = iconFor(ctx, a[3]);
+            String label = label(a[0]);
             if ("@nav".equals(a[1])) {
                 Intent nav = navIntent(navPackageHint);
                 if (nav != null) {
                     String pkg = nav.getComponent() != null ? nav.getComponent().getPackageName() : String.valueOf(nav.getPackage());
-                    out.add(new App(a[0], null, nav, icon, false, pkg));
+                    out.add(new App(label, null, nav, icon, false, pkg));
                 }
                 continue;
             }
             ComponentName cn = new ComponentName(a[1], a[2]);
             if (exists(cn)) {
-                out.add(new App(a[0], cn, null, icon, false, a[1]));
+                out.add(new App(label, cn, null, icon, false, a[1]));
             } else {
                 Intent li = pm.getLaunchIntentForPackage(a[1]);
                 if (li != null) {
-                    out.add(new App(a[0], null, li, icon, false, a[1]));
+                    out.add(new App(label, null, li, icon, false, a[1]));
                 }
             }
         }
@@ -174,7 +182,7 @@ public final class AppCatalog {
                     || label.toLowerCase(Locale.ROOT).contains("task manager") || pkg.toLowerCase(Locale.ROOT).contains("taskmanager");
             out.add(new App(label, new ComponentName(pkg, ri.activityInfo.name), null, 0, mine, pkg));
         }
-        final Collator col = Collator.getInstance(Locale.ITALY);
+        final Collator col = Collator.getInstance(Locale.getDefault());
         Collections.sort(out, (x, y) -> {
             return col.compare(x.label, y.label);
         });

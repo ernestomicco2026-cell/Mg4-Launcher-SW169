@@ -55,6 +55,16 @@ public final class Prefs {
         sp.edit().putString("theme", m).apply();
     }
 
+    // --- lingua: "auto" = come il sistema dell'auto, altrimenti codice (it, en, es, de, pt, fr, tr) ---
+
+    public String language() {
+        return sp.getString("lingua", Lang.AUTO);
+    }
+
+    public void setLanguage(String code) {
+        sp.edit().putString("lingua", code).apply();
+    }
+
     // --- app installate nascoste dalla griglia ---
 
     public Set<String> hiddenApps() {

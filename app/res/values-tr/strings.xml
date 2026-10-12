@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generato da tools/gen_strings.py: non modificare a mano, modifica tools/strings.py -->
+<resources>
+    <string name="vehicle_connecting" formatted="false">Araca bağlanılıyor…</string>
+    <string name="vehicle_unavailable" formatted="false">Araç servisi kullanılamıyor</string>
+    <string name="chip_consumption" formatted="false">Ort. tüketim</string>
+    <string name="chip_limit" formatted="false">Şarj sınırı</string>
+    <string name="v2l_desc" formatted="false">V2L, enerji yönetimini aç</string>
+    <string name="v2l_on" formatted="false">Açık</string>
+    <string name="v2l_off" formatted="false">Kapalı</string>
+    <string name="outside_temp">Dışarı %1$s°</string>
+    <string name="charge_full_at">%1$s\'de dolu</string>
+    <string name="chg_charging" formatted="false">Şarj oluyor</string>
+    <string name="chg_fast" formatted="false">Hızlı şarj</string>
+    <string name="chg_wireless" formatted="false">Kablosuz şarj</string>
+    <string name="chg_done" formatted="false">Şarj tamamlandı</string>
+    <string name="chg_balancing" formatted="false">Batarya dengeleniyor</string>
+    <string name="chg_error" formatted="false">Şarj hatası</string>
+    <string name="chg_connecting" formatted="false">Bağlanıyor…</string>
+    <string name="chg_not_recognized" formatted="false">Takılı · tanınmadı</string>
+    <string name="chg_not_charging" formatted="false">Takılı · şarj olmuyor</string>
+    <string name="chg_stopped" formatted="false">Şarj durdu</string>
+    <string name="chg_scheduled" formatted="false">Planlı şarj</string>
+    <string name="chg_multiple" formatted="false">Çoklu şarj</string>
+    <string name="v2l_active" formatted="false">V2L açık · harici güç</string>
+    <string name="v2l_stopped" formatted="false">V2L durdu</string>
+    <string name="v2l_done" formatted="false">V2L bitti</string>
+    <string name="chg_ready" formatted="false">Hazır</string>
+    <string name="tab_map" formatted="false">Harita</string>
+    <string name="tab_media" formatted="false">Medya</string>
+    <string name="nav_title" formatted="false">Navigasyon</string>
+    <string name="nav_sub_nophone" formatted="false">CarPlay veya Android Auto ile gezinmek için telefonu bağlayın</string>
+    <string name="nav_sub_phone">%1$s bağlı: navigasyon telefondan gelir</string>
+    <string name="nav_open_on">%1$s aç</string>
+    <string name="nav_waiting" formatted="false">Telefon bekleniyor</string>
+    <string name="nav_other_apps" formatted="false">Diğer navigasyon uygulamaları</string>
+    <string name="nav_from_phone" formatted="false">Telefondan navigasyon</string>
+    <string name="nav_next" formatted="false">Sonraki manevra</string>
+    <string name="nav_in_progress" formatted="false">Navigasyon sürüyor</string>
+    <string name="nav_remaining">%1$s kaldı</string>
+    <string name="nav_tap_open" formatted="false">Navigasyonu açmak için dokunun</string>
+    <string name="nav_arrival">varış %1$s</string>
+    <string name="art_desc" formatted="false">Kaynak uygulamasını aç</string>
+    <string name="st_not_ready" formatted="false">İstasyon henüz hazır değil</string>
+    <string name="fav_added" formatted="false">Favorilere eklendi</string>
+    <string name="fav_removed" formatted="false">Favorilerden çıkarıldı</string>
+    <string name="prev" formatted="false">Önceki</string>
+    <string name="play_pause" formatted="false">Oynat veya duraklat</string>
+    <string name="next" formatted="false">Sonraki</string>
+    <string name="src_radio" formatted="false">Radyo</string>
+    <string name="src_online" formatted="false">Çevrimiçi</string>
+    <string name="name_radio" formatted="false">RADYO</string>
+    <string name="name_usb" formatted="false">USB MÜZİK</string>
+    <string name="name_online" formatted="false">ÇEVRİMİÇİ MÜZİK</string>
+    <string name="fav_hint" formatted="false">Favorilere eklemek için istasyon kutusuna basılı tutun</string>
+    <string name="favorites" formatted="false">Favoriler</string>
+    <string name="usb_no_track" formatted="false">Parça yok</string>
+    <string name="usb_plug" formatted="false">Bir USB bellek takın</string>
+    <string name="bt_title" formatted="false">Bluetooth müzik</string>
+    <string name="bt_start" formatted="false">Oynatmayı telefondan başlatın</string>
+    <string name="online_title" formatted="false">Çevrimiçi müzik</string>
+    <string name="from_phone" formatted="false">telefondan</string>
+    <string name="list_stations" formatted="false">İstasyonlar</string>
+    <string name="list_search" formatted="false">Ara</string>
+    <string name="list_refresh" formatted="false">Yenile</string>
+    <string name="list_empty_fm" formatted="false">FM istasyonu yok: bulmak için Ara\'ya dokunun</string>
+    <string name="list_empty_dab" formatted="false">DAB istasyonu yok: Yenile\'ye dokunun</string>
+    <string name="list_searching" formatted="false">İstasyonlar aranıyor…</string>
+    <string name="list_found">%1$d istasyon bulundu</string>
+    <string name="radio_band_desc">Radyo %1$s</string>
+    <string name="phone_connected" formatted="false">Telefon bağlı</string>
+    <string name="phone_ready">%1$s hazır. Tam ekran açmak için dokunun.</string>
+    <string name="open" formatted="false">Aç</string>
+    <string name="temp_down" formatted="false">Sıcaklığı düşür</string>
+    <string name="temp_up" formatted="false">Sıcaklığı artır</string>
+    <string name="fan_down" formatted="false">Fan azalt</string>
+    <string name="fan_up" formatted="false">Fan artır</string>
+    <string name="climate" formatted="false">Klima</string>
+    <string name="phone" formatted="false">Telefon</string>
+    <string name="settings" formatted="false">Ayarlar</string>
+    <string name="set_title" formatted="false">Başlatıcı ayarları</string>
+    <string name="set_car_color" formatted="false">ARAÇ RENGİ</string>
+    <string name="set_black_roof" formatted="false">Siyah tavan</string>
+    <string name="set_theme" formatted="false">TEMA</string>
+    <string name="set_language" formatted="false">DİL</string>
+    <string name="lang_auto" formatted="false">Araçla aynı</string>
+    <string name="set_open_original" formatted="false">Orijinal MG ana ekranını aç</string>
+    <string name="set_diag" formatted="false">ARAÇ SERVİSİ TANILAMA</string>
+    <string name="save_log" formatted="false">Günlüğü kaydet</string>
+    <string name="close" formatted="false">Kapat</string>
+    <string name="log_hint" formatted="false">Günlüğü kaydet: USB bellek takılıysa dosya oraya da kopyalanır.</string>
+    <string name="set_updates" formatted="false">GÜNCELLEMELER</string>
+    <string name="upd_check_btn" formatted="false">Güncellemeleri denetle</string>
+    <string name="upd_install_btn" formatted="false">İndir ve yükle</string>
+    <string name="upd_install_ver">%1$s indir ve yükle</string>
+    <string name="upd_busy" formatted="false">İşlem sürüyor…</string>
+    <string name="upd_idle" formatted="false">Yeni sürüm aramak için Denetle\'ye dokunun</string>
+    <string name="log_saving" formatted="false">Günlük kaydediliyor…</string>
+    <string name="log_failed" formatted="false">Günlük hiçbir klasöre kaydedilemedi.</string>
+    <string name="log_saved_usb" formatted="false">Günlük kaydedildi, USB belleğe de:</string>
+    <string name="log_saved" formatted="false">Günlük kaydedildi:</string>
+    <string name="log_usb_hint" formatted="false">USB belleğe almak için: takın ve tekrar Günlüğü kaydet\'e dokunun.</string>
+    <string name="theme_auto" formatted="false">Otomatik</string>
+    <string name="theme_night" formatted="false">Gece</string>
+    <string name="theme_day" formatted="false">Gündüz</string>
+    <string name="diag_waiting" formatted="false">Araç servisleri bekleniyor…</string>
+    <string name="apps_title" formatted="false">Uygulamalar</string>
+    <string name="edit" formatted="false">Düzenle</string>
+    <string name="done" formatted="false">Bitti</string>
+    <string name="edit_desc" formatted="false">Gösterilecek yüklü uygulamaları seçin</string>
+    <string name="launcher_settings" formatted="false">Başlatıcı ayarları</string>
+    <string name="sec_car" formatted="false">ARAÇ</string>
+    <string name="sec_installed" formatted="false">SİZİN YÜKLEDİKLERİNİZ</string>
+    <string name="tap_toggle" formatted="false">göstermek veya gizlemek için dokunun</string>
+    <string name="app_vehicle" formatted="false">Araç</string>
+    <string name="app_climate" formatted="false">Klima</string>
+    <string name="app_energy" formatted="false">Enerji</string>
+    <string name="app_phone" formatted="false">Telefon</string>
+    <string name="app_radio" formatted="false">Radyo</string>
+    <string name="app_music" formatted="false">Müzik</string>
+    <string name="app_files" formatted="false">Dosyalar ve videolar</string>
+    <string name="app_settings" formatted="false">Ayarlar</string>
+    <string name="app_sos" formatted="false">SOS araması</string>
+    <string name="upd_checking" formatted="false">GitHub denetleniyor…</string>
+    <string name="upd_no_apk">Son sürümde (%1$s) APK yok</string>
+    <string name="upd_new">Yeni sürüm mevcut: %1$s</string>
+    <string name="upd_uptodate">Güncel (%1$s, son sürüm %2$s)</string>
+    <string name="upd_no_conn">GitHub bağlantısı yok (%1$s)</string>
+    <string name="upd_downloading">%1$s indiriliyor…</string>
+    <string name="upd_dl_failed">İndirme başarısız: %1$s</string>
+    <string name="upd_invalid">İndirilen dosya geçerli bir APK değil (%1$d bayt)</string>
+    <string name="upd_wrong_pkg" formatted="false">İndirilen dosya bir başlatıcı güncellemesi değil</string>
+    <string name="upd_installing">%1$s yükleniyor… başlatıcı kendiliğinden yeniden başlayacak</string>
+    <string name="upd_install_failed">Yükleme başarısız: %1$s</string>
+    <string name="upd_new_version" formatted="false">yeni sürüm</string>
+    <string name="upd_progress">İndiriliyor %%%1$d…</string>
+    <string name="upd_confirm" formatted="false">Yüklemeyi ekranda onaylayın</string>
+    <string name="upd_installed" formatted="false">Güncelleme yüklendi</string>
+    <string name="upd_err_code">hata %1$d</string>
+    <string name="upd_not_found" formatted="false">GitHub\'da sürüm bulunamadı</string>
+    <string name="upd_not_found_repo">%1$s üzerinde sürüm bulunamadı</string>
+    <string name="upd_token" formatted="false">GitHub belirteci geçersiz veya süresi dolmuş</string>
+    <string name="upd_refused" formatted="false">GitHub isteği reddetti (istek sınırı)</string>
+    <string name="upd_unexpected">Beklenmeyen GitHub yanıtı: %1$d</string>
+    <string name="upd_no_release_apk">%1$s üzerinde APK içeren sürüm yok</string>
+    <string name="upd_dl_http">İndirme başarısız: GitHub yanıtı %1$d</string>
+</resources>

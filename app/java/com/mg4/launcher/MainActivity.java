@@ -22,6 +22,7 @@ import com.mg4.launcher.svc.Updater;
 import com.mg4.launcher.svc.VehicleClient;
 import com.mg4.launcher.ui.AppsView;
 import com.mg4.launcher.ui.HomeView;
+import com.mg4.launcher.ui.Lang;
 import com.mg4.launcher.ui.Pager;
 import com.mg4.launcher.ui.Prefs;
 import com.mg4.launcher.ui.SettingsView;
@@ -51,11 +52,13 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
     private Pager pager;
     private SettingsView settings;
     private int lastUiMode;
+    private java.util.Locale appliedLocale;
 
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         prefs = new Prefs(this);
+        appliedLocale = Lang.apply(this, prefs.language());
         catalog = new AppCatalog(this);
         vehicle = new VehicleClient(this);
         media = new MediaClient(this);
@@ -207,6 +210,15 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
     @Override
     public void onConfigurationChanged(Configuration cfg) {
         super.onConfigurationChanged(cfg);
+        // lingua: il sistema ha appena riscritto le risorse con la sua lingua; si riapplica quella scelta
+        // e, se è cambiata (es. "Come l'auto" e lingua dell'auto modificata), si ricostruisce l'interfaccia
+        java.util.Locale loc = Lang.apply(this, prefs.language());
+        if (!loc.equals(appliedLocale)) {
+            appliedLocale = loc;
+            IconStyler.clearCache();
+            build();
+            return;
+        }
         if (cfg.uiMode != lastUiMode) {
             lastUiMode = cfg.uiMode;
             if (Prefs.THEME_AUTO.equals(prefs.themeMode())) {
@@ -287,7 +299,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
                 Diag.error("navigatore.altro", e.toString());
             }
         }
-        android.widget.Toast.makeText(this, "Collega il telefono per navigare con CarPlay o Android Auto",
+        android.widget.Toast.makeText(this, getString(R.string.nav_sub_nophone),
                 android.widget.Toast.LENGTH_LONG).show();
     }
 
@@ -321,6 +333,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
     @Override
     public void settingsChanged(boolean rebuild) {
         if (rebuild) {
+            appliedLocale = Lang.apply(this, prefs.language());
             IconStyler.clearCache();
             build();
             openSettings();
