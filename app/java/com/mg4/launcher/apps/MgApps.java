@@ -32,11 +32,6 @@ public final class MgApps {
     public static final String ENERGY_PKG = "com.saicmotor.saicev";
     public static final String ENERGY_CLS = "com.saicmotor.saicev.activity.MainActivity";
 
-    /** Telecamere: la home originale avvia EvsService con "state" = 1 (0 = chiudi). */
-    public static final String CAMERA_PKG = "com.saicmotor.evs";
-    public static final String CAMERA_SERVICE = "com.saicmotor.evs.service.EvsService";
-    public static final String CAMERA_CLS = "com.saicmotor.evs.view.EvsActivity";
-
     public static final String FILES_PKG = "com.saicmotor.folder";
     public static final String FILES_CLS = "com.saicmotor.folder.ui.activity.MainActivity";
 

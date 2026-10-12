@@ -63,9 +63,7 @@ public final class AppCatalog {
             {"Radio", MgApps.RADIO_PKG, MgApps.RADIO_CLS, "radio"},
             {"Musica", MgApps.MEDIA_PKG, MgApps.MEDIA_CLS, "music"},
             {"File e video", MgApps.FILES_PKG, MgApps.FILES_CLS, "video"},
-            {"Telecamere", MgApps.CAMERA_PKG, MgApps.CAMERA_CLS, "cam360"},
             {"Impostazioni", MgApps.SETTINGS_PKG, MgApps.SETTINGS_CLS, "gear"},
-            {"Navigatore", "@nav", "", "nav"},
             {"Chiamata SOS", MgApps.SOS_PKG, MgApps.SOS_CLS, "sos"},
     };
 

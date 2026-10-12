@@ -88,10 +88,9 @@ public final class SettingsView extends FrameLayout {
         themeRow = Ui.row(c);
         col.addView(themeRow, top(10));
 
-        col.addView(label(c, "NAVIGATORE PREDEFINITO"), top(24));
+        // SW169: niente navigatore MG, si usa sempre quello del telefono (CarPlay / Android Auto):
+        // la scelta del navigatore predefinito non serve e non si mostra
         navRow = Ui.row(c);
-        col.addView(navRow, top(10));
-        col.addView(Ui.text(c, "Automatico: quello del telefono se è collegato CarPlay o Android Auto, altrimenti MG.", 14, t.sub, Ui.REGULAR), top(8));
 
         TextView original = Ui.text(c, "Apri la home originale MG", 19, t.text, Ui.MEDIUM);
         original.setGravity(Gravity.CENTER_VERTICAL);
@@ -228,7 +227,7 @@ public final class SettingsView extends FrameLayout {
 
         navRow.removeAllViews();
         String nav = prefs.navApp();
-        String[][] navs = {{Prefs.NAV_AUTO, "Automatico"}, {Prefs.NAV_MG, "MG"}, {Prefs.NAV_PHONE, "Telefono"}};
+        String[][] navs = {{Prefs.NAV_AUTO, "Automatico"}, {Prefs.NAV_PHONE, "Telefono"}};
         for (String[] m : navs) {
             boolean on = m[0].equals(nav);
             TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);

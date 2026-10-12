@@ -87,7 +87,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         });
         vehicle.start();
         media.start();
-        nav.start();
+        // SW169: nessun navigatore MG, il servizio di navigazione non si usa (resta nav.last() vuoto)
 
         IntentFilter f = new IntentFilter();
         f.addAction(Intent.ACTION_PACKAGE_ADDED);
@@ -167,7 +167,6 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         // il collegamento ai servizi resta attivo; qui si riprendono solo le letture periodiche
         vehicle.resume();
         media.resume();
-        nav.resume();
     }
 
     @Override
@@ -175,7 +174,6 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         super.onStop();
         vehicle.pause();
         media.pause();
-        nav.pause();
     }
 
     @Override
@@ -254,18 +252,6 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         }
     }
 
-    /** Come la home originale SW169: EvsService con "state" = 1; se non parte, la schermata delle telecamere. */
-    @Override
-    public void openCamera() {
-        try {
-            startService(new Intent().setComponent(new ComponentName(MgApps.CAMERA_PKG, MgApps.CAMERA_SERVICE))
-                    .putExtra("state", 1));
-        } catch (Exception e) {
-            Diag.error("telecamere", e.toString());
-            catalog.launchComponent(MgApps.CAMERA_PKG, MgApps.CAMERA_CLS);
-        }
-    }
-
     @Override
     public void launchNavigator() {
         launchNavigator(prefs.navApp());
@@ -274,14 +260,9 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
     /** Apre il navigatore scelto: MG, quello del telefono (CarPlay/Android Auto) o un'app installata. */
     @Override
     public void launchNavigator(String which) {
+        // SW169: il navigatore è quello del telefono (CarPlay / Android Auto) o un'app installata sull'auto
         boolean phone = media.last().deviceType != 0;
-        if (Prefs.NAV_PHONE.equals(which) || (Prefs.NAV_AUTO.equals(which) && phone)) {
-            if (phone) {
-                media.openProjection();
-                media.openRemoteNavigation();
-                return;
-            }
-        } else if (!Prefs.NAV_AUTO.equals(which) && !Prefs.NAV_MG.equals(which)) {
+        if (!Prefs.NAV_AUTO.equals(which) && !Prefs.NAV_PHONE.equals(which) && !Prefs.NAV_MG.equals(which)) {
             Intent li = getPackageManager().getLaunchIntentForPackage(which);
             if (li != null) {
                 try {
@@ -292,16 +273,11 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
                 }
             }
         }
-        Intent i = catalog.navIntent(nav.last().mapPackage);
-        if (i != null) {
-            try {
-                startActivity(i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                return;
-            } catch (Exception e) {
-                Diag.error("navigatore.apri", e.toString());
-            }
+        if (phone) {
+            media.openProjection();
+            media.openRemoteNavigation();
+            return;
         }
-        // SW169 Color Radio: senza navigatore MG si usa il primo navigatore installato (Waze, Maps…)
         java.util.List<AppCatalog.App> others = otherNavApps();
         if (!others.isEmpty()) {
             try {
@@ -311,17 +287,8 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
                 Diag.error("navigatore.altro", e.toString());
             }
         }
-        if (nav.last().connected && !nav.last().mapPackage.isEmpty()) {
-            nav.openNavigator();
-            return;
-        }
-        android.widget.Toast.makeText(this, "Nessun navigatore: collega il telefono per CarPlay o Android Auto",
+        android.widget.Toast.makeText(this, "Collega il telefono per navigare con CarPlay o Android Auto",
                 android.widget.Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public boolean hasMgNavigator() {
-        return catalog.navIntent(nav.last().mapPackage) != null;
     }
 
     @Override

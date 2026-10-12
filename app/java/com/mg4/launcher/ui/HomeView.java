@@ -33,17 +33,11 @@ public final class HomeView extends LinearLayout {
         /** App Energia: "ricarica" o "scarica" (V2L). Sulla SW169 si apre sempre la schermata principale. */
         void openEnergy(String module);
 
-        /** Telecamere (EvsService), come il pulsante della home originale SW169. */
-        void openCamera();
-
         void launchNavigator();
 
         void launchNavigator(String which);
 
         java.util.List<com.mg4.launcher.apps.AppCatalog.App> otherNavApps();
-
-        /** true se sull'auto c'è un navigatore MG (la SW169 Color Radio di solito non lo ha). */
-        boolean hasMgNavigator();
     }
 
     private static final int TAB_MAP = 0, TAB_MEDIA = 1, TAB_PHONE = 2;
@@ -72,7 +66,6 @@ public final class HomeView extends LinearLayout {
     // mappa
     private LinearLayout navIdle, navCard, navEta;
     private TextView navCardTitle, navCardSub, navEtaArrive, navEtaMin, navEtaKm;
-    private TextView navHomeBtn, navOfficeBtn;
     private LinearLayout navWith;
     private boolean navWithPhone;
 
@@ -351,13 +344,10 @@ public final class HomeView extends LinearLayout {
         LinearLayout btns = Ui.row(c);
         btns.setGravity(Gravity.CENTER);
         TextView open = pill(c, R.drawable.ic_nav, "Navigatore", true, v -> host.launchNavigator());
-        navHomeBtn = pill(c, R.drawable.ic_home, "Casa", false, v -> nav.goHome());
-        navOfficeBtn = pill(c, R.drawable.ic_work, "Lavoro", false, v -> nav.goOffice());
+        // SW169: nessun navigatore MG, si naviga con CarPlay / Android Auto
         btns.addView(open);
-        btns.addView(navHomeBtn, Ui.margins(Ui.lp(-2, dp(64)), dp(14), 0, 0, 0));
-        btns.addView(navOfficeBtn, Ui.margins(Ui.lp(-2, dp(64)), dp(14), 0, 0, 0));
         navIdle.addView(btns, Ui.margins(new LayoutParams(-2, -2), 0, dp(26), 0, 0));
-        // apri con: MG / telefono (CarPlay, Android Auto) / navigatori installati (Waze, Google Maps...)
+        // apri con: telefono (CarPlay, Android Auto) / navigatori installati (Waze, Google Maps...)
         navWith = Ui.row(c);
         navWith.setGravity(Gravity.CENTER);
         navIdle.addView(navWith, Ui.margins(new LayoutParams(-2, -2), 0, dp(22), 0, 0));
@@ -419,16 +409,15 @@ public final class HomeView extends LinearLayout {
         navWithPhone = phone;
         navWith.removeAllViews();
         String pref = prefs.navApp();
-        if (host.hasMgNavigator()) addNavChip(c, "MG", Prefs.NAV_MG, pref);
         if (phone) {
             addNavChip(c, media.last().deviceType == MediaClient.DEV_AAUTO ? "Android Auto" : "CarPlay", Prefs.NAV_PHONE, pref);
         }
         for (com.mg4.launcher.apps.AppCatalog.App a : host.otherNavApps()) addNavChip(c, a.label, a.packageName, pref);
-        navWith.setVisibility(navWith.getChildCount() > (host.hasMgNavigator() ? 1 : 0) ? VISIBLE : GONE);
+        navWith.setVisibility(navWith.getChildCount() > 1 ? VISIBLE : GONE);
     }
 
     private void addNavChip(Context c, String label, String value, String pref) {
-        boolean def = value.equals(pref) || (Prefs.NAV_AUTO.equals(pref) && value.equals(navWithPhone ? Prefs.NAV_PHONE : Prefs.NAV_MG));
+        boolean def = value.equals(pref) || (Prefs.NAV_AUTO.equals(pref) && Prefs.NAV_PHONE.equals(value));
         TextView chip = Ui.text(c, label, 16, def ? t.text : t.sub, Ui.MEDIUM);
         chip.setGravity(Gravity.CENTER);
         chip.setPadding(dp(18), 0, dp(18), 0);
@@ -458,8 +447,6 @@ public final class HomeView extends LinearLayout {
         MediaClient.State m = media.last();
         boolean remote = m.deviceType != 0 && m.tbtActive;
         boolean guiding = n.navigating || remote;
-        navHomeBtn.setVisibility(n.connected && n.hasHome ? VISIBLE : GONE);
-        navOfficeBtn.setVisibility(n.connected && n.hasOffice ? VISIBLE : GONE);
         navIdle.setVisibility(guiding ? GONE : VISIBLE);
         navCard.setVisibility(guiding ? VISIBLE : GONE);
         navEta.setVisibility(n.navigating && !remote && n.remainSeconds > 0 ? VISIBLE : GONE);
@@ -936,7 +923,6 @@ public final class HomeView extends LinearLayout {
 
         bar.addView(shortcut(c, R.drawable.ic_phone, "Telefono", v -> host.launch(MgApps.PHONE_PKG, MgApps.PHONE_CLS)));
         bar.addView(shortcut(c, R.drawable.ic_radio, "Radio", v -> host.launch(MgApps.RADIO_PKG, MgApps.RADIO_CLS)));
-        bar.addView(shortcut(c, R.drawable.ic_cam360, "Telecamere", v -> host.openCamera()));
         bar.addView(shortcut(c, R.drawable.ic_gear, "Impostazioni", v -> host.launch(MgApps.SETTINGS_PKG, MgApps.SETTINGS_CLS)));
         // le app si aprono scorrendo la home verso sinistra: niente pulsante dedicato
         return bar;
