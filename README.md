@@ -49,10 +49,10 @@ Sostituisce la schermata home originale mantenendone le funzioni, con la stessa 
   con le icone tutte nello stesso stile; scorri verso destra per tornare. Con **Modifica** scegli quali app installate mostrare.
 - **Impostazioni** (tieni premuta l'auto): colore dell'auto, tetto nero, tema (automatico, notte, giorno),
   **lingua**, aggiornamenti, diagnostica con **Salva log**.
+  Si aprono anche dall'ingranaggio in alto a destra nella pagina App.
 - **Lingue**: italiano, inglese, spagnolo, tedesco, portoghese, francese e turco. Con **Come l'auto** (predefinita)
   il launcher usa la lingua di sistema e si aggiorna da solo quando la cambi nell'auto; altrimenti scegli una lingua
   nelle impostazioni. Per le lingue non tradotte usa l'inglese.
-  Si aprono anche dall'ingranaggio in alto a destra nella pagina App.
 - **Schermo intero**: barra di stato e dock MG nascosti (trascina dal bordo per richiamarli).
 - **Aggiornamenti**: le nuove versioni si scaricano e si installano dalle impostazioni, senza computer.
 
@@ -97,7 +97,10 @@ e gli aggiornamenti successivi si fanno dalle impostazioni del launcher, senza c
 
 Impostazioni del launcher → **Aggiornamenti** → **Controlla aggiornamenti**.
 Se c'è una versione più nuova compare **Scarica e installa**: il launcher la installa da solo e si riavvia.
+Serve che l'auto sia collegata a internet (connettività dell'auto o hotspot del telefono).
 Gli aggiornamenti arrivano solo da questo repository: una versione SW168 non viene mai proposta.
+Dalla 0.1.3 il controllo e il download passano da raw.githubusercontent.com, senza il limite di richieste delle API
+di GitHub. Chi ha una versione precedente alla 0.1.3 deve installarla una volta a mano (chiavetta o adb).
 Si possono installare anche da computer, con lo stesso comando dell'installazione.
 
 ### Tornare alla home MG originale
@@ -244,7 +247,7 @@ It replaces the original home screen, keeping its features, with the same design
 - **Apps**: swipe the home screen left for the car's apps and the ones you install; swipe right to go back.
   Use **Modifica** (Edit) to choose which installed apps to show.
 - **Settings** (long-press the car): car colour, black roof, theme, **language**, updates,
-  diagnostics with **Salva log** (save log).
+  diagnostics with **Salva log** (save log). Also available from the gear at the top right of the Apps page.
 - **Full screen**: status bar and MG dock hidden (swipe from the edge to bring them back).
 - **Updates**: new versions download and install from the settings, no computer needed.
 
@@ -291,7 +294,10 @@ and later updates are installed from the launcher settings, with no USB stick or
 ### Updates
 
 Launcher settings → **Aggiornamenti** (Updates) → **Controlla aggiornamenti** (Check for updates).
-Updates come only from this repository: a SW168 build is never offered.
+If a newer version exists, **Scarica e installa** (Download and install) appears: the launcher installs it and restarts.
+The car needs an internet connection (car connectivity or phone hotspot). Updates come only from this repository:
+a SW168 build is never offered. Since 0.1.3 they are read from raw.githubusercontent.com, without the GitHub API rate
+limit; anyone on an older version must install 0.1.3 once by hand (USB stick or adb).
 
 ### Going back to the original MG home
 
