@@ -51,21 +51,40 @@ Sostituisce la schermata home originale mantenendone le funzioni, con la stessa 
 
 ### Installazione
 
-Solo per infotainment **SW169 Color Radio**. Serve un computer con [adb](https://developer.android.com/tools/releases/platform-tools) collegato all'auto.
-Il firmware MG blocca l'installazione normale delle app: l'opzione `-f` la permette.
+Solo per infotainment **SW169 Color Radio**. Scarica l'APK dalla cartella [`releases/`](releases/).
+Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file manager sull'auto, oppure con adb da computer.
 
-1. Scarica l'APK dalla cartella [`releases/`](releases/).
-2. Installa:
+#### Metodo 1 — Da chiavetta USB (senza computer)
+
+Serve poter aprire un file manager sull'infotainment.
+
+1. Copia `MG4Launcher-SW169-0.1.0.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
+3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
+   **Consenti da questa fonte** per il file manager e torna indietro.
+4. Tocca **Installa**.
+5. Premi il tasto **Home**: Android chiede quale home usare. Scegli **MG4 Launcher** e poi **Sempre**.
+
+Se **Impostazioni** non apre nulla o l'installazione dà errore, usa il metodo 2
+(e, se puoi, segnala il messaggio d'errore).
+
+#### Metodo 2 — Con adb da computer
+
+Serve un computer con [adb](https://developer.android.com/tools/releases/platform-tools) collegato all'auto.
+Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` la permette.
+
+1. Installa:
    ```bash
    adb install -r -f MG4Launcher-SW169-0.1.0.apk
    ```
-3. Rendilo la home predefinita:
+2. Rendilo la home predefinita:
    ```bash
    adb shell cmd package set-home-activity com.mg4.launcher/.MainActivity
    ```
    In alternativa premi il tasto Home: Android chiede quale home usare.
 
-Il launcher parte già all'accensione dell'auto, come la home originale.
+Con entrambi i metodi il launcher parte poi da solo all'accensione dell'auto, come la home originale,
+e gli aggiornamenti successivi si fanno dalle impostazioni del launcher, senza chiavetta né computer.
 
 ### Aggiornamenti
 
@@ -206,17 +225,39 @@ The app's interface is in Italian.
 
 ### Installation
 
-Only for **SW169 Color Radio** infotainment. You need a computer with [adb](https://developer.android.com/tools/releases/platform-tools) connected to the car.
+Only for **SW169 Color Radio** infotainment. Download the APK from the [`releases/`](releases/) folder.
+There are two ways to install it: from a USB stick, if you can open a file manager on the car, or with adb from a computer.
 
-1. Download the APK from the [`releases/`](releases/) folder.
-2. Install it:
+#### Method 1 — From a USB stick (no computer)
+
+You need to be able to open a file manager on the infotainment.
+
+1. Copy `MG4Launcher-SW169-0.1.0.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+2. Plug it into the car, open the file manager and tap the APK.
+3. If Android says it cannot install apps from this source: tap **Settings**, enable
+   **Allow from this source** for the file manager and go back.
+4. Tap **Install**.
+5. Press the **Home** button: Android asks which home app to use. Pick **MG4 Launcher**, then **Always**.
+
+If **Settings** does nothing or the install fails, use method 2 (and, if you can, report the error message).
+
+#### Method 2 — With adb from a computer
+
+You need a computer with [adb](https://developer.android.com/tools/releases/platform-tools) connected to the car.
+The MG firmware may block normal app installs; the `-f` option allows it.
+
+1. Install it:
    ```bash
    adb install -r -f MG4Launcher-SW169-0.1.0.apk
    ```
-3. Make it the default home:
+2. Make it the default home:
    ```bash
    adb shell cmd package set-home-activity com.mg4.launcher/.MainActivity
    ```
+   Or press the Home button: Android asks which home app to use.
+
+Either way, the launcher then starts by itself when the car switches on, like the original home,
+and later updates are installed from the launcher settings, with no USB stick or computer.
 
 ### Updates
 
