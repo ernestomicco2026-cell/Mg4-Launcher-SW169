@@ -17,6 +17,29 @@
 <img width="1179" height="444" alt="Senza nome" src="https://github.com/user-attachments/assets/c0b5f5ba-1c4c-48cd-a238-18fd6ab0b0bc" />
 ---
 
+## Quale versione installare? / Which version should I install?
+
+Ci sono **due launcher diversi**, uno per ciascun software dell'infotainment MG4. Non sono intercambiabili:
+servizi dell'auto, radio, media e clima sono diversi, e con la versione sbagliata il launcher si apre ma non legge
+nulla dall'auto ("Servizio veicolo non disponibile").
+
+| Software dell'auto | Repository | File APK |
+|---|---|---|
+| **SW168 SAIC 1.0+** | [mg4-launcher](https://github.com/ernestomicco2026-cell/mg4-launcher) | `MG4Launcher-X.Y.Z.apk` |
+| **SW169 Color Radio** | **questo repository** | `MG4Launcher-SW169-X.Y.Z.apk` |
+
+**Come sapere quale software hai:** con il computer collegato all'auto
+`adb shell getprop ro.build.mt2712.version` → se inizia con `SWI69-` è la **SW169**, altrimenti (es. `SWI68-…`) è la **SW168**.
+Se il launcher è già installato: impostazioni → riga **MG4 Launcher X.Y.Z · repository** sotto *Aggiornamenti*;
+il nome del repository dice quale versione hai. Se nella *Diagnostica* compaiono `veicolo.bind = fallito` e
+`media.usb.bind = fallito`, hai installato la versione SW168 su un'auto SW169 (o viceversa).
+
+There are **two different launchers**, one per MG4 infotainment software, and they are not interchangeable.
+Check your software with `adb shell getprop ro.build.mt2712.version` (starts with `SWI69-` = SW169, otherwise SW168) and
+use the matching repository above.
+
+---
+
 ## Italiano
 
 Launcher in stile Tesla per l'infotainment della **MG4** con software **SW169 Color Radio**
