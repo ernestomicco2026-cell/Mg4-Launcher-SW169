@@ -8,7 +8,7 @@
 > Garantita al momento su **MG4 standard MY23 R45**; usando i dati della FICM originale dovrebbe funzionare su tutte
 > le versioni con **Color Radio** · Currently verified on **MG4 standard MY23 R45**; since it uses the original FICM's
 > data it should work on every **Color Radio** version.
-> Per **SWI68 SAIC 1.0+** usa [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168) · for **SWI68 SAIC 1.0+** use [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
+> Per **SWI68 SAIC 1.0+** usa [Mg4-Launcher-SWI68](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SWI68) · for **SWI68 SAIC 1.0+** use [Mg4-Launcher-SWI68](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SWI68).
 
 > Progetto amatoriale e **non ufficiale**: non è affiliato né approvato da MG Motor o SAIC Motor.
 > I nomi MG / MG4 servono solo a indicare l'auto compatibile (infotainment SWI69). Installalo e usalo a tuo rischio.
@@ -28,7 +28,7 @@ nulla dall'auto ("Servizio veicolo non disponibile").
 
 | Software dell'auto | Repository | File APK |
 |---|---|---|
-| **SWI68 SAIC 1.0+** | [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168) | `MG4Launcher-X.Y.Z.apk` |
+| **SWI68 SAIC 1.0+** | [Mg4-Launcher-SWI68](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SWI68) | `MG4Launcher-X.Y.Z.apk` |
 | **SWI69 Color Radio** | **questo repository** | `MG4Launcher-SWI69-X.Y.Z.apk` |
 
 **Come sapere quale software hai:** con il computer collegato all'auto
@@ -49,7 +49,7 @@ Launcher in stile Tesla per l'infotainment della **MG4** con software **SWI69 Co
 (EH32, Android Automotive 9, build `SWI69-29958-1100R45`).
 
 **Compatibilità:** funziona **solo con il software SWI69 Color Radio**. La SWI69 Color Radio non è un aggiornamento
-della SWI68: è un software diverso, con altri servizi dell'auto. Su SWI68 usa la [versione SWI68](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
+della SWI68: è un software diverso, con altri servizi dell'auto. Su SWI68 usa la [versione SWI68](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SWI68).
 Sostituisce la schermata home originale mantenendone le funzioni, con la stessa grafica della versione SWI68.
 
 **Versioni dell'auto:** al momento la compatibilità è **garantita sulla MG4 standard MY23 con software R45**
@@ -285,7 +285,7 @@ Tesla-style launcher for the **MG4** infotainment system running **SWI69 Color R
 (EH32, Android Automotive 9, build `SWI69-29958-1100R45`).
 
 **Compatibility:** works **only with SWI69 Color Radio**. SWI69 Color Radio is not an update of SWI68: it is different
-software with different car services. On SWI68 use the [SWI68 version](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
+software with different car services. On SWI68 use the [SWI68 version](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SWI68).
 It replaces the original home screen, keeping its features, with the same design as the SWI68 version.
 
 **Car versions:** compatibility is currently **verified on the MG4 standard MY23 with R45 software**
