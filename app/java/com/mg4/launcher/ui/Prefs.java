@@ -95,12 +95,31 @@ public final class Prefs {
     // --- aggiornamenti da GitHub ---
     public static final String DEFAULT_REPO = "ernestomicco2026-cell/Mg4-Launcher-SWI69";
 
+    /** Vecchio nome del repository (prima che la sigla del software diventasse SWI69). */
+    private static final String OLD_REPO_NAME = "mg4-launcher-sw169";
+
     public String updateRepo() {
-        return sp.getString("ghRepo", DEFAULT_REPO);
+        String saved = sp.getString("ghRepo", DEFAULT_REPO);
+        String fixed = normalizeRepo(saved);
+        // salvato con il vecchio nome (Mg4-Launcher-SW169) → si passa da soli al nuovo
+        if (!fixed.equals(saved)) sp.edit().putString("ghRepo", fixed).apply();
+        return fixed;
     }
 
     public void setUpdateRepo(String r) {
-        sp.edit().putString("ghRepo", r == null || r.trim().isEmpty() ? DEFAULT_REPO : r.trim()).apply();
+        sp.edit().putString("ghRepo", normalizeRepo(r)).apply();
+    }
+
+    /** Vuoto o vecchio nome del repository → repository attuale (Mg4-Launcher-SWI69). */
+    static String normalizeRepo(String r) {
+        if (r == null || r.trim().isEmpty()) return DEFAULT_REPO;
+        String t = r.trim();
+        int slash = t.lastIndexOf('/');
+        String name = slash >= 0 ? t.substring(slash + 1) : t;
+        if (name.toLowerCase(java.util.Locale.ROOT).equals(OLD_REPO_NAME)) {
+            return (slash >= 0 ? t.substring(0, slash + 1) : "ernestomicco2026-cell/") + "Mg4-Launcher-SWI69";
+        }
+        return t;
     }
 
     /** Token GitHub di sola lettura: serve perché il repository è privato. */

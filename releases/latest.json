@@ -1,6 +1,6 @@
 {
-  "version": "0.2.1",
-  "apk": "releases/MG4Launcher-SWI69-0.2.1.apk",
+  "version": "0.2.2",
+  "apk": "releases/MG4Launcher-SWI69-0.2.2.apk",
   "size": 417747,
-  "notes": "Nome corretto del software: SWI69 (repository, file e cartella dei log)."
+  "notes": "Nome corretto del software (SWI69) e del repository (Mg4-Launcher-SWI69): il launcher passa da solo al nuovo repository per gli aggiornamenti."
 }
