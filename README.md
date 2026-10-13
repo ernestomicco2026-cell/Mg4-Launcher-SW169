@@ -2,7 +2,7 @@
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.1.3](releases/MG4Launcher-SW169-0.1.3.apk)**
+**Ultima versione / Latest version: [0.1.4](releases/MG4Launcher-SW169-0.1.4.apk)**
 
 > ⚠️ **Compatibilità / Compatibility:** solo infotainment **SW169 Color Radio** · only **SW169 Color Radio** infotainment.
 > Per **SW168 SAIC 1.0+** usa [mg4-launcher](https://github.com/ernestomicco2026-cell/mg4-launcher) · for **SW168 SAIC 1.0+** use [mg4-launcher](https://github.com/ernestomicco2026-cell/mg4-launcher).
@@ -77,7 +77,13 @@ Sostituisce la schermata home originale mantenendone le funzioni, con la stessa 
   il launcher usa la lingua di sistema e si aggiorna da solo quando la cambi nell'auto; altrimenti scegli una lingua
   nelle impostazioni. Per le lingue non tradotte usa l'inglese.
 - **Schermo intero**: barra di stato e dock MG nascosti (trascina dal bordo per richiamarli).
-- **Aggiornamenti**: le nuove versioni si scaricano e si installano dalle impostazioni, senza computer.
+- **Aggiornamenti**: le nuove versioni si scaricano e si installano dalle impostazioni, senza computer. Quando ne
+  esce una, compare in basso a destra un piccolo avviso con **Aggiorna** / **Più tardi** (sparisce da solo; "Più tardi"
+  lo rimanda di un giorno).
+- **Invio dei log**: il launcher invia in automatico la diagnostica in un repository privato dello sviluppatore
+  (all'avvio, ogni 30 minuti e con **Salva log**), per poter correggere i problemi senza dover raccogliere i file a mano.
+  Contiene solo versione, valori letti dai servizi dell'auto ed errori: niente posizione, telaio o dati del telefono.
+  Si disattiva nelle impostazioni (**Invio log**).
 
 ### Installazione
 
@@ -88,7 +94,7 @@ Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file 
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SW169-0.1.3.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SW169-0.1.4.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -105,7 +111,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SW169-0.1.3.apk
+   adb install -r -f MG4Launcher-SW169-0.1.4.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -166,6 +172,12 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 
 ### Versioni
 
+#### 0.1.4 — 13 ottobre 2026
+- **Invio automatico dei log** nel repository privato dello sviluppatore: all'avvio, ogni 30 minuti e con **Salva log**;
+  senza rete restano in coda. Interruttore e stato nelle impostazioni (**Invio log**).
+- **Avviso discreto di nuova versione**: piccola scheda in basso a destra con **Aggiorna** / **Più tardi**,
+  controllo ogni 6 ore; sparisce da sola e "Più tardi" la rimanda di 24 ore.
+
 #### 0.1.3 — 12 ottobre 2026
 - Aggiornamenti: il launcher legge la nuova versione e scarica l'APK da raw.githubusercontent.com.
 
@@ -198,6 +210,10 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 Nessun Gradle: `./build.sh` usa aapt2, javac (bytecode 8), D8 e firma con la chiave platform AOSP
 (la stessa del sistema dell'auto, build test-keys: identica su SW168 e SW169). L'APK esce in `build/`.
 La versione è in `version.properties`.
+
+**Invio dei log:** il token del repository privato dei log non è nel repository. Per compilare un APK che invia i log,
+metti il token (fine-grained, solo *Contents: read and write* sul repository dei log) in `tools/log-token.txt`, escluso
+da git: `build.sh` lo inserisce nell'APK. Senza quel file l'APK funziona uguale, ma non invia i log.
 
 **Testi e traduzioni:** sono tutti in `tools/strings.py` (una riga per testo, con le 7 lingue). Dopo una modifica
 esegui `python3 tools/gen_strings.py`, che rigenera `app/res/values*/strings.xml`.
@@ -270,7 +286,11 @@ It replaces the original home screen, keeping its features, with the same design
 - **Settings** (long-press the car): car colour, black roof, theme, **language**, updates,
   diagnostics with **Salva log** (save log). Also available from the gear at the top right of the Apps page.
 - **Full screen**: status bar and MG dock hidden (swipe from the edge to bring them back).
-- **Updates**: new versions download and install from the settings, no computer needed.
+- **Updates**: new versions download and install from the settings, no computer needed. When one is out, a small
+  notice with **Update** / **Later** appears at the bottom right (it hides by itself; "Later" waits a day).
+- **Log upload**: the launcher automatically sends its diagnostics to the developer's private repository (at start,
+  every 30 minutes and with **Save log**). Only version, values read from the car services and errors: no location,
+  VIN or phone data. It can be turned off in the settings (**Log upload**).
 
 **Languages:** Italian, English, Spanish, German, Portuguese, French and Turkish. **Same as car** (default) follows
 the system language and updates by itself when you change it in the car; or pick a language in the settings.
@@ -285,7 +305,7 @@ There are two ways to install it: from a USB stick, if you can open a file manag
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SW169-0.1.3.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SW169-0.1.4.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -301,7 +321,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SW169-0.1.3.apk
+   adb install -r -f MG4Launcher-SW169-0.1.4.apk
    ```
 2. Make it the default home:
    ```bash
@@ -337,6 +357,11 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 without testing on a car, so the saved log is the quickest way to fix anything that does not work.
 
 ### Changelog
+
+#### 0.1.4 — 13 October 2026
+- **Automatic log upload** to the developer's private repository (at start, every 30 minutes, with Save log; queued
+  when offline), with a switch and status in the settings.
+- **Discreet new-version notice** at the bottom right with Update / Later, checked every 6 hours.
 
 #### 0.1.3 — 12 October 2026
 - Updates: the new version and the APK are read from raw.githubusercontent.com.

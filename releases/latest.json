@@ -1,6 +1,6 @@
 {
-  "version": "0.1.3",
-  "apk": "releases/MG4Launcher-SW169-0.1.3.apk",
-  "size": 397048,
-  "notes": "Aggiornamenti senza il limite di richieste di GitHub (download da raw.githubusercontent.com)."
+  "version": "0.1.4",
+  "apk": "releases/MG4Launcher-SW169-0.1.4.apk",
+  "size": 409336,
+  "notes": "Invio automatico dei log (attivabile/disattivabile nelle impostazioni) e avviso discreto quando esce una nuova versione."
 }
