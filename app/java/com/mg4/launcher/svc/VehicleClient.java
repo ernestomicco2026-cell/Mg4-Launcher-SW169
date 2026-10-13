@@ -25,7 +25,7 @@ public final class VehicleClient {
 
     private static final String HUB = "com.saicmotor.carapi.ICarAdapterService";
     private static final int HUB_QUERY_CLIENT = 1;
-    private static final int BIND_EV = 4, BIND_HVAC = 7;
+    private static final int BIND_EV = 4, BIND_HVAC = 7, BIND_CONFIG = 2, BIND_LAMP = 13;
 
     private static final String EV = "com.saicmotor.carapi.ev.ICarEvService";
     private static final int EV_PERCENT = 3;          // int  getChargePercentChange
@@ -47,6 +47,14 @@ public final class VehicleClient {
     private static final int AC_SET_DRV_TEMP = 21;    // void setDriverTemperature(float)
     private static final int AC_GET_DRV_TEMP = 22;    // float getDriverTemperature
     private static final int AC_GET_OUT_TEMP = 25;    // float getOutSideTemperature
+    private static final int AC_SWITCH_AC = 7, AC_GET_AC = 8;                 // switchACStatus / getACStatus
+    private static final int AC_SWITCH_DEFROST = 27, AC_GET_DEFROST = 28;     // parabrezza
+
+    // fendinebbia, come la schermata dell'auto originale: set(1) = "premuto" (commuta), get 1 = acceso
+    private static final String LAMP = "com.saicmotor.carapi.lamp.ICarLampService";
+    private static final int LAMP_SET_REAR_FOG = 30, LAMP_GET_REAR_FOG = 31, LAMP_SET_FRONT_FOG = 40, LAMP_GET_FRONT_FOG = 41;
+    private static final String CONFIG = "com.saicmotor.carapi.config.ICarConfigService";
+    private static final int CONFIG_FRONT_FOG = 60;   // getFrontFrogConfigData: 0 = fendinebbia anteriori presenti
 
     /** Ventola come la barra del launcher: 0 = clima spento, 1..11, 15 = automatico. */
     public static final int FAN_OFF = 0, FAN_AUTO = 15;
@@ -75,6 +83,9 @@ public final class VehicleClient {
         public int dischargeStatus = -1;
         public int acTemp = -1;           // 15 = LO, 16..30, 31 = HI
         public int hvacPower = -1;
+        public int acOn = -1, autoOn = -1, defrostOn = -1;   // 1 acceso, 0 spento, -1 sconosciuto
+        public int rearFog = -1, frontFog = -1;           // 1 acceso, 0 spento, -1 non disponibile
+        public boolean hasFrontFog;
         public int fanLevel = -1;         // 0 spento, 1..max, 15 auto
         public int fanMin = FAN_MIN, fanMax = FAN_MAX;
         public float outsideTemp = -10000f;   // °C
@@ -251,12 +262,17 @@ public final class VehicleClient {
                     Diag.put("clima.tempGuidatore", drv + (s.acTemp != readTemp ? " (richiesta " + s.acTemp + ")" : ""));
                     Diag.put("clima.ventola", speed + (auto ? " auto" : "") + (s.fanLevel != readFan ? " (richiesta " + s.fanLevel + ")" : ""));
                     Diag.put("clima.accensione", power);
+                    s.acOn = held(AC_GET_AC, Rpc.callBool(a, AC, AC_GET_AC) ? 1 : 0, now);
+                    s.autoOn = held(AC_GET_AUTO, auto ? 1 : 0, now);
+                    s.defrostOn = held(AC_GET_DEFROST, Rpc.callBool(a, AC, AC_GET_DEFROST) ? 1 : 0, now);
+                    Diag.put("clima.ac/auto/sbrinamento", s.acOn + " / " + s.autoOn + " / " + s.defrostOn);
                 }
             } catch (Exception ex) {
                 Diag.error("clima", ex.toString());
                 forget(BIND_HVAC);
             }
         }
+        readLamps(s);
         readBms(s);
         last = s;
         main.post(() -> {
@@ -294,6 +310,91 @@ public final class VehicleClient {
         Diag.putQuiet("veicolo.consumo.ultimoKm", lastKm);
         Diag.put("veicolo.consumo.altri", "reale " + bms.getFloat(CarBms.VEH_ACTU_ELEC_CSUMP)
                 + " · mediaBatteria " + bms.getFloat(CarBms.BAT_ELEC_ENRG_AVG_RATE));
+    }
+
+    private void readLamps(State s) {
+        try {
+            if (frontFogConfig == Integer.MIN_VALUE) {
+                IBinder cfg = sub(BIND_CONFIG);
+                if (cfg != null) {
+                    frontFogConfig = Rpc.callInt(cfg, CONFIG, CONFIG_FRONT_FOG);
+                    Diag.put("luci.fendinebbiaAnterioriConfig", frontFogConfig);
+                }
+            }
+        } catch (Exception e) {
+            Diag.error("luci.config", e.toString());
+            forget(BIND_CONFIG);
+        }
+        try {
+            IBinder l = sub(BIND_LAMP);
+            if (l != null) {
+                long now = android.os.SystemClock.uptimeMillis();
+                s.rearFog = held(LAMP_GET_REAR_FOG, Rpc.callInt(l, LAMP, LAMP_GET_REAR_FOG) == 1 ? 1 : 0, now);
+                s.hasFrontFog = frontFogConfig == 0;
+                if (s.hasFrontFog) s.frontFog = held(LAMP_GET_FRONT_FOG, Rpc.callInt(l, LAMP, LAMP_GET_FRONT_FOG) == 1 ? 1 : 0, now);
+                Diag.put("luci.fendinebbia ant/post", s.frontFog + " / " + s.rearFog);
+            }
+        } catch (Exception e) {
+            Diag.error("luci", e.toString());
+            forget(BIND_LAMP);
+        }
+    }
+
+    // ---- pulsanti a commutazione (A/C, AUTO, sbrinamento, fendinebbia) ------------------------
+
+    private int frontFogConfig = Integer.MIN_VALUE;
+    private final Map<Integer, long[]> holds = new HashMap<>();   // codice lettura -> {valore, scadenza}
+
+    /** Dopo un tocco mostra subito il nuovo stato per qualche secondo, finché l'auto non lo conferma. */
+    private int held(int getCode, int read, long now) {
+        synchronized (holds) {
+            long[] h = holds.get(getCode);
+            if (h == null) return read;
+            if (now < h[1] && read != h[0]) return (int) h[0];
+            holds.remove(getCode);
+            return read;
+        }
+    }
+
+    private void hold(int getCode, int value) {
+        synchronized (holds) {
+            holds.put(getCode, new long[]{value, android.os.SystemClock.uptimeMillis() + HOLD_MS});
+        }
+    }
+
+    /** Commuta: il servizio SW169 ha solo "cambia stato" (senza argomenti) per il clima, set(1) per le luci. */
+    private void press(int bind, String desc, int setCode, boolean withOne, int getCode, int current, String what) {
+        if (bg == null) return;
+        if (current == 0 || current == 1) hold(getCode, 1 - current);
+        bg.post(() -> {
+            try {
+                IBinder b = sub(bind);
+                if (b != null) {
+                    if (withOne) Rpc.call(b, desc, setCode, p -> p.writeInt(1));
+                    else Rpc.call(b, desc, setCode, Rpc.NONE);
+                }
+            } catch (Exception e) {
+                Diag.error(what, e.toString());
+                forget(bind);
+            }
+            poll();
+        });
+    }
+
+    public void toggleAc() {
+        press(BIND_HVAC, AC, AC_SWITCH_AC, false, AC_GET_AC, last.acOn, "clima.ac");
+    }
+
+    public void toggleAuto() {
+        press(BIND_HVAC, AC, AC_SWITCH_AUTO, false, AC_GET_AUTO, last.autoOn, "clima.auto");
+    }
+
+    public void toggleRearFog() {
+        press(BIND_LAMP, LAMP, LAMP_SET_REAR_FOG, true, LAMP_GET_REAR_FOG, last.rearFog, "luci.retronebbia");
+    }
+
+    public void toggleFrontFog() {
+        press(BIND_LAMP, LAMP, LAMP_SET_FRONT_FOG, true, LAMP_GET_FRONT_FOG, last.frontFog, "luci.fendinebbia");
     }
 
     /** Imposta la temperatura lato guida (15 = LO … 31 = HI). Il valore richiesto resta visibile per qualche secondo. */

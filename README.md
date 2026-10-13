@@ -2,7 +2,7 @@
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.1.4](releases/MG4Launcher-SW169-0.1.4.apk)**
+**Ultima versione / Latest version: [0.2.0](releases/MG4Launcher-SW169-0.2.0.apk)**
 
 > ⚠️ **Compatibilità / Compatibility:** solo infotainment **SW169 Color Radio** · only **SW169 Color Radio** infotainment.
 > Garantita al momento su **MG4 standard MY23 R45**; usando i dati della FICM originale dovrebbe funzionare su tutte
@@ -59,23 +59,28 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
 
 ### Cosa fa
 
-- **Auto e batteria** (a sinistra): autonomia, percentuale, barra batteria con tacca del limite di ricarica,
-  stato di ricarica e V2L, temperatura esterna. La tua MG4 ricolorabile con gli 8 colori della gamma, tetto nero opzionale.
+- **Auto e batteria** (a sinistra): autonomia e **orologio** grandi, barra batteria con la percentuale accanto e la
+  tacca del limite di ricarica, stato di ricarica e V2L, temperatura esterna. La tua MG4 ricolorabile con gli 8 colori della gamma, tetto nero opzionale.
   Tocca l'auto o V2L → app Energia. Tieni premuta l'auto → impostazioni del launcher.
 - **Mappa / Media / CarPlay** (a destra):
   - **Mappa**: la SW169 non ha un navigatore MG, si naviga con **CarPlay / Android Auto**. Senza guida una scheda
     mostra lo stato del telefono: collegato → pulsante **Apri CarPlay / Android Auto**; non collegato → ti ricorda
     di collegarlo. Durante la guida il pannello mostra le indicazioni del telefono.
   - **Media**: parte dalla sorgente in riproduzione, altrimenti dalla radio; in alto un pulsante per ogni sorgente
-    (Radio, USB, Bluetooth, Online se disponibile, e CarPlay/Android Auto se il telefono è collegato).
+    (Radio, USB, Bluetooth, Online se disponibile, e CarPlay/Android Auto se il telefono è collegato);
+    con più di 4 sorgenti quelle non selezionate mostrano solo l'icona.
     Per la radio: nome e logo della stazione, **preferiti** con i loghi e, a destra, **FM / DAB** con l'**elenco delle
     stazioni**: DAB dal servizio radio (**Aggiorna** per rileggerlo), FM dalla ricerca (**Cerca**) e dalle stazioni già
     ascoltate. Tocca una stazione per sintonizzarla, tienila premuta per aggiungerla o toglierla dai preferiti
     (★ = già tra i preferiti). Anche **tenendo premuto il riquadro della stazione** la aggiungi o la togli;
     tieni premuto un preferito per eliminarlo.
   - **CarPlay / Android Auto**: la scheda compare da sola quando colleghi il telefono.
-- **Barra in basso**: temperatura ‹ › (LO, 16…30, HI), ventola ‹ › (OFF / 1…11 / A = automatico;
-  tocca l'icona = app Clima, tieni premuto = accendi/spegni), mini-player, Telefono, Radio, Impostazioni.
+  - In alto a destra, prima delle schede, una pillola con **Bluetooth** (pieno = telefono collegato, sbiadito = acceso)
+    e **Wi-Fi** con 4 tacche di segnale (solo quando è collegato).
+- **Barra in basso**, con comandi grandi da usare guidando: temperatura ‹ › (LO, 16…30, HI) e ventola ‹ ›
+  (OFF / 1…11 / A = automatico; tocca il numero = app Clima, tieni premuto = accendi/spegni), pulsanti **A/C** e
+  **AUTO** (acceso = colori invertiti), mini-player compatto, **retronebbia** (icona ambra da acceso) e
+  **fendinebbia anteriori** (verde, solo se l'auto li ha), Telefono, Radio, Impostazioni.
 - **App**: scorri la home verso sinistra per le app dell'auto e quelle che installi tu,
   con le icone tutte nello stesso stile; scorri verso destra per tornare. Con **Modifica** scegli quali app installate mostrare.
 - **Impostazioni** (tieni premuta l'auto): colore dell'auto, tetto nero, tema (automatico, notte, giorno),
@@ -102,7 +107,7 @@ Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file 
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SW169-0.1.4.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SW169-0.2.0.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -119,7 +124,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SW169-0.1.4.apk
+   adb install -r -f MG4Launcher-SW169-0.2.0.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -179,6 +184,14 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 `media.radio.sessione` e `radio.corrente`, poi manda il log salvato.
 
 ### Versioni
+
+#### 0.2.0 — 13 ottobre 2026
+- **Orologio** nel riquadro batteria, grande quanto l'autonomia; percentuale accanto alla barra della batteria.
+- **Clima più grande** e più facile da usare guidando: temperatura e ventola con pulsanti da 68 dp su fondo chip,
+  nuovi pulsanti **A/C** e **AUTO**; barra in basso alta 100 dp e mini-player più compatto.
+- **Fendinebbia**: retronebbia (e anteriori, se presenti) direttamente dalla barra in basso.
+- **Indicatori Bluetooth e Wi-Fi** (4 tacche) in alto a destra.
+- Con più di 4 sorgenti media, solo l'icona per quelle non selezionate.
 
 #### 0.1.4 — 13 ottobre 2026
 - **Invio automatico dei log** nel repository privato dello sviluppatore: all'avvio, ogni 30 minuti e con **Salva log**;
@@ -278,21 +291,26 @@ it should work on **every version with the Color Radio**. Reports from other ver
 
 ### Features
 
-- **Car and battery** (left): range, percentage, battery bar with a charge-limit mark, charging and V2L status,
-  outside temperature. Your MG4, recolourable with the 8 factory colours, optional black roof.
+- **Car and battery** (left): large range and **clock**, battery bar with the percentage next to it and a
+  charge-limit mark, charging and V2L status, outside temperature. Your MG4, recolourable with the 8 factory colours, optional black roof.
   Tap the car or V2L → Energy app. Long-press the car → launcher settings.
 - **Map / Media / CarPlay** (right):
   - **Map**: SW169 has no MG navigator, navigation is done with **CarPlay / Android Auto**. When not guiding, a card
     shows the phone status with an **Open CarPlay / Android Auto** button (or a reminder to connect the phone);
     while guiding, the panel shows the phone's directions.
   - **Media**: starts on the source that is playing, otherwise the radio; one button per source at the top
-    (Radio, USB, Bluetooth, Online when available, plus CarPlay/Android Auto when a phone is connected).
+    (Radio, USB, Bluetooth, Online when available, plus CarPlay/Android Auto when a phone is connected);
+    with more than 4 sources the unselected ones show only their icon.
     Radio: station name and logo, **favourites** with logos and, on the right, **FM / DAB** with the **station list**
     (DAB from the radio service, FM from a scan and from stations you have listened to). Tap a station to tune in,
     long-press it to add/remove it from favourites (★). Long-pressing the station tile also adds/removes it.
   - **CarPlay / Android Auto**: the tab appears by itself when you connect a phone.
-- **Bottom bar**: temperature ‹ › (LO, 16…30, HI), fan ‹ › (OFF / 1…11 / A = auto;
-  tap the icon = Climate app, long-press = climate on/off), mini player, Phone, Radio, Settings.
+  - Top right, before the tabs, a pill with **Bluetooth** (solid = phone connected, faded = on) and **Wi-Fi** with
+    4 signal bars (only when connected).
+- **Bottom bar**, with large controls for use while driving: temperature ‹ › (LO, 16…30, HI) and fan ‹ ›
+  (OFF / 1…11 / A = auto; tap the number = Climate app, long-press = climate on/off), **A/C** and **AUTO** buttons
+  (on = inverted colours), compact mini player, **rear fog light** (amber icon when on) and **front fog lights**
+  (green, only if fitted), Phone, Radio, Settings.
 - **Apps**: swipe the home screen left for the car's apps and the ones you install; swipe right to go back.
   Use **Modifica** (Edit) to choose which installed apps to show.
 - **Settings** (long-press the car): car colour, black roof, theme, **language**, updates,
@@ -317,7 +335,7 @@ There are two ways to install it: from a USB stick, if you can open a file manag
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SW169-0.1.4.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SW169-0.2.0.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -333,7 +351,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SW169-0.1.4.apk
+   adb install -r -f MG4Launcher-SW169-0.2.0.apk
    ```
 2. Make it the default home:
    ```bash
@@ -369,6 +387,14 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 without testing on a car, so the saved log is the quickest way to fix anything that does not work.
 
 ### Changelog
+
+#### 0.2.0 — 13 October 2026
+- **Clock** in the battery panel, as large as the range; percentage next to the battery bar.
+- **Larger climate controls** for use while driving: temperature and fan with 68 dp buttons on a chip background,
+  new **A/C** and **AUTO** buttons; 100 dp bottom bar and a more compact mini player.
+- **Fog lights**: rear (and front, if fitted) straight from the bottom bar.
+- **Bluetooth and Wi-Fi indicators** (4 bars) at the top right.
+- With more than 4 media sources, only the icon for the unselected ones.
 
 #### 0.1.4 — 13 October 2026
 - **Automatic log upload** to the developer's private repository (at start, every 30 minutes, with Save log; queued

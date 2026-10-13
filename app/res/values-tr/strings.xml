@@ -74,6 +74,10 @@
     <string name="temp_down" formatted="false">Sıcaklığı düşür</string>
     <string name="temp_up" formatted="false">Sıcaklığı artır</string>
     <string name="fan_down" formatted="false">Fan azalt</string>
+    <string name="ac_desc" formatted="false">Klima</string>
+    <string name="auto_desc" formatted="false">Otomatik klima</string>
+    <string name="fog_front" formatted="false">Ön sis farları</string>
+    <string name="fog_rear" formatted="false">Arka sis lambası</string>
     <string name="fan_up" formatted="false">Fan artır</string>
     <string name="climate" formatted="false">Klima</string>
     <string name="phone" formatted="false">Telefon</string>

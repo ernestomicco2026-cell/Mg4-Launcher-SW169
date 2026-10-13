@@ -74,6 +74,10 @@
     <string name="temp_down" formatted="false">Baixar temperatura</string>
     <string name="temp_up" formatted="false">Subir temperatura</string>
     <string name="fan_down" formatted="false">Ventilador menos</string>
+    <string name="ac_desc" formatted="false">Ar condicionado</string>
+    <string name="auto_desc" formatted="false">Climatização automática</string>
+    <string name="fog_front" formatted="false">Faróis de nevoeiro</string>
+    <string name="fog_rear" formatted="false">Farol de nevoeiro traseiro</string>
     <string name="fan_up" formatted="false">Ventilador mais</string>
     <string name="climate" formatted="false">Climatização</string>
     <string name="phone" formatted="false">Telefone</string>

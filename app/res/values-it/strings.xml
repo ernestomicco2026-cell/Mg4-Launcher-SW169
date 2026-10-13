@@ -74,6 +74,10 @@
     <string name="temp_down" formatted="false">Diminuisci temperatura</string>
     <string name="temp_up" formatted="false">Aumenta temperatura</string>
     <string name="fan_down" formatted="false">Ventola meno</string>
+    <string name="ac_desc" formatted="false">Aria condizionata</string>
+    <string name="auto_desc" formatted="false">Clima automatico</string>
+    <string name="fog_front" formatted="false">Fendinebbia anteriori</string>
+    <string name="fog_rear" formatted="false">Retronebbia</string>
     <string name="fan_up" formatted="false">Ventola più</string>
     <string name="climate" formatted="false">Clima</string>
     <string name="phone" formatted="false">Telefono</string>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.mg4.launcher.R;
@@ -99,7 +100,8 @@ public final class HomeView extends LinearLayout {
     private int acTemp = -1;
     private int fanLevel = -1, fanMin = 1, fanMax = 11;
     private long localTempUntil, localFanUntil;
-    private TextView fanTv, outTv;
+    private TextView fanTv, outTv, acBtn, autoBtn;
+    private FrameLayout frontFogBtn, rearFogBtn;
     private ImageView outIcon;
 
     public HomeView(Context c, Theme t, Prefs prefs, Host host, VehicleClient vehicle, MediaClient media, NavClient nav) {
@@ -121,7 +123,7 @@ public final class HomeView extends LinearLayout {
         top.addView(buildCarPanel(c), new LayoutParams(dp(720), LayoutParams.MATCH_PARENT));
         right = buildRightPanel(c);
         top.addView(right, Ui.margins(Ui.lpWeight(0, LayoutParams.MATCH_PARENT, 1f), dp(16), 0, 0, 0));
-        addView(buildBottomBar(c), Ui.margins(new LayoutParams(LayoutParams.MATCH_PARENT, dp(92)), 0, dp(16), 0, 0));
+        addView(buildBottomBar(c), Ui.margins(new LayoutParams(LayoutParams.MATCH_PARENT, dp(100)), 0, dp(14), 0, 0));
 
         applyCarLook();
         selectTab(TAB_MEDIA, false);
@@ -159,6 +161,7 @@ public final class HomeView extends LinearLayout {
             return true;
         });
 
+        // autonomia a sinistra, orologio grande quanto l'autonomia a destra
         LinearLayout head = Ui.row(c);
         head.setGravity(Gravity.BOTTOM);
         rangeTv = Ui.text(c, "—", 76, t.text, Ui.LIGHT);
@@ -167,13 +170,26 @@ public final class HomeView extends LinearLayout {
         TextView km = Ui.text(c, "km", 26, t.sub, Ui.REGULAR);
         head.addView(km, Ui.margins(Ui.lp(-2, -2), dp(14), 0, 0, dp(8)));
         head.addView(Ui.spacer(c));
-        socTv = Ui.text(c, "—", 30, t.text, Ui.MEDIUM);
-        head.addView(socTv, Ui.margins(Ui.lp(-2, -2), 0, 0, 0, dp(8)));
+        TextClock clock = new TextClock(c);
+        clock.setFormat24Hour("HH:mm");
+        clock.setFormat12Hour("h:mm");
+        clock.setTextSize(76);
+        clock.setTextColor(t.text);
+        clock.setTypeface(Ui.LIGHT);
+        clock.setLetterSpacing(-0.03f);
+        clock.setIncludeFontPadding(rangeTv.getIncludeFontPadding());
+        head.addView(clock);
         p.addView(head);
 
+        // barra batteria con la percentuale accanto
+        LinearLayout batRow = Ui.row(c);
+        batRow.setGravity(Gravity.CENTER_VERTICAL);
         battery = new Bars.Progress(c);
         battery.setColors(t.track, t.battery);
-        p.addView(battery, Ui.margins(new LayoutParams(-1, dp(8)), 0, dp(16), 0, 0));
+        batRow.addView(battery, Ui.lpWeight(0, dp(8), 1));
+        socTv = Ui.text(c, "—", 24, t.text, Ui.MEDIUM);
+        batRow.addView(socTv, Ui.margins(Ui.lp(-2, -2), dp(16), 0, 0, 0));
+        p.addView(batRow, Ui.margins(new LayoutParams(-1, -2), 0, dp(10), 0, 0));
 
         LinearLayout status = Ui.row(c);
         statusIcon = Ui.icon(c, R.drawable.ic_bolt, t.battery, 22);
@@ -253,7 +269,13 @@ public final class HomeView extends LinearLayout {
         }
         fanMin = s.fanMin;
         fanMax = s.fanMax;
+        styleToggle(acBtn, s.acOn);
+        styleToggle(autoBtn, s.autoOn);
+        frontFogBtn.setVisibility(s.hasFrontFog ? VISIBLE : GONE);
+        styleToggle(frontFogBtn, s.frontFog, 0xFF34C77B);
+        styleToggle(rearFogBtn, s.rearFog, 0xFFFFB020);
     }
+
 
     private String chargeText(VehicleClient.State s) {
         String kw = s.chargeKw > 0.3f ? String.format(Locale.getDefault(), " · %.1f kW", s.chargeKw) : "";
@@ -306,9 +328,14 @@ public final class HomeView extends LinearLayout {
         tabMedia = addTab(c, tabs, s(R.string.tab_media), TAB_MEDIA);
         tabPhone = addTab(c, tabs, "CarPlay", TAB_PHONE);
         tabPhone.setVisibility(GONE);
+        // in alto a destra, prima delle schede: pillola Bluetooth / Wi-Fi
+        LinearLayout topRight = Ui.row(c);
+        topRight.setGravity(Gravity.CENTER_VERTICAL);
+        topRight.addView(new ConnIndicator(c, t), Ui.margins(new LayoutParams(-2, dp(60)), 0, 0, dp(10), 0));
+        topRight.addView(tabs);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(-2, -2, Gravity.TOP | Gravity.END);
         lp.setMargins(0, dp(20), dp(20), 0);
-        f.addView(tabs, lp);
+        f.addView(topRight, lp);
         return f;
     }
 
@@ -715,6 +742,10 @@ public final class HomeView extends LinearLayout {
             boolean on = src == selected;
             b.setBackground(on ? Ui.round(t.text, dp(12)) : Ui.pressable(getContext(), 0, 12, t));
             b.setTextColor(on ? t.panel : t.sub);
+            // con più di 4 sorgenti, solo l'icona per quelle non selezionate
+            boolean compact = srcRow.getChildCount() > 4;
+            b.setText(compact && !on ? "" : sourceLabel(src));
+            b.setCompoundDrawablePadding(compact && !on ? 0 : dp(10));
             android.graphics.drawable.Drawable d = getContext().getDrawable(sourceIcon(src)).mutate();
             d.setTint(on ? t.panel : t.sub);
             d.setBounds(0, 0, dp(22), dp(22));
@@ -989,29 +1020,37 @@ public final class HomeView extends LinearLayout {
 
     private View buildBottomBar(Context c) {
         LinearLayout bar = Ui.row(c);
+        bar.setGravity(Gravity.CENTER_VERTICAL);
         bar.setBackground(Ui.round(t.panel, dp(24)));
-        bar.setPadding(dp(16), 0, dp(16), 0);
+        bar.setPadding(dp(14), 0, dp(14), 0);
 
-        bar.addView(Ui.iconButton(c, t, R.drawable.ic_chev_left, t.sub, 0, 56, 26, 28, s(R.string.temp_down),
+        // temperatura: pulsanti grandi, facili da prendere durante la guida
+        LinearLayout tempBox = Ui.row(c);
+        tempBox.setGravity(Gravity.CENTER_VERTICAL);
+        tempBox.setBackground(Ui.round(t.chip, dp(20)));
+        tempBox.addView(Ui.iconButton(c, t, R.drawable.ic_chev_left, t.text, 0, 68, 30, 20, s(R.string.temp_down),
                 v -> changeTemp(-1)));
-        tempTv = Ui.text(c, "—", 32, t.text, Ui.REGULAR);
+        tempTv = Ui.text(c, "—", 40, t.text, Ui.REGULAR);
         tempTv.setGravity(Gravity.CENTER);
-        bar.addView(tempTv, new LayoutParams(dp(108), -2));
-        bar.addView(Ui.iconButton(c, t, R.drawable.ic_chev_right, t.sub, 0, 56, 26, 28, s(R.string.temp_up),
+        tempBox.addView(tempTv, new LayoutParams(dp(112), -2));
+        tempBox.addView(Ui.iconButton(c, t, R.drawable.ic_chev_right, t.text, 0, 68, 30, 20, s(R.string.temp_up),
                 v -> changeTemp(1)));
-        bar.addView(Ui.divider(c, t.track, 48));
+        bar.addView(tempBox, new LayoutParams(-2, dp(76)));
 
         // ventola: ‹ livello ›, tocca l'icona = app Clima, tieni premuto = accendi/spegni il clima
-        bar.addView(Ui.iconButton(c, t, R.drawable.ic_chev_left, t.sub, 0, 56, 26, 28, s(R.string.fan_down),
+        LinearLayout fanGroup = Ui.row(c);
+        fanGroup.setGravity(Gravity.CENTER_VERTICAL);
+        fanGroup.setBackground(Ui.round(t.chip, dp(20)));
+        fanGroup.addView(Ui.iconButton(c, t, R.drawable.ic_chev_left, t.text, 0, 68, 30, 20, s(R.string.fan_down),
                 v -> changeFan(-1)));
         LinearLayout fanBox = Ui.row(c);
         fanBox.setGravity(Gravity.CENTER);
-        ImageView fanIc = Ui.icon(c, R.drawable.ic_fan, t.accent, 26);
-        fanBox.addView(fanIc, new LayoutParams(dp(26), dp(26)));
-        fanTv = Ui.text(c, "—", 26, t.text, Ui.REGULAR);
+        ImageView fanIc = Ui.icon(c, R.drawable.ic_fan, t.accent, 30);
+        fanBox.addView(fanIc, new LayoutParams(dp(30), dp(30)));
+        fanTv = Ui.text(c, "—", 34, t.text, Ui.REGULAR);
         fanTv.setGravity(Gravity.CENTER);
-        fanBox.addView(fanTv, Ui.margins(new LayoutParams(-2, -2), dp(8), 0, 0, 0));
-        fanBox.setMinimumWidth(dp(104));
+        fanBox.addView(fanTv, Ui.margins(new LayoutParams(-2, -2), dp(10), 0, 0, 0));
+        fanBox.setMinimumWidth(dp(118));
         fanBox.setClickable(true);
         fanBox.setContentDescription(s(R.string.climate));
         fanBox.setBackground(Ui.pressable(c, 0, 16, t));
@@ -1020,32 +1059,50 @@ public final class HomeView extends LinearLayout {
             vehicle.setHvacPower(vehicle.last().hvacPower != 1);
             return true;
         });
-        bar.addView(fanBox, new LayoutParams(-2, dp(56)));
-        bar.addView(Ui.iconButton(c, t, R.drawable.ic_chev_right, t.sub, 0, 56, 26, 28, s(R.string.fan_up),
+        fanGroup.addView(fanBox, new LayoutParams(-2, dp(68)));
+        fanGroup.addView(Ui.iconButton(c, t, R.drawable.ic_chev_right, t.text, 0, 68, 30, 20, s(R.string.fan_up),
                 v -> changeFan(1)));
+        bar.addView(fanGroup, Ui.margins(new LayoutParams(-2, dp(76)), dp(10), 0, 0, 0));
+
+        // A/C e AUTO (lo sbrinamento ha il tasto fisico in plancia)
+        acBtn = toggleText(c, "A/C", s(R.string.ac_desc), v -> vehicle.toggleAc());
+        bar.addView(acBtn, Ui.margins(new LayoutParams(dp(76), dp(76)), dp(10), 0, 0, 0));
+        autoBtn = toggleText(c, "AUTO", s(R.string.auto_desc), v -> vehicle.toggleAuto());
+        bar.addView(autoBtn, Ui.margins(new LayoutParams(dp(76), dp(76)), dp(8), 0, 0, 0));
 
         bar.addView(Ui.divider(c, t.track, 48));
 
+        // mini-player compatto
         LinearLayout mini = Ui.row(c);
-        mini.setPadding(dp(8), 0, dp(8), 0);
-        miniArt = Ui.icon(c, R.drawable.ic_radio, t.sub, 30);
+        mini.setGravity(Gravity.CENTER_VERTICAL);
+        mini.setPadding(dp(6), 0, dp(4), 0);
+        miniArt = Ui.icon(c, R.drawable.ic_radio, t.sub, 26);
         FrameLayout artBox = new FrameLayout(c);
         artBox.setBackground(Ui.round(t.chip, dp(12)));
-        artBox.addView(miniArt, new FrameLayout.LayoutParams(dp(30), dp(30), Gravity.CENTER));
-        mini.addView(artBox, new LayoutParams(dp(56), dp(56)));
+        artBox.addView(miniArt, new FrameLayout.LayoutParams(dp(26), dp(26), Gravity.CENTER));
+        mini.addView(artBox, new LayoutParams(dp(48), dp(48)));
         LinearLayout mt = Ui.column(c);
-        miniTitle = Ui.oneLine(Ui.text(c, "", 19, t.text, Ui.MEDIUM));
-        miniSub = Ui.oneLine(Ui.text(c, "", 16, t.sub, Ui.REGULAR));
+        miniTitle = Ui.oneLine(Ui.text(c, "", 17, t.text, Ui.MEDIUM));
+        miniSub = Ui.oneLine(Ui.text(c, "", 14, t.sub, Ui.REGULAR));
         mt.addView(miniTitle);
-        mt.addView(miniSub, Ui.margins(new LayoutParams(-2, -2), 0, dp(4), 0, 0));
-        mini.addView(mt, Ui.margins(Ui.lpWeight(0, -2, 1), dp(14), 0, dp(8), 0));
+        mt.addView(miniSub, Ui.margins(new LayoutParams(-2, -2), 0, dp(2), 0, 0));
+        mini.addView(mt, Ui.margins(Ui.lpWeight(0, -2, 1), dp(12), 0, dp(4), 0));
         mini.setClickable(true);
         mini.setOnClickListener(v -> selectTab(TAB_MEDIA, true));
-        FrameLayout mp = Ui.iconButton(c, t, R.drawable.ic_pause, t.text, 0, 56, 28, 28, s(R.string.play_pause), v -> media.playPause());
+        FrameLayout mp = Ui.iconButton(c, t, R.drawable.ic_pause, t.text, 0, 52, 26, 26, s(R.string.play_pause), v -> media.playPause());
         miniPlayIcon = (ImageView) mp.getChildAt(0);
         mini.addView(mp);
-        mini.addView(Ui.iconButton(c, t, R.drawable.ic_next, t.text, 0, 56, 26, 28, s(R.string.next), v -> media.skip(true)));
+        mini.addView(Ui.iconButton(c, t, R.drawable.ic_next, t.text, 0, 52, 24, 26, s(R.string.next), v -> media.skip(true)));
         bar.addView(mini, Ui.lpWeight(0, -1, 1));
+
+        bar.addView(Ui.divider(c, t.track, 48));
+
+        // fendinebbia (sulla MG4 si accendono solo dallo schermo)
+        frontFogBtn = toggleIcon(c, R.drawable.ic_fog_front, s(R.string.fog_front), v -> vehicle.toggleFrontFog());
+        frontFogBtn.setVisibility(GONE);
+        bar.addView(frontFogBtn, Ui.margins(new LayoutParams(dp(68), dp(68)), 0, 0, dp(8), 0));
+        rearFogBtn = toggleIcon(c, R.drawable.ic_fog_rear, s(R.string.fog_rear), v -> vehicle.toggleRearFog());
+        bar.addView(rearFogBtn, new LayoutParams(dp(68), dp(68)));
 
         bar.addView(Ui.divider(c, t.track, 48));
 
@@ -1056,9 +1113,48 @@ public final class HomeView extends LinearLayout {
         return bar;
     }
 
+    /** Pulsante a commutazione con testo (A/C, AUTO): acceso = colori invertiti. */
+    private TextView toggleText(Context c, String label, String desc, View.OnClickListener l) {
+        TextView b = Ui.text(c, label, label.length() > 3 ? 17 : 20, t.text, Ui.MEDIUM);
+        b.setGravity(Gravity.CENTER);
+        b.setContentDescription(desc);
+        b.setClickable(true);
+        b.setOnClickListener(l);
+        styleToggle(b, -1);
+        return b;
+    }
+
+    private FrameLayout toggleIcon(Context c, int icon, String desc, View.OnClickListener l) {
+        FrameLayout f = Ui.iconButton(c, t, icon, t.text, t.chip, 76, 32, 20, desc, l);
+        styleToggle(f, -1);
+        return f;
+    }
+
+    /** state: 1 acceso, 0 spento, -1 sconosciuto/non disponibile (attenuato). */
+    private void styleToggle(View v, int state) {
+        styleToggle(v, state, 0);
+    }
+
+    /** onColor ≠ 0: fendinebbia, icona colorata come la spia del quadro (verde anteriori, ambra posteriori). */
+    private void styleToggle(View v, int state, int onColor) {
+        boolean on = state == 1;
+        Integer prev = (Integer) v.getTag();
+        if (prev != null && prev == state) return;
+        v.setTag(state);
+        v.setAlpha(state < 0 ? 0.45f : 1f);
+        if (onColor != 0) {
+            v.setBackground(Ui.pressable(getContext(), t.chip, 20, t));
+            ((ImageView) ((FrameLayout) v).getChildAt(0)).setColorFilter(on ? onColor : t.text);
+            return;
+        }
+        v.setBackground(on ? Ui.round(t.text, dp(20)) : Ui.pressable(getContext(), t.chip, 20, t));
+        if (v instanceof TextView) ((TextView) v).setTextColor(on ? t.panel : t.text);
+        else ((ImageView) ((FrameLayout) v).getChildAt(0)).setColorFilter(on ? t.panel : t.text);
+    }
+
     private View shortcut(Context c, int icon, String desc, View.OnClickListener l) {
-        FrameLayout f = Ui.iconButton(c, t, icon, t.text, 0, 68, 30, 18, desc, l);
-        f.setLayoutParams(Ui.margins(Ui.lp(dp(68), dp(68)), dp(8), 0, 0, 0));
+        FrameLayout f = Ui.iconButton(c, t, icon, t.text, 0, 64, 30, 18, desc, l);
+        f.setLayoutParams(Ui.margins(Ui.lp(dp(64), dp(64)), dp(6), 0, 0, 0));
         return f;
     }
 
