@@ -5,7 +5,10 @@
 **Ultima versione / Latest version: [0.1.4](releases/MG4Launcher-SW169-0.1.4.apk)**
 
 > ⚠️ **Compatibilità / Compatibility:** solo infotainment **SW169 Color Radio** · only **SW169 Color Radio** infotainment.
-> Per **SW168 SAIC 1.0+** usa [mg4-launcher](https://github.com/ernestomicco2026-cell/mg4-launcher) · for **SW168 SAIC 1.0+** use [mg4-launcher](https://github.com/ernestomicco2026-cell/mg4-launcher).
+> Garantita al momento su **MG4 standard MY23 R45**; usando i dati della FICM originale dovrebbe funzionare su tutte
+> le versioni con **Color Radio** · Currently verified on **MG4 standard MY23 R45**; since it uses the original FICM's
+> data it should work on every **Color Radio** version.
+> Per **SW168 SAIC 1.0+** usa [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168) · for **SW168 SAIC 1.0+** use [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
 
 > Progetto amatoriale e **non ufficiale**: non è affiliato né approvato da MG Motor o SAIC Motor.
 > I nomi MG / MG4 servono solo a indicare l'auto compatibile (infotainment SW169). Installalo e usalo a tuo rischio.
@@ -25,7 +28,7 @@ nulla dall'auto ("Servizio veicolo non disponibile").
 
 | Software dell'auto | Repository | File APK |
 |---|---|---|
-| **SW168 SAIC 1.0+** | [mg4-launcher](https://github.com/ernestomicco2026-cell/mg4-launcher) | `MG4Launcher-X.Y.Z.apk` |
+| **SW168 SAIC 1.0+** | [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168) | `MG4Launcher-X.Y.Z.apk` |
 | **SW169 Color Radio** | **questo repository** | `MG4Launcher-SW169-X.Y.Z.apk` |
 
 **Come sapere quale software hai:** con il computer collegato all'auto
@@ -46,8 +49,13 @@ Launcher in stile Tesla per l'infotainment della **MG4** con software **SW169 Co
 (EH32, Android Automotive 9, build `SWI69-29958-1100R45`).
 
 **Compatibilità:** funziona **solo con il software SW169 Color Radio**. La SW169 Color Radio non è un aggiornamento
-della SW168: è un software diverso, con altri servizi dell'auto. Su SW168 usa la [versione SW168](https://github.com/ernestomicco2026-cell/mg4-launcher).
+della SW168: è un software diverso, con altri servizi dell'auto. Su SW168 usa la [versione SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
 Sostituisce la schermata home originale mantenendone le funzioni, con la stessa grafica della versione SW168.
+
+**Versioni dell'auto:** al momento la compatibilità è **garantita sulla MG4 standard MY23 con software R45**
+(`SWI69-29958-1100R45`), dove il launcher è stato provato. Dato che usa gli stessi dati e servizi della **FICM**
+originale (l'unità dell'infotainment), dovrebbe funzionare su **tutte le versioni con la radio Color Radio**.
+Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio dei log attivo arrivano da sole.
 
 ### Cosa fa
 
@@ -261,8 +269,12 @@ Tesla-style launcher for the **MG4** infotainment system running **SW169 Color R
 (EH32, Android Automotive 9, build `SWI69-29958-1100R45`).
 
 **Compatibility:** works **only with SW169 Color Radio**. SW169 Color Radio is not an update of SW168: it is different
-software with different car services. On SW168 use the [SW168 version](https://github.com/ernestomicco2026-cell/mg4-launcher).
+software with different car services. On SW168 use the [SW168 version](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
 It replaces the original home screen, keeping its features, with the same design as the SW168 version.
+
+**Car versions:** compatibility is currently **verified on the MG4 standard MY23 with R45 software**
+(`SWI69-29958-1100R45`). Since it uses the same data and services as the original **FICM** (the infotainment unit),
+it should work on **every version with the Color Radio**. Reports from other versions are welcome.
 
 ### Features
 
