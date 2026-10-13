@@ -65,6 +65,20 @@ public final class Prefs {
         sp.edit().putString("lingua", code).apply();
     }
 
+    // --- avviso di nuova versione: "Più tardi" lo rimanda per quella versione ---
+
+    public void snoozeUpdate(String tag, long until) {
+        sp.edit().putString("upd_snooze_tag", tag).putLong("upd_snooze_until", until).apply();
+    }
+
+    public String snoozedUpdateTag() {
+        return sp.getString("upd_snooze_tag", "");
+    }
+
+    public long snoozedUpdateUntil() {
+        return sp.getLong("upd_snooze_until", 0);
+    }
+
     // --- app installate nascoste dalla griglia ---
 
     public Set<String> hiddenApps() {

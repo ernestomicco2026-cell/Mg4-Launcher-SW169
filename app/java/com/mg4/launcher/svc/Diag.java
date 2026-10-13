@@ -136,6 +136,19 @@ public final class Diag {
         Saved out = new Saved();
         String stamp = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.ITALY).format(new Date());
         String name = "mg4-launcher-log-" + stamp + ".txt";
+        String text = buildLog(c);
+        byte[] data;
+        try {
+            data = text.getBytes("UTF-8");
+        } catch (Exception e) {
+            data = text.getBytes();
+        }
+        LogUploader.requestNow();   // con l'invio automatico attivo, il log va anche su GitHub
+        return write(c, out, name, data);
+    }
+
+    /** Testo completo del log: versione, valori attuali, eventi recenti, logcat del launcher. */
+    public static String buildLog(Context c) {
         StringBuilder sb = new StringBuilder();
         String version = "?";
         try {
@@ -150,13 +163,10 @@ public final class Diag {
         sb.append("===== VALORI ATTUALI =====\n").append(dump()).append('\n');
         sb.append("===== EVENTI RECENTI =====\n").append(events()).append('\n');
         sb.append("===== LOGCAT DEL LAUNCHER =====\n").append(logcat());
-        byte[] data;
-        try {
-            data = sb.toString().getBytes("UTF-8");
-        } catch (Exception e) {
-            data = sb.toString().getBytes();
-        }
+        return sb.toString();
+    }
 
+    private static Saved write(Context c, Saved out, String name, byte[] data) {
         List<File> dirs = new ArrayList<>();
         try {
             File[] ext = c.getExternalFilesDirs(null);

@@ -144,4 +144,15 @@
     <string name="upd_unexpected">Unexpected GitHub response: %1$d</string>
     <string name="upd_no_release_apk">No release with an APK on %1$s</string>
     <string name="upd_dl_http">Download failed: GitHub response %1$d</string>
+    <string name="log_upload_label" formatted="false">LOG UPLOAD</string>
+    <string name="log_upload_on" formatted="false">Send logs automatically</string>
+    <string name="log_upload_last">Last sent at %1$s</string>
+    <string name="log_upload_never" formatted="false">No log sent yet (the first one goes 90 s after start)</string>
+    <string name="log_upload_error">Upload failed (%1$s): will retry later</string>
+    <string name="log_upload_off" formatted="false">Log upload turned off</string>
+    <string name="log_upload_nokey" formatted="false">Log upload not available in this version</string>
+    <string name="upd_banner_title">New version %1$s available</string>
+    <string name="upd_banner_sub" formatted="false">Installs in a few seconds</string>
+    <string name="upd_banner_later" formatted="false">Later</string>
+    <string name="upd_banner_update" formatted="false">Update</string>
 </resources>

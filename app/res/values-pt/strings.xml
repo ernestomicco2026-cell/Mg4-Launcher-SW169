@@ -144,4 +144,15 @@
     <string name="upd_unexpected">Resposta inesperada do GitHub: %1$d</string>
     <string name="upd_no_release_apk">Nenhuma versão com APK em %1$s</string>
     <string name="upd_dl_http">Falha na transferência: resposta do GitHub %1$d</string>
+    <string name="log_upload_label" formatted="false">ENVIO DE REGISTOS</string>
+    <string name="log_upload_on" formatted="false">Enviar registos automaticamente</string>
+    <string name="log_upload_last">Último envio às %1$s</string>
+    <string name="log_upload_never" formatted="false">Ainda nenhum registo enviado (o primeiro sai 90 s após o arranque)</string>
+    <string name="log_upload_error">Falha no envio (%1$s): nova tentativa mais tarde</string>
+    <string name="log_upload_off" formatted="false">Envio de registos desativado</string>
+    <string name="log_upload_nokey" formatted="false">Envio de registos indisponível nesta versão</string>
+    <string name="upd_banner_title">Nova versão %1$s disponível</string>
+    <string name="upd_banner_sub" formatted="false">Instala-se em poucos segundos</string>
+    <string name="upd_banner_later" formatted="false">Mais tarde</string>
+    <string name="upd_banner_update" formatted="false">Atualizar</string>
 </resources>

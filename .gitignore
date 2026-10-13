@@ -5,3 +5,4 @@ tools/d8.jar
 keys/platform.key.pem
 art/preview_*
 __pycache__/
+tools/log-token.txt

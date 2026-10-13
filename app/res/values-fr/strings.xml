@@ -144,4 +144,15 @@
     <string name="upd_unexpected">Réponse GitHub inattendue : %1$d</string>
     <string name="upd_no_release_apk">Aucune version avec APK sur %1$s</string>
     <string name="upd_dl_http">Échec du téléchargement : réponse GitHub %1$d</string>
+    <string name="log_upload_label" formatted="false">ENVOI DES JOURNAUX</string>
+    <string name="log_upload_on" formatted="false">Envoyer les journaux automatiquement</string>
+    <string name="log_upload_last">Dernier envoi à %1$s</string>
+    <string name="log_upload_never" formatted="false">Aucun journal envoyé (le premier part 90 s après le démarrage)</string>
+    <string name="log_upload_error">Échec de l\'envoi (%1$s) : nouvel essai plus tard</string>
+    <string name="log_upload_off" formatted="false">Envoi des journaux désactivé</string>
+    <string name="log_upload_nokey" formatted="false">Envoi des journaux indisponible dans cette version</string>
+    <string name="upd_banner_title">Nouvelle version %1$s disponible</string>
+    <string name="upd_banner_sub" formatted="false">S\'installe en quelques secondes</string>
+    <string name="upd_banner_later" formatted="false">Plus tard</string>
+    <string name="upd_banner_update" formatted="false">Mettre à jour</string>
 </resources>

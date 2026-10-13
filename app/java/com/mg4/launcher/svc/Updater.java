@@ -124,6 +124,28 @@ public final class Updater {
      * Scarica l'APK della release e lo installa. L'APK resta in memoria e va direttamente nella sessione
      * di installazione: nessun file temporaneo da salvare (era il punto che non riusciva sull'auto).
      */
+    /** Risultato del controllo silenzioso (avviso di nuova versione nella home). */
+    public interface QuietResult {
+        void onRelease(Release r);
+    }
+
+    /**
+     * Controllo in background, senza messaggi di stato: usato per l'avviso discreto di nuova versione.
+     * Usa raw.githubusercontent.com (nessun limite di richieste); non fa nulla se è già in corso un'operazione.
+     */
+    public void checkQuiet(String repo, QuietResult cb) {
+        if (busy) return;
+        bg.post(() -> {
+            try {
+                Release r = latest(repo, "");
+                Diag.put("aggiornamenti.controllo", "ultima " + r.tag + (r.newer ? " (nuova)" : ""));
+                main.post(() -> cb.onRelease(r));
+            } catch (Exception e) {
+                Diag.put("aggiornamenti.controllo", "non riuscito: " + describe(e));
+            }
+        });
+    }
+
     public void install(Release r, String token) {
         if (busy || r == null || r.apkUrl == null) return;
         status(tr(R.string.upd_downloading, r.apkName), r, true);

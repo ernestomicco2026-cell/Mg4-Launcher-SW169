@@ -28,6 +28,8 @@ public final class SettingsView extends FrameLayout {
         void openOriginalHome();
 
         Updater updater();
+
+        com.mg4.launcher.svc.LogUploader logs();
     }
 
     private final Theme t;
@@ -37,6 +39,7 @@ public final class SettingsView extends FrameLayout {
     private TextView diag;
     private final LinearLayout colorRow, themeRow, navRow;
     private LinearLayout langRow;
+    private TextView logUpload;
     private final TextView colorName;
     private TextView updStatus, updInstall, updCheck, logBtn, logStatus;
     private Updater.Release found;
@@ -100,6 +103,19 @@ public final class SettingsView extends FrameLayout {
         // SW169: niente navigatore MG, si usa sempre quello del telefono (CarPlay / Android Auto):
         // la scelta del navigatore predefinito non serve e non si mostra
         navRow = Ui.row(c);
+
+        // invio automatico dei log nel repository privato dei log
+        col.addView(label(c, c.getString(R.string.log_upload_label)), top(24));
+        LinearLayout lr = Ui.row(c);
+        lr.addView(Ui.text(c, c.getString(R.string.log_upload_on), 20, t.text, Ui.REGULAR), Ui.lpWeight(0, -2, 1));
+        Switch ls2 = new Switch(c);
+        ls2.setChecked(host.logs().enabled());
+        ls2.setEnabled(com.mg4.launcher.svc.LogUploader.configured());
+        ls2.setOnCheckedChangeListener((b, on) -> host.logs().setEnabled(on));
+        lr.addView(ls2);
+        col.addView(lr, top(10));
+        logUpload = Ui.text(c, "", 15, t.sub, Ui.REGULAR);
+        col.addView(logUpload, top(6));
 
         TextView original = Ui.text(c, c.getString(R.string.set_open_original), 19, t.text, Ui.MEDIUM);
         original.setGravity(Gravity.CENTER_VERTICAL);
@@ -310,11 +326,23 @@ public final class SettingsView extends FrameLayout {
         return f;
     }
 
+    /** Stato dell'invio dei log, nella lingua del launcher. */
+    private String logUploadText() {
+        Context c = getContext();
+        if (!com.mg4.launcher.svc.LogUploader.configured()) return c.getString(R.string.log_upload_nokey);
+        if (!host.logs().enabled()) return c.getString(R.string.log_upload_off);
+        String st = com.mg4.launcher.svc.LogUploader.status();
+        if (st.startsWith("ok ")) return c.getString(R.string.log_upload_last, st.substring(3));
+        if (st.startsWith("errore ")) return c.getString(R.string.log_upload_error, st.substring(7));
+        return c.getString(R.string.log_upload_never);
+    }
+
     private final Runnable refreshDiag = new Runnable() {
         @Override
         public void run() {
             String d = Diag.dump();
             diag.setText(d.isEmpty() ? getContext().getString(R.string.diag_waiting) : d);
+            logUpload.setText(logUploadText());
             if (isAttachedToWindow()) main.postDelayed(this, 1000);
         }
     };

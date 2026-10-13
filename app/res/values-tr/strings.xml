@@ -144,4 +144,15 @@
     <string name="upd_unexpected">Beklenmeyen GitHub yanıtı: %1$d</string>
     <string name="upd_no_release_apk">%1$s üzerinde APK içeren sürüm yok</string>
     <string name="upd_dl_http">İndirme başarısız: GitHub yanıtı %1$d</string>
+    <string name="log_upload_label" formatted="false">GÜNLÜK GÖNDERİMİ</string>
+    <string name="log_upload_on" formatted="false">Günlükleri otomatik gönder</string>
+    <string name="log_upload_last">Son gönderim %1$s</string>
+    <string name="log_upload_never" formatted="false">Henüz günlük gönderilmedi (ilki başlangıçtan 90 sn sonra)</string>
+    <string name="log_upload_error">Gönderilemedi (%1$s): daha sonra yeniden denenecek</string>
+    <string name="log_upload_off" formatted="false">Günlük gönderimi kapalı</string>
+    <string name="log_upload_nokey" formatted="false">Bu sürümde günlük gönderimi yok</string>
+    <string name="upd_banner_title">Yeni sürüm %1$s mevcut</string>
+    <string name="upd_banner_sub" formatted="false">Birkaç saniyede yüklenir</string>
+    <string name="upd_banner_later" formatted="false">Sonra</string>
+    <string name="upd_banner_update" formatted="false">Güncelle</string>
 </resources>

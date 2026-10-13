@@ -27,6 +27,8 @@ import com.mg4.launcher.ui.Pager;
 import com.mg4.launcher.ui.Prefs;
 import com.mg4.launcher.ui.SettingsView;
 import com.mg4.launcher.ui.Theme;
+import com.mg4.launcher.ui.Ui;
+import com.mg4.launcher.ui.UpdateBanner;
 
 /** Home del launcher: costruisce l'interfaccia e collega i servizi dell'auto. */
 public final class MainActivity extends Activity implements HomeView.Host, AppsView.Host, SettingsView.Host {
@@ -44,6 +46,10 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
     private MediaClient media;
     private NavClient nav;
     private Updater updater;
+    private com.mg4.launcher.svc.LogUploader logs;
+    private UpdateBanner banner;
+    private Updater.Release pendingUpdate;
+    private static final long UPDATE_FIRST_MS = 2 * 60_000, UPDATE_PERIOD_MS = 6 * 3_600_000L, SNOOZE_MS = 24 * 3_600_000L;
 
     private FrameLayout root;
     private Theme theme;
@@ -64,6 +70,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         media = new MediaClient(this);
         nav = new NavClient(this);
         updater = new Updater(this);
+        logs = new com.mg4.launcher.svc.LogUploader(this);
         lastUiMode = getResources().getConfiguration().uiMode;
 
         root = new FrameLayout(this);
@@ -90,6 +97,8 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         });
         vehicle.start();
         media.start();
+        logs.start();
+        root.postDelayed(updateCheck, UPDATE_FIRST_MS);
         // SW169: nessun navigatore MG, il servizio di navigazione non si usa (resta nav.last() vuoto)
 
         IntentFilter f = new IntentFilter();
@@ -160,6 +169,23 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         home.onVehicle(vehicle.last());
         home.onMedia(media.last());
         home.onNav(nav.last());
+        // avviso discreto di nuova versione, in basso a destra sopra la barra
+        banner = new UpdateBanner(this, theme, new UpdateBanner.Actions() {
+            @Override
+            public void onUpdate() {
+                Updater.Release r = pendingUpdate;
+                openSettings();
+                if (r != null) updater.install(r, prefs.githubToken());
+            }
+
+            @Override
+            public void onLater() {
+                if (pendingUpdate != null) prefs.snoozeUpdate(pendingUpdate.tag, System.currentTimeMillis() + SNOOZE_MS);
+            }
+        });
+        FrameLayout.LayoutParams bl = new FrameLayout.LayoutParams(-2, -2, android.view.Gravity.BOTTOM | android.view.Gravity.END);
+        bl.setMargins(0, 0, Ui.dp(this, 40), Ui.dp(this, 132));
+        root.addView(banner, bl);
         getWindow().setStatusBarColor(theme.bg);
         root.requestApplyInsets();
     }
@@ -183,6 +209,8 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
     protected void onDestroy() {
         super.onDestroy();
         root.removeCallbacks(saveDiag);
+        root.removeCallbacks(updateCheck);
+        logs.stop();
         vehicle.stop();
         media.stop();
         nav.stop();
@@ -238,6 +266,20 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
 
     // --- HomeView.Host ------------------------------------------------------------------------
 
+    /** Controllo silenzioso degli aggiornamenti: all'avvio (dopo 2 minuti) e poi ogni 6 ore. */
+    private final Runnable updateCheck = new Runnable() {
+        @Override
+        public void run() {
+            updater.checkQuiet(prefs.updateRepo(), r -> {
+                if (r == null || !r.newer || r.apkUrl == null) return;
+                pendingUpdate = r;
+                boolean snoozed = r.tag.equals(prefs.snoozedUpdateTag()) && System.currentTimeMillis() < prefs.snoozedUpdateUntil();
+                if (!snoozed && settings == null && banner != null) banner.show(r.tag);
+            });
+            root.postDelayed(this, UPDATE_PERIOD_MS);
+        }
+    };
+
     @Override
     public void openApps() {
         if (pager != null) pager.show(1, true);
@@ -245,6 +287,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
 
     @Override
     public void openSettings() {
+        if (banner != null) banner.hide();
         if (settings == null) {
             settings = new SettingsView(this, theme, prefs, this);
             root.addView(settings, new FrameLayout.LayoutParams(-1, -1));
@@ -341,6 +384,11 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
             home.applyCarLook();
             home.refreshNav();
         }
+    }
+
+    @Override
+    public com.mg4.launcher.svc.LogUploader logs() {
+        return logs;
     }
 
     @Override
