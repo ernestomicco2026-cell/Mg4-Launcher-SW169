@@ -1,4 +1,4 @@
-# Quando pubblichi una release (tag vX.Y.Z), allega in automatico releases/MG4Launcher-SW169-X.Y.Z.apk
+# Quando pubblichi una release (tag vX.Y.Z), allega in automatico releases/MG4Launcher-SWI69-X.Y.Z.apk
 # e, se la descrizione è vuota, usa le note di releases/latest.json.
 name: Allega APK alla release
 
@@ -27,8 +27,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.event.release.tag_name || inputs.tag }}
         run: |
-          VER="${TAG#sw169-}"; VER="${VER#v}"
-          APK="releases/MG4Launcher-SW169-${VER}.apk"
+          VER="${TAG#swi69-}"; VER="${VER#sw169-}"; VER="${VER#v}"
+          APK="releases/MG4Launcher-SWI69-${VER}.apk"
           if [ ! -f "$APK" ]; then
             echo "::error::Non trovo $APK nel repository per il tag $TAG"
             ls releases
@@ -41,7 +41,7 @@ jobs:
             if [ -n "$NOTES" ]; then
               gh release edit "$TAG" -R "$GITHUB_REPOSITORY" --notes "$NOTES
 
-          Installazione: \`adb install -r -f MG4Launcher-SW169-${VER}.apk\` oppure Impostazioni del launcher → Aggiornamenti."
+          Installazione: \`adb install -r -f MG4Launcher-SWI69-${VER}.apk\` oppure Impostazioni del launcher → Aggiornamenti."
             fi
           fi
           echo "Allegato $APK alla release $TAG"

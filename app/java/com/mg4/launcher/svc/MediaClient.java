@@ -29,12 +29,12 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Sorgenti audio dell'auto, versione SW169 (EH32 Color Radio), come la home originale SW169:
+ * Sorgenti audio dell'auto, versione SWI69 (EH32 Color Radio), come la home originale SWI69:
  *  - USB e musica online: MediaBrowserService dell'app com.saicmotor.media
  *  - Bluetooth: A2dpMediaBrowserService di com.android.bluetooth
  *  - Radio FM/DAB: RadioMBService (sessione: titolo, testo, logo, play/pausa, ricerca) +
  *    IRadioManager di com.saicmotor.radio (frequenza, sintonia diretta, stazioni DAB)
- *  - CarPlay / Android Auto (allgo): com.allgo.rui + MediaBrowser per i metadati, come sulla SW168
+ *  - CarPlay / Android Auto (allgo): com.allgo.rui + MediaBrowser per i metadati, come sulla SWI68
  * I preferiti radio li tiene il launcher (l'app Radio li salva in un database privato).
  */
 public final class MediaClient {
@@ -53,7 +53,7 @@ public final class MediaClient {
         }
     }
 
-    // --- MediaBrowserService (SW169) ----------------------------------------------------------
+    // --- MediaBrowserService (SWI69) ----------------------------------------------------------
     private static final String MEDIA_PKG = "com.saicmotor.media";
     private static final String RADIO_PKG = "com.saicmotor.radio";
 
@@ -66,7 +66,7 @@ public final class MediaClient {
     private static final String DAB_CB = "com.android.car.radio.service.IDabCallback";
     private static final String ACTION_NEXT_BAND = "__ACTION_NEXT_SOURCE__";
     private static final String ACTION_PREV_BAND = "__ACTION_PREV_SOURCE__";
-    /** Bande dell'app Radio SW169 (ordine di FeatureUtil.getRadioBands: DAB, FM, AM). */
+    /** Bande dell'app Radio SWI69 (ordine di FeatureUtil.getRadioBands: DAB, FM, AM). */
     public static final int BAND_AM = 0, BAND_FM = 1, BAND_DAB = 4;
 
     // --- CarPlay / Android Auto ---------------------------------------------------------------

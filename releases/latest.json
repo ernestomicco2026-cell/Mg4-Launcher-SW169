@@ -1,6 +1,6 @@
 {
-  "version": "0.2.0",
-  "apk": "releases/MG4Launcher-SW169-0.2.0.apk",
+  "version": "0.2.1",
+  "apk": "releases/MG4Launcher-SWI69-0.2.1.apk",
   "size": 417747,
-  "notes": "Orologio nel riquadro batteria, clima più grande con A/C e AUTO, fendinebbia, indicatori Bluetooth e Wi-Fi."
+  "notes": "Nome corretto del software: SWI69 (repository, file e cartella dei log)."
 }

@@ -99,7 +99,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         media.start();
         logs.start();
         root.postDelayed(updateCheck, UPDATE_FIRST_MS);
-        // SW169: nessun navigatore MG, il servizio di navigazione non si usa (resta nav.last() vuoto)
+        // SWI69: nessun navigatore MG, il servizio di navigazione non si usa (resta nav.last() vuoto)
 
         IntentFilter f = new IntentFilter();
         f.addAction(Intent.ACTION_PACKAGE_ADDED);
@@ -299,7 +299,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         catalog.launchComponent(pkg, cls);
     }
 
-    /** App Energia SW169 (ricarica, scarica V2L, consumi): non ha schede apribili dall'esterno. */
+    /** App Energia SWI69 (ricarica, scarica V2L, consumi): non ha schede apribili dall'esterno. */
     @Override
     public void openEnergy(String module) {
         if (!catalog.launchComponent(MgApps.ENERGY_PKG, MgApps.ENERGY_CLS)) {
@@ -315,7 +315,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
     /** Apre il navigatore scelto: MG, quello del telefono (CarPlay/Android Auto) o un'app installata. */
     @Override
     public void launchNavigator(String which) {
-        // SW169: il navigatore è quello del telefono (CarPlay / Android Auto) o un'app installata sull'auto
+        // SWI69: il navigatore è quello del telefono (CarPlay / Android Auto) o un'app installata sull'auto
         boolean phone = media.last().deviceType != 0;
         if (!Prefs.NAV_AUTO.equals(which) && !Prefs.NAV_PHONE.equals(which) && !Prefs.NAV_MG.equals(which)) {
             Intent li = getPackageManager().getLaunchIntentForPackage(which);

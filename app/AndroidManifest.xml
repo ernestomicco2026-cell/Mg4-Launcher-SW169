@@ -12,7 +12,7 @@
     <!-- aggiornamento da GitHub senza conferma (permesso di sistema, concesso dalla firma platform) -->
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!-- SW169: proprietà batteria (manager "bms") e clima dal CarService, concesse dalla firma platform -->
+    <!-- SWI69: proprietà batteria (manager "bms") e clima dal CarService, concesse dalla firma platform -->
     <uses-permission android:name="android.car.permission.CAR_VENDOR_EXTENSION" />
     <uses-permission android:name="android.car.permission.CAR_ENERGY" />
     <uses-permission android:name="android.car.permission.CAR_ENERGY_PORTS" />

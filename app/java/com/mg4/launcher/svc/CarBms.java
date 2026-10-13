@@ -10,7 +10,7 @@ import android.os.Looper;
 import java.lang.reflect.Method;
 
 /**
- * Proprietà batteria SAIC lette dal CarService di Android (manager "bms", come l'app Energia SW169).
+ * Proprietà batteria SAIC lette dal CarService di Android (manager "bms", come l'app Energia SWI69).
  * La libreria android.car è nel classpath di sistema: la si usa per riflessione, senza includerla nell'APK.
  * ID presi da android.car.hardware.CarBMSManager del firmware SWI69.
  */

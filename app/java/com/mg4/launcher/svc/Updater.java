@@ -31,7 +31,7 @@ import java.net.URL;
  * con PackageInstaller (il launcher è firmato con la chiave platform, quindi non serve conferma).
  */
 public final class Updater {
-    /** Repository dedicato alla SW169: ramo main, cartella releases/, Release con tag "vX.Y.Z" (o "sw169-vX.Y.Z"). */
+    /** Repository dedicato alla SWI69: ramo main, cartella releases/, Release con tag "vX.Y.Z" (o "swi69-vX.Y.Z"). */
     static final String BRANCH = "main";
     static final String CHANNEL_DIR = "releases/";
 
@@ -508,8 +508,8 @@ public final class Updater {
     }
 
     private static int[] nums(String v) {
-        // "sw169-v0.1.0" → 0.1.0: il nome del software non fa parte della versione
-        String[] parts = v.replaceAll("(?i)sw\\s*-?169", "").replaceAll("[^0-9.]", "").replaceAll("^\\.+", "").split("\\.");
+        // "swi69-v0.1.0" (o il vecchio "sw169-…") → 0.1.0: il nome del software non fa parte della versione
+        String[] parts = v.replaceAll("(?i)sw\\s*-?[i1]69", "").replaceAll("[^0-9.]", "").replaceAll("^\\.+", "").split("\\.");
         int[] out = new int[parts.length];
         for (int i = 0; i < parts.length; i++) {
             try {

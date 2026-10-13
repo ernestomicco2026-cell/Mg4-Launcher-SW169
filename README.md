@@ -1,20 +1,20 @@
-# MG4 Launcher — SW169 Color Radio
+# MG4 Launcher — SWI69 Color Radio
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.2.0](releases/MG4Launcher-SW169-0.2.0.apk)**
+**Ultima versione / Latest version: [0.2.1](releases/MG4Launcher-SWI69-0.2.1.apk)**
 
-> ⚠️ **Compatibilità / Compatibility:** solo infotainment **SW169 Color Radio** · only **SW169 Color Radio** infotainment.
+> ⚠️ **Compatibilità / Compatibility:** solo infotainment **SWI69 Color Radio** · only **SWI69 Color Radio** infotainment.
 > Garantita al momento su **MG4 standard MY23 R45**; usando i dati della FICM originale dovrebbe funzionare su tutte
 > le versioni con **Color Radio** · Currently verified on **MG4 standard MY23 R45**; since it uses the original FICM's
 > data it should work on every **Color Radio** version.
-> Per **SW168 SAIC 1.0+** usa [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168) · for **SW168 SAIC 1.0+** use [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
+> Per **SWI68 SAIC 1.0+** usa [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168) · for **SWI68 SAIC 1.0+** use [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
 
 > Progetto amatoriale e **non ufficiale**: non è affiliato né approvato da MG Motor o SAIC Motor.
-> I nomi MG / MG4 servono solo a indicare l'auto compatibile (infotainment SW169). Installalo e usalo a tuo rischio.
+> I nomi MG / MG4 servono solo a indicare l'auto compatibile (infotainment SWI69). Installalo e usalo a tuo rischio.
 >
 > Hobby project, **not official**: not affiliated with or endorsed by MG Motor or SAIC Motor.
-> The MG / MG4 names only identify the compatible car (SW169 infotainment). Install and use it at your own risk.
+> The MG / MG4 names only identify the compatible car (SWI69 infotainment). Install and use it at your own risk.
 
 ---
 <img width="1179" height="444" alt="Senza nome" src="https://github.com/user-attachments/assets/c0b5f5ba-1c4c-48cd-a238-18fd6ab0b0bc" />
@@ -28,29 +28,29 @@ nulla dall'auto ("Servizio veicolo non disponibile").
 
 | Software dell'auto | Repository | File APK |
 |---|---|---|
-| **SW168 SAIC 1.0+** | [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168) | `MG4Launcher-X.Y.Z.apk` |
-| **SW169 Color Radio** | **questo repository** | `MG4Launcher-SW169-X.Y.Z.apk` |
+| **SWI68 SAIC 1.0+** | [Mg4-Launcher-SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168) | `MG4Launcher-X.Y.Z.apk` |
+| **SWI69 Color Radio** | **questo repository** | `MG4Launcher-SWI69-X.Y.Z.apk` |
 
 **Come sapere quale software hai:** con il computer collegato all'auto
-`adb shell getprop ro.build.mt2712.version` → se inizia con `SWI69-` è la **SW169**, altrimenti (es. `SWI68-…`) è la **SW168**.
+`adb shell getprop ro.build.mt2712.version` → se inizia con `SWI69-` è la **SWI69**, altrimenti (es. `SWI68-…`) è la **SWI68**.
 Se il launcher è già installato: impostazioni → riga **MG4 Launcher X.Y.Z · repository** sotto *Aggiornamenti*;
 il nome del repository dice quale versione hai. Se nella *Diagnostica* compaiono `veicolo.bind = fallito` e
-`media.usb.bind = fallito`, hai installato la versione SW168 su un'auto SW169 (o viceversa).
+`media.usb.bind = fallito`, hai installato la versione SWI68 su un'auto SWI69 (o viceversa).
 
 There are **two different launchers**, one per MG4 infotainment software, and they are not interchangeable.
-Check your software with `adb shell getprop ro.build.mt2712.version` (starts with `SWI69-` = SW169, otherwise SW168) and
+Check your software with `adb shell getprop ro.build.mt2712.version` (starts with `SWI69-` = SWI69, otherwise SWI68) and
 use the matching repository above.
 
 ---
 
 ## Italiano
 
-Launcher in stile Tesla per l'infotainment della **MG4** con software **SW169 Color Radio**
+Launcher in stile Tesla per l'infotainment della **MG4** con software **SWI69 Color Radio**
 (EH32, Android Automotive 9, build `SWI69-29958-1100R45`).
 
-**Compatibilità:** funziona **solo con il software SW169 Color Radio**. La SW169 Color Radio non è un aggiornamento
-della SW168: è un software diverso, con altri servizi dell'auto. Su SW168 usa la [versione SW168](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
-Sostituisce la schermata home originale mantenendone le funzioni, con la stessa grafica della versione SW168.
+**Compatibilità:** funziona **solo con il software SWI69 Color Radio**. La SWI69 Color Radio non è un aggiornamento
+della SWI68: è un software diverso, con altri servizi dell'auto. Su SWI68 usa la [versione SWI68](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
+Sostituisce la schermata home originale mantenendone le funzioni, con la stessa grafica della versione SWI68.
 
 **Versioni dell'auto:** al momento la compatibilità è **garantita sulla MG4 standard MY23 con software R45**
 (`SWI69-29958-1100R45`), dove il launcher è stato provato. Dato che usa gli stessi dati e servizi della **FICM**
@@ -63,7 +63,7 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
   tacca del limite di ricarica, stato di ricarica e V2L, temperatura esterna. La tua MG4 ricolorabile con gli 8 colori della gamma, tetto nero opzionale.
   Tocca l'auto o V2L → app Energia. Tieni premuta l'auto → impostazioni del launcher.
 - **Mappa / Media / CarPlay** (a destra):
-  - **Mappa**: la SW169 non ha un navigatore MG, si naviga con **CarPlay / Android Auto**. Senza guida una scheda
+  - **Mappa**: la SWI69 non ha un navigatore MG, si naviga con **CarPlay / Android Auto**. Senza guida una scheda
     mostra lo stato del telefono: collegato → pulsante **Apri CarPlay / Android Auto**; non collegato → ti ricorda
     di collegarlo. Durante la guida il pannello mostra le indicazioni del telefono.
   - **Media**: parte dalla sorgente in riproduzione, altrimenti dalla radio; in alto un pulsante per ogni sorgente
@@ -100,14 +100,14 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
 
 ### Installazione
 
-Solo per infotainment **SW169 Color Radio**. Scarica l'APK dalla cartella [`releases/`](releases/).
+Solo per infotainment **SWI69 Color Radio**. Scarica l'APK dalla cartella [`releases/`](releases/).
 Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file manager sull'auto, oppure con adb da computer.
 
 #### Metodo 1 — Da chiavetta USB (senza computer)
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SW169-0.2.0.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SWI69-0.2.1.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -124,7 +124,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SW169-0.2.0.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.1.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -140,7 +140,7 @@ e gli aggiornamenti successivi si fanno dalle impostazioni del launcher, senza c
 Impostazioni del launcher → **Aggiornamenti** → **Controlla aggiornamenti**.
 Se c'è una versione più nuova compare **Scarica e installa**: il launcher la installa da solo e si riavvia.
 Serve che l'auto sia collegata a internet (connettività dell'auto o hotspot del telefono).
-Gli aggiornamenti arrivano solo da questo repository: una versione SW168 non viene mai proposta.
+Gli aggiornamenti arrivano solo da questo repository: una versione SWI68 non viene mai proposta.
 Dalla 0.1.3 il controllo e il download passano da raw.githubusercontent.com, senza il limite di richieste delle API
 di GitHub. Chi ha una versione precedente alla 0.1.3 deve installarla una volta a mano (chiavetta o adb).
 Si possono installare anche da computer, con lo stesso comando dell'installazione.
@@ -185,6 +185,9 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 
 ### Versioni
 
+#### 0.2.1 — 13 ottobre 2026
+- Nome corretto del software: **SWI69** (non SW169) nel repository, nei file APK e nella cartella dei log.
+
 #### 0.2.0 — 13 ottobre 2026
 - **Orologio** nel riquadro batteria, grande quanto l'autonomia; percentuale accanto alla barra della batteria.
 - **Clima più grande** e più facile da usare guidando: temperatura e ventola con pulsanti da 68 dp su fondo chip,
@@ -211,25 +214,25 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
   con **Come l'auto** che segue la lingua di sistema.
 
 #### 0.1.1 — 12 ottobre 2026
-- Tolto il pulsante Telecamere: le MG4 con SW169 non hanno la telecamera a 360°.
+- Tolto il pulsante Telecamere: le MG4 con SWI69 non hanno la telecamera a 360°.
 - Navigatore solo da CarPlay / Android Auto: tolti i pulsanti Casa / Lavoro, il pulsante "MG" e la scelta del
   navigatore predefinito nelle impostazioni; il launcher non si collega più al servizio di navigazione MG.
 
 #### 0.1.0 — 12 ottobre 2026
-- Prima versione per **SW169 Color Radio**, con la grafica e le correzioni della versione SW168 0.4.1.
-- Servizi dell'auto riscritti per la SW169: batteria, ricarica, V2L e clima dal servizio `caradapter`;
+- Prima versione per **SWI69 Color Radio**, con la grafica e le correzioni della versione SWI68 0.4.1.
+- Servizi dell'auto riscritti per la SWI69: batteria, ricarica, V2L e clima dal servizio `caradapter`;
   limite di ricarica, potenza e consumo dal CarService (come l'app Energia).
-- Clima **16–30 °C** (LO / HI agli estremi), come sulla MG4 EU con SW169.
+- Clima **16–30 °C** (LO / HI agli estremi), come sulla MG4 EU con SWI69.
 - Media con le sessioni standard di Android (USB, Bluetooth, online, radio); bande DAB / FM.
-- Preferiti radio gestiti dal launcher (l'app Radio SW169 non li rende leggibili alle altre app).
-- V2L e auto aprono l'app Energia; pulsante Telecamere come la home originale SW169.
+- Preferiti radio gestiti dal launcher (l'app Radio SWI69 non li rende leggibili alle altre app).
+- V2L e auto aprono l'app Energia; pulsante Telecamere come la home originale SWI69.
 - Pulsante "MG" del navigatore solo se l'auto ha un navigatore MG.
 - Aggiornamenti solo da questo repository.
 
 ### Compilare
 
 Nessun Gradle: `./build.sh` usa aapt2, javac (bytecode 8), D8 e firma con la chiave platform AOSP
-(la stessa del sistema dell'auto, build test-keys: identica su SW168 e SW169). L'APK esce in `build/`.
+(la stessa del sistema dell'auto, build test-keys: identica su SWI68 e SWI69). L'APK esce in `build/`.
 La versione è in `version.properties`.
 
 **Invio dei log:** il token del repository privato dei log non è nel repository. Per compilare un APK che invia i log,
@@ -246,15 +249,15 @@ Prima di compilare metti in `tools/` i due file non inclusi nel repository:
 `keys/platform.p12` è la chiave platform **pubblica** di test AOSP (password `android`).
 
 **Pubblicare una nuova versione:** aumenta `VERSION_CODE` e `VERSION_NAME` in `version.properties`, compila,
-copia l'APK in `releases/MG4Launcher-SW169-X.Y.Z.apk`, aggiorna `releases/latest.json` (versione, nome del file
+copia l'APK in `releases/MG4Launcher-SWI69-X.Y.Z.apk`, aggiorna `releases/latest.json` (versione, nome del file
 e dimensione) e le Versioni qui sopra, poi commit e push. Il launcher controlla `releases/latest.json` e anche le
 Release di GitHub con un APK allegato, e propone la più recente.
 Per la Release di GitHub basta crearla con il tag `vX.Y.Z`: l'automazione `.github/workflows/allega-apk.yml`
-allega da sola `releases/MG4Launcher-SW169-X.Y.Z.apk` (e, se la descrizione è vuota, usa le note di `latest.json`).
+allega da sola `releases/MG4Launcher-SWI69-X.Y.Z.apk` (e, se la descrizione è vuota, usa le note di `latest.json`).
 
 ### Come comunica con l'auto
 
-Servizi del software **SW169 Color Radio** (ricavati dall'analisi del firmware `SWI69-29958-1100R45`).
+Servizi del software **SWI69 Color Radio** (ricavati dall'analisi del firmware `SWI69-29958-1100R45`).
 
 | Funzione | Servizio | Note |
 |---|---|---|
@@ -278,12 +281,12 @@ il pannello Mappa mostra le indicazioni del telefono e apre CarPlay / Android Au
 
 ## English
 
-Tesla-style launcher for the **MG4** infotainment system running **SW169 Color Radio** software
+Tesla-style launcher for the **MG4** infotainment system running **SWI69 Color Radio** software
 (EH32, Android Automotive 9, build `SWI69-29958-1100R45`).
 
-**Compatibility:** works **only with SW169 Color Radio**. SW169 Color Radio is not an update of SW168: it is different
-software with different car services. On SW168 use the [SW168 version](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
-It replaces the original home screen, keeping its features, with the same design as the SW168 version.
+**Compatibility:** works **only with SWI69 Color Radio**. SWI69 Color Radio is not an update of SWI68: it is different
+software with different car services. On SWI68 use the [SWI68 version](https://github.com/ernestomicco2026-cell/Mg4-Launcher-SW168).
+It replaces the original home screen, keeping its features, with the same design as the SWI68 version.
 
 **Car versions:** compatibility is currently **verified on the MG4 standard MY23 with R45 software**
 (`SWI69-29958-1100R45`). Since it uses the same data and services as the original **FICM** (the infotainment unit),
@@ -295,7 +298,7 @@ it should work on **every version with the Color Radio**. Reports from other ver
   charge-limit mark, charging and V2L status, outside temperature. Your MG4, recolourable with the 8 factory colours, optional black roof.
   Tap the car or V2L → Energy app. Long-press the car → launcher settings.
 - **Map / Media / CarPlay** (right):
-  - **Map**: SW169 has no MG navigator, navigation is done with **CarPlay / Android Auto**. When not guiding, a card
+  - **Map**: SWI69 has no MG navigator, navigation is done with **CarPlay / Android Auto**. When not guiding, a card
     shows the phone status with an **Open CarPlay / Android Auto** button (or a reminder to connect the phone);
     while guiding, the panel shows the phone's directions.
   - **Media**: starts on the source that is playing, otherwise the radio; one button per source at the top
@@ -328,14 +331,14 @@ Other system languages fall back to English.
 
 ### Installation
 
-Only for **SW169 Color Radio** infotainment. Download the APK from the [`releases/`](releases/) folder.
+Only for **SWI69 Color Radio** infotainment. Download the APK from the [`releases/`](releases/) folder.
 There are two ways to install it: from a USB stick, if you can open a file manager on the car, or with adb from a computer.
 
 #### Method 1 — From a USB stick (no computer)
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SW169-0.2.0.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SWI69-0.2.1.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -351,7 +354,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SW169-0.2.0.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.1.apk
    ```
 2. Make it the default home:
    ```bash
@@ -367,7 +370,7 @@ and later updates are installed from the launcher settings, with no USB stick or
 Launcher settings → **Aggiornamenti** (Updates) → **Controlla aggiornamenti** (Check for updates).
 If a newer version exists, **Scarica e installa** (Download and install) appears: the launcher installs it and restarts.
 The car needs an internet connection (car connectivity or phone hotspot). Updates come only from this repository:
-a SW168 build is never offered. Since 0.1.3 they are read from raw.githubusercontent.com, without the GitHub API rate
+a SWI68 build is never offered. Since 0.1.3 they are read from raw.githubusercontent.com, without the GitHub API rate
 limit; anyone on an older version must install 0.1.3 once by hand (USB stick or adb).
 
 ### Going back to the original MG home
@@ -387,6 +390,9 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 without testing on a car, so the saved log is the quickest way to fix anything that does not work.
 
 ### Changelog
+
+#### 0.2.1 — 13 October 2026
+- Correct software name: **SWI69** (not SW169) in the repository, APK files and log folder.
 
 #### 0.2.0 — 13 October 2026
 - **Clock** in the battery panel, as large as the range; percentage next to the battery bar.
@@ -412,12 +418,12 @@ without testing on a car, so the saved log is the quickest way to fix anything t
   **Same as car** following the system language.
 
 #### 0.1.1 — 12 October 2026
-- Cameras button removed: MG4 cars with SW169 have no 360° camera.
+- Cameras button removed: MG4 cars with SWI69 have no 360° camera.
 - Navigation only through CarPlay / Android Auto: Home / Work buttons, the "MG" button and the default-navigator
   setting removed; the launcher no longer connects to the MG navigation service.
 
 #### 0.1.0 — 12 October 2026
-- First version for **SW169 Color Radio**, with the design and fixes of SW168 version 0.4.1.
-- Car services rewritten for SW169 (`caradapter` hub, CarService `bms` properties, standard Android media sessions).
+- First version for **SWI69 Color Radio**, with the design and fixes of SWI68 version 0.4.1.
+- Car services rewritten for SWI69 (`caradapter` hub, CarService `bms` properties, standard Android media sessions).
 - Climate range **16–30 °C**; radio favourites kept by the launcher; V2L and the car open the Energy app;
-  Cameras button like the original SW169 home; MG navigator button only when present; updates only from this repository.
+  Cameras button like the original SWI69 home; MG navigator button only when present; updates only from this repository.

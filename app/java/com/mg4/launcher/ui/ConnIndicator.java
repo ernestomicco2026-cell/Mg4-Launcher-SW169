@@ -19,7 +19,7 @@ import com.mg4.launcher.R;
 import com.mg4.launcher.svc.Diag;
 
 /**
- * Pillola in alto a destra, prima delle schede: Bluetooth e Wi-Fi con 4 tacche (come la SW168 0.6.0).
+ * Pillola in alto a destra, prima delle schede: Bluetooth e Wi-Fi con 4 tacche (come la SWI68 0.6.0).
  * Bluetooth: pieno = collegato a un telefono, sbiadito = acceso. Wi-Fi: solo se collegato, tacche = segnale.
  * Se nulla è acceso la pillola sparisce.
  */

@@ -12,10 +12,10 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * Veicolo, versione SW169 (EH32 Color Radio).
+ * Veicolo, versione SWI69 (EH32 Color Radio).
  *
  * Il servizio com.saicmotor.caradapter è un "hub" (ICarAdapterService.queryClient(codice)) che restituisce i
- * binder dei sotto-servizi, come fa la home originale SW169 (libreria carapi). Da qui: batteria, autonomia,
+ * binder dei sotto-servizi, come fa la home originale SWI69 (libreria carapi). Da qui: batteria, autonomia,
  * stato di ricarica, V2L e climatizzatore. Limite di ricarica, corrente/tensione e consumo arrivano invece
  * dalle proprietà "bms" del CarService di Android (CarBms), come nell'app Energia.
  */
@@ -29,7 +29,7 @@ public final class VehicleClient {
 
     private static final String EV = "com.saicmotor.carapi.ev.ICarEvService";
     private static final int EV_PERCENT = 3;          // int  getChargePercentChange
-    private static final int EV_STATUS = 4;           // int  getChargeStatus (stessi codici della SW168)
+    private static final int EV_STATUS = 4;           // int  getChargeStatus (stessi codici della SWI68)
     private static final int EV_REMAIN_TIME = 6;      // int  getChargingRemainTime (minuti)
     private static final int EV_DISCHG_TIME = 7;      // int  getDisChargingRemainTime
     private static final int EV_UNITS = 11;           // int  getDistanceUnits (0 = km)
@@ -63,7 +63,7 @@ public final class VehicleClient {
     private static final long HOLD_MS = 4000;
 
     /**
-     * Temperatura nella barra: MG4 EU/UK su SW169 va da 16 a 30 °C, con LO = 15,5 e HI = 30,5
+     * Temperatura nella barra: MG4 EU/UK su SWI69 va da 16 a 30 °C, con LO = 15,5 e HI = 30,5
      * (CarModel.isTempRange16to30CarModel della home originale). Nel launcher: 15 = "LO", 31 = "HI".
      */
     public static final int TEMP_MIN = 15;   // "LO"
@@ -190,7 +190,7 @@ public final class VehicleClient {
 
     /**
      * Limite di ricarica: il CarService restituisce un codice, non una percentuale
-     * (1 = 40% … 5 = 80% … 6 = 90%, altrimenti 100%, come l'app Energia SW169).
+     * (1 = 40% … 5 = 80% … 6 = 90%, altrimenti 100%, come l'app Energia SWI69).
      */
     static int limitPercent(int code) {
         if (code >= 1 && code <= 7) return (code + 3) * 10;
@@ -362,7 +362,7 @@ public final class VehicleClient {
         }
     }
 
-    /** Commuta: il servizio SW169 ha solo "cambia stato" (senza argomenti) per il clima, set(1) per le luci. */
+    /** Commuta: il servizio SWI69 ha solo "cambia stato" (senza argomenti) per il clima, set(1) per le luci. */
     private void press(int bind, String desc, int setCode, boolean withOne, int getCode, int current, String what) {
         if (bg == null) return;
         if (current == 0 || current == 1) hold(getCode, 1 - current);
@@ -451,7 +451,7 @@ public final class VehicleClient {
         });
     }
 
-    /** Accende o spegne il clima (il servizio SW169 ha solo il comando "cambia stato"). */
+    /** Accende o spegne il clima (il servizio SWI69 ha solo il comando "cambia stato"). */
     public void setHvacPower(boolean on) {
         if (bg == null) return;
         bg.post(() -> {

@@ -93,7 +93,7 @@ public final class Prefs {
     }
 
     // --- aggiornamenti da GitHub ---
-    public static final String DEFAULT_REPO = "ernestomicco2026-cell/Mg4-Launcher-SW169";
+    public static final String DEFAULT_REPO = "ernestomicco2026-cell/Mg4-Launcher-SWI69";
 
     public String updateRepo() {
         return sp.getString("ghRepo", DEFAULT_REPO);

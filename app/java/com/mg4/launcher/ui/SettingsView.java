@@ -100,7 +100,7 @@ public final class SettingsView extends FrameLayout {
         ls.addView(langRow);
         col.addView(ls, Ui.margins(new LinearLayout.LayoutParams(-1, -2), 0, dp(10), 0, 0));
 
-        // SW169: niente navigatore MG, si usa sempre quello del telefono (CarPlay / Android Auto):
+        // SWI69: niente navigatore MG, si usa sempre quello del telefono (CarPlay / Android Auto):
         // la scelta del navigatore predefinito non serve e non si mostra
         navRow = Ui.row(c);
 

@@ -31,7 +31,7 @@ public final class HomeView extends LinearLayout {
 
         void launch(String pkg, String cls);
 
-        /** App Energia: "ricarica" o "scarica" (V2L). Sulla SW169 si apre sempre la schermata principale. */
+        /** App Energia: "ricarica" o "scarica" (V2L). Sulla SWI69 si apre sempre la schermata principale. */
         void openEnergy(String module);
 
         void launchNavigator();
@@ -374,7 +374,7 @@ public final class HomeView extends LinearLayout {
         decor.setColors(t.map, t.road, t.roadMinor);
         f.addView(decor, new FrameLayout.LayoutParams(-1, -1));
 
-        // nessuna guida: scheda centrale con lo stato del telefono (la SW169 naviga solo con CarPlay / Android Auto)
+        // nessuna guida: scheda centrale con lo stato del telefono (la SWI69 naviga solo con CarPlay / Android Auto)
         navIdle = Ui.column(c);
         navIdle.setGravity(Gravity.CENTER_HORIZONTAL);
         navIdle.setBackground(Ui.round(t.overlay, dp(28)));

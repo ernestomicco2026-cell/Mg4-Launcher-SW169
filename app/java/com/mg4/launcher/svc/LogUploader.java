@@ -24,14 +24,14 @@ import java.util.UUID;
 
 /**
  * Invio automatico dei log nel repository privato dei log su GitHub (API "contents", un file per invio):
- *   SW169/<codice installazione>/<aaaa-mm-gg>/<hh-mm-ss>.txt
+ *   SWI69/<codice installazione>/<aaaa-mm-gg>/<hh-mm-ss>.txt
  * All'avvio (dopo 90 s, quando i servizi dell'auto hanno risposto), ogni 30 minuti e con "Salva log".
  * Senza rete i log restano in coda (al massimo 20) e partono al primo invio riuscito.
  * Il token NON è nel codice: build.sh genera LogConfig da tools/log-token.txt (escluso da git).
  */
 public final class LogUploader {
     private static final String REPO = "ernestomicco2026-cell/mg4-launcher-logs";
-    private static final String FOLDER = "SW169";
+    private static final String FOLDER = "SWI69";
     private static final long FIRST_DELAY_MS = 90_000, PERIOD_MS = 30 * 60_000;
     private static final int MAX_QUEUE = 20;
     private static final int MAX_BYTES = 400_000;

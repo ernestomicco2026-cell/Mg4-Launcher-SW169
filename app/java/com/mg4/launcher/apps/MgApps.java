@@ -1,7 +1,7 @@
 package com.mg4.launcher.apps;
 
 /**
- * App MG del software SW169 (EH32 Color Radio): pacchetti e schermate principali,
+ * App MG del software SWI69 (EH32 Color Radio): pacchetti e schermate principali,
  * presi dai manifest del firmware SWI69-29958-1100R45.
  */
 public final class MgApps {

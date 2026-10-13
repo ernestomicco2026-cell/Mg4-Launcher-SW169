@@ -54,7 +54,7 @@ public final class AppCatalog {
         }
     }
 
-    /** App dell'auto SW169 (EH32 Color Radio), nell'ordine del launcher MG; quelle assenti non compaiono. */
+    /** App dell'auto SWI69 (EH32 Color Radio), nell'ordine del launcher MG; quelle assenti non compaiono. */
     private static final String[][] CAR_APPS = {
             {"@app_vehicle", MgApps.VEHICLE_PKG, MgApps.VEHICLE_CLS, "car"},
             {"@app_climate", MgApps.HVAC_PKG, MgApps.HVAC_CLS, "fan"},
