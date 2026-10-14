@@ -31,6 +31,9 @@ public final class CarBms {
     private volatile Object car;
     private volatile Object bms;
     private volatile Method getProperty;
+    /** Manager "hvac" del CarService (temperatura dell'abitacolo). */
+    private volatile Object hvac;
+    private volatile Method hvacGetFloat;
     private boolean started;
 
     public CarBms(Context c) {
@@ -60,6 +63,13 @@ public final class CarBms {
                             getProperty = bms.getClass().getMethod("getProperty", Class.class, int.class, int.class);
                         }
                         Diag.put("bms.stato", bms != null ? "collegato" : "manager bms assente");
+                        try {
+                            hvac = car.getClass().getMethod("getCarManager", String.class).invoke(car, "hvac");
+                            if (hvac != null) hvacGetFloat = hvac.getClass().getMethod("getFloatProperty", int.class, int.class);
+                            Diag.put("hvac.stato", hvac != null ? "collegato" : "manager hvac assente");
+                        } catch (Throwable e) {
+                            Diag.error("hvac.manager", e.toString());
+                        }
                     } catch (Throwable e) {
                         Diag.error("bms.manager", e.toString());
                     }
@@ -76,6 +86,21 @@ public final class CarBms {
         } catch (Throwable e) {
             Diag.error("bms.car", e.toString());
             main.postDelayed(this::connect, 15000);
+        }
+    }
+
+    /** Proprietà float del manager "hvac" (CarHvacManager) per una zona, o NaN se non leggibile. */
+    public float hvacFloat(int id, int area) {
+        Object m = hvac;
+        Method g = hvacGetFloat;
+        if (m == null || g == null) return Float.NaN;
+        try {
+            Object v = g.invoke(m, id, area);
+            return v instanceof Float ? (Float) v : Float.NaN;
+        } catch (Throwable e) {
+            Throwable c = e.getCause() != null ? e.getCause() : e;
+            Diag.put("hvac.0x" + Integer.toHexString(id) + "@" + area, "errore " + c.getClass().getSimpleName());
+            return Float.NaN;
         }
     }
 

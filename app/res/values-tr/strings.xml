@@ -8,6 +8,9 @@
     <string name="v2l_desc" formatted="false">V2L, enerji yönetimini aç</string>
     <string name="v2l_on" formatted="false">Açık</string>
     <string name="v2l_off" formatted="false">Kapalı</string>
+    <string name="inside_temp">İç %1$s°</string>
+    <string name="set_soc_decimals" formatted="false">Ondalıklı batarya yüzdesi</string>
+    <string name="set_show_tpms" formatted="false">Tekerleklerin altında lastik basıncı (TPMS)</string>
     <string name="outside_temp">Dışarı %1$s°</string>
     <string name="charge_full_at">%1$s\'de dolu</string>
     <string name="chg_charging" formatted="false">Şarj oluyor</string>

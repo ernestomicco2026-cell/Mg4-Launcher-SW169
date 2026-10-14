@@ -2,7 +2,7 @@
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.2.2](releases/MG4Launcher-SWI69-0.2.2.apk)**
+**Ultima versione / Latest version: [0.2.3](releases/MG4Launcher-SWI69-0.2.3.apk)**
 
 > ⚠️ **Compatibilità / Compatibility:** solo infotainment **SWI69 Color Radio** · only **SWI69 Color Radio** infotainment.
 > Garantita al momento su **MG4 standard MY23 R45**; usando i dati della FICM originale dovrebbe funzionare su tutte
@@ -17,7 +17,10 @@
 > The MG / MG4 names only identify the compatible car (SWI69 infotainment). Install and use it at your own risk.
 
 ---
-<img width="1920" height="720" alt="MG4Launcher-SWI69-0 2 2-notte" src="https://github.com/user-attachments/assets/d3fa05fd-6e46-4ab7-ac93-482e9be71134" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.3 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.3-notte.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.3 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.3-giorno.png" />
+
+<sub>Anteprima della grafica 0.2.3 (tema notte e giorno, con decimali e pressione pneumatici attivi): i valori sono di esempio · Preview of the 0.2.3 design (night and day theme, decimals and tyre pressure on): values are examples.</sub>
 
 ---
 
@@ -61,7 +64,8 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
 ### Cosa fa
 
 - **Auto e batteria** (a sinistra): autonomia e **orologio** grandi, barra batteria con la percentuale accanto e la
-  tacca del limite di ricarica, stato di ricarica e V2L, temperatura esterna. La tua MG4 ricolorabile con gli 8 colori della gamma, tetto nero opzionale.
+  tacca del limite di ricarica, stato di ricarica e V2L, temperatura esterna e interna; nelle impostazioni si attivano la percentuale
+  con un decimale e la pressione degli pneumatici (TPMS) sotto le ruote. La tua MG4 ricolorabile con gli 8 colori della gamma, tetto nero opzionale.
   Tocca l'auto o V2L → app Energia. Tieni premuta l'auto → impostazioni del launcher.
 - **Mappa / Media / CarPlay** (a destra):
   - **Mappa**: la SWI69 non ha un navigatore MG, si naviga con **CarPlay / Android Auto**. Senza guida una scheda
@@ -108,7 +112,7 @@ Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file 
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SWI69-0.2.2.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SWI69-0.2.3.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -125,7 +129,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.2.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.3.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -185,6 +189,12 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 `media.radio.sessione` e `radio.corrente`, poi manda il log salvato.
 
 ### Versioni
+
+#### 0.2.3 — 14 ottobre 2026
+- **Percentuale della batteria con un decimale** (es. 88,1%), attivabile nelle impostazioni.
+- **Pressione degli pneumatici (TPMS)** sotto le ruote dell'auto disegnata (anteriori sotto la ruota davanti, posteriori
+  sotto quella dietro, nell'unità scelta sul quadro; in ambra se l'auto segnala un problema), attivabile nelle impostazioni.
+- **Temperatura interna** sotto quella esterna, quando l'auto la fornisce.
 
 #### 0.2.2 — 13 ottobre 2026
 - Nome corretto del software (**SWI69**) e del repository (**Mg4-Launcher-SWI69**). Se nelle impostazioni era salvato
@@ -300,7 +310,8 @@ it should work on **every version with the Color Radio**. Reports from other ver
 ### Features
 
 - **Car and battery** (left): large range and **clock**, battery bar with the percentage next to it and a
-  charge-limit mark, charging and V2L status, outside temperature. Your MG4, recolourable with the 8 factory colours, optional black roof.
+  charge-limit mark, charging and V2L status, outside and inside temperature; the settings turn on the percentage with one
+  decimal and the tyre pressure (TPMS) under the wheels. Your MG4, recolourable with the 8 factory colours, optional black roof.
   Tap the car or V2L → Energy app. Long-press the car → launcher settings.
 - **Map / Media / CarPlay** (right):
   - **Map**: SWI69 has no MG navigator, navigation is done with **CarPlay / Android Auto**. When not guiding, a card
@@ -343,7 +354,7 @@ There are two ways to install it: from a USB stick, if you can open a file manag
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SWI69-0.2.2.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SWI69-0.2.3.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -359,7 +370,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.2.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.3.apk
    ```
 2. Make it the default home:
    ```bash
@@ -395,6 +406,12 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 without testing on a car, so the saved log is the quickest way to fix anything that does not work.
 
 ### Changelog
+
+#### 0.2.3 — 14 October 2026
+- **Battery percentage with one decimal** (e.g. 88.1%), can be turned on in the settings.
+- **Tyre pressure (TPMS)** under the wheels of the car picture (front under the front wheel, rear under the rear one, in the
+  unit chosen on the cluster; amber when the car reports a problem), can be turned on in the settings.
+- **Inside temperature** under the outside one, when the car provides it.
 
 #### 0.2.2 — 13 October 2026
 - Correct software name (**SWI69**) and repository name (**Mg4-Launcher-SWI69**). If the old Mg4-Launcher-SW169

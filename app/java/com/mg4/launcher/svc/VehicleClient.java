@@ -25,7 +25,7 @@ public final class VehicleClient {
 
     private static final String HUB = "com.saicmotor.carapi.ICarAdapterService";
     private static final int HUB_QUERY_CLIENT = 1;
-    private static final int BIND_EV = 4, BIND_HVAC = 7, BIND_CONFIG = 2, BIND_LAMP = 13;
+    private static final int BIND_EV = 4, BIND_HVAC = 7, BIND_CONFIG = 2, BIND_LAMP = 13, BIND_IPK = 5, BIND_VS = 8;
 
     private static final String EV = "com.saicmotor.carapi.ev.ICarEvService";
     private static final int EV_PERCENT = 3;          // int  getChargePercentChange
@@ -54,6 +54,17 @@ public final class VehicleClient {
     private static final String LAMP = "com.saicmotor.carapi.lamp.ICarLampService";
     private static final int LAMP_SET_REAR_FOG = 30, LAMP_GET_REAR_FOG = 31, LAMP_SET_FRONT_FOG = 40, LAMP_GET_FRONT_FOG = 41;
     private static final String CONFIG = "com.saicmotor.carapi.config.ICarConfigService";
+
+    // pneumatici (TPMS): servizio impostazioni veicolo, zone 1 AS · 2 AD · 3 PS · 4 PD
+    private static final String VS = "com.saicmotor.carapi.vs.ICarVehicleSettingService";
+    private static final int VS_TPMS_CONFIG = 5, VS_TIRE_PRESS = 92, VS_TIRE_PRESS_FLOAT = 93, VS_TIRE_TEMP = 94, VS_TIRE_STATUS = 95;
+    private static final String IPK = "com.saicmotor.carapi.ipk.ICarIpkService";
+    private static final int IPK_TYRE_UNIT = 29;   // 0 bar, 1 kPa, 2 psi (scelta dell'utente sul quadro)
+    public static final int TYRE_BAR = 0, TYRE_KPA = 1, TYRE_PSI = 2;
+
+    // temperatura dell'abitacolo dal CarService (CarHvacManager)
+    private static final int HVAC_TEMP_ACTUAL = 358614274;      // ID_ZONED_TEMP_ACTUAL, per sedile
+    private static final int HVAC_AMBIENT_TEMP = 358622506;     // ID_AC_AMBIENT_TEMPERATURE (SAIC)
     private static final int CONFIG_FRONT_FOG = 60;   // getFrontFrogConfigData: 0 = fendinebbia anteriori presenti
 
     /** Ventola come la barra del launcher: 0 = clima spento, 1..11, 15 = automatico. */
@@ -86,6 +97,11 @@ public final class VehicleClient {
         public int acOn = -1, autoOn = -1, defrostOn = -1;   // 1 acceso, 0 spento, -1 sconosciuto
         public int rearFog = -1, frontFog = -1;           // 1 acceso, 0 spento, -1 non disponibile
         public boolean hasFrontFog;
+        public float insideTemp = Float.NaN;  // °C abitacolo, NaN = non disponibile
+        public boolean tpms;              // l'auto ha il TPMS e i valori sono leggibili
+        public final float[] tyreKpa = {Float.NaN, Float.NaN, Float.NaN, Float.NaN};   // AS, AD, PS, PD
+        public final int[] tyreStatus = {-1, -1, -1, -1};   // 0 normale, 2 bassa, 3 perdita, 4 alta…
+        public int tyreUnit = TYRE_BAR;
         public int fanLevel = -1;         // 0 spento, 1..max, 15 auto
         public int fanMin = FAN_MIN, fanMax = FAN_MAX;
         public float outsideTemp = -10000f;   // °C
@@ -273,6 +289,8 @@ public final class VehicleClient {
             }
         }
         readLamps(s);
+        readInside(s);
+        readTyres(s);
         readBms(s);
         last = s;
         main.post(() -> {
@@ -310,6 +328,71 @@ public final class VehicleClient {
         Diag.putQuiet("veicolo.consumo.ultimoKm", lastKm);
         Diag.put("veicolo.consumo.altri", "reale " + bms.getFloat(CarBms.VEH_ACTU_ELEC_CSUMP)
                 + " · mediaBatteria " + bms.getFloat(CarBms.BAT_ELEC_ENRG_AVG_RATE));
+    }
+
+    /** Temperatura interna: prima quella reale per il sedile del guidatore, poi quella "ambiente" del clima. */
+    private void readInside(State s) {
+        float actual1 = bms.hvacFloat(HVAC_TEMP_ACTUAL, 1);
+        float actual0 = bms.hvacFloat(HVAC_TEMP_ACTUAL, 0);
+        float ambient = bms.hvacFloat(HVAC_AMBIENT_TEMP, 0);
+        Diag.put("clima.tempInterna", "attuale(1) " + actual1 + " · attuale(0) " + actual0 + " · ambiente " + ambient);
+        if (plausible(actual1)) s.insideTemp = actual1;
+        else if (plausible(actual0)) s.insideTemp = actual0;
+        // la "ambiente" del clima conta solo se diversa dalla temperatura esterna (altrimenti è la stessa sonda)
+        else if (plausible(ambient) && Math.abs(ambient - s.outsideTemp) > 0.4f) s.insideTemp = ambient;
+    }
+
+    private static boolean plausible(float t) {
+        return !Float.isNaN(t) && t > -40 && t < 80;
+    }
+
+    /** Pressioni degli pneumatici, normalizzate in kPa (il servizio può restituire bar, kPa o psi). */
+    private void readTyres(State s) {
+        try {
+            IBinder v = sub(BIND_VS);
+            if (v == null) return;
+            if (tpmsConfig == Integer.MIN_VALUE) {
+                tpmsConfig = Rpc.callInt(v, VS, VS_TPMS_CONFIG);
+                Diag.put("tpms.config", tpmsConfig + " (0 = presente)");
+            }
+            try {
+                IBinder ipk = sub(BIND_IPK);
+                if (ipk != null) s.tyreUnit = Rpc.callInt(ipk, IPK, IPK_TYRE_UNIT);
+            } catch (Exception e) {
+                forget(BIND_IPK);
+            }
+            StringBuilder raw = new StringBuilder();
+            int valid = 0;
+            for (int z = 1; z <= 4; z++) {
+                final int zone = z;
+                Float f = Rpc.call(v, VS, VS_TIRE_PRESS_FLOAT, p -> p.writeInt(zone), android.os.Parcel::readFloat);
+                Integer i = Rpc.call(v, VS, VS_TIRE_PRESS, p -> p.writeInt(zone), android.os.Parcel::readInt);
+                Integer st = Rpc.call(v, VS, VS_TIRE_STATUS, p -> p.writeInt(zone), android.os.Parcel::readInt);
+                Integer tc = Rpc.call(v, VS, VS_TIRE_TEMP, p -> p.writeInt(zone), android.os.Parcel::readInt);
+                float kpa = toKpa(f != null ? f : Float.NaN);
+                if (Float.isNaN(kpa) && i != null) kpa = toKpa(i);
+                s.tyreKpa[z - 1] = kpa;
+                s.tyreStatus[z - 1] = st != null ? st : -1;
+                if (!Float.isNaN(kpa)) valid++;
+                raw.append(z).append(": ").append(f).append(" / ").append(i).append(" st ").append(st)
+                        .append(" ").append(tc).append("°  ");
+            }
+            s.tpms = valid > 0 && tpmsConfig != 1;
+            Diag.put("tpms.pneumatici", raw.toString().trim() + " · unità " + s.tyreUnit);
+        } catch (Exception e) {
+            Diag.error("tpms", e.toString());
+            forget(BIND_VS);
+        }
+    }
+
+    private int tpmsConfig = Integer.MIN_VALUE;
+
+    /** Valore grezzo → kPa: sotto 10 sono bar, fino a 80 psi, oltre kPa. NaN se non valido. */
+    private static float toKpa(float v) {
+        if (Float.isNaN(v) || v <= 0.3f || v > 1000) return Float.NaN;
+        if (v < 10) return v * 100f;
+        if (v < 80) return v * 6.895f;
+        return v;
     }
 
     private void readLamps(State s) {

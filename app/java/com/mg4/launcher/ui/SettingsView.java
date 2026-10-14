@@ -88,6 +88,17 @@ public final class SettingsView extends FrameLayout {
         roof.addView(sw);
         col.addView(roof, top(18));
 
+        // percentuale della batteria con un decimale
+        col.addView(toggleRow(c, c.getString(R.string.set_soc_decimals), prefs.socDecimals(), on -> {
+            prefs.setSocDecimals(on);
+            host.settingsChanged(false);
+        }), top(14));
+        // pressione degli pneumatici (TPMS) sotto le ruote dell'auto
+        col.addView(toggleRow(c, c.getString(R.string.set_show_tpms), prefs.showTpms(), on -> {
+            prefs.setShowTpms(on);
+            host.settingsChanged(false);
+        }), top(14));
+
         col.addView(label(c, c.getString(R.string.set_theme)), top(24));
         themeRow = Ui.row(c);
         col.addView(themeRow, top(10));
@@ -327,6 +338,21 @@ public final class SettingsView extends FrameLayout {
     }
 
     /** Stato dell'invio dei log, nella lingua del launcher. */
+    private interface OnToggle {
+        void changed(boolean on);
+    }
+
+    /** Riga "testo ……… interruttore", come quella del tetto nero. */
+    private LinearLayout toggleRow(Context c, String label, boolean checked, OnToggle l) {
+        LinearLayout r = Ui.row(c);
+        r.addView(Ui.text(c, label, 20, t.text, Ui.REGULAR), Ui.lpWeight(0, -2, 1));
+        Switch sw = new Switch(c);
+        sw.setChecked(checked);
+        sw.setOnCheckedChangeListener((b, on) -> l.changed(on));
+        r.addView(sw);
+        return r;
+    }
+
     private String logUploadText() {
         Context c = getContext();
         if (!com.mg4.launcher.svc.LogUploader.configured()) return c.getString(R.string.log_upload_nokey);

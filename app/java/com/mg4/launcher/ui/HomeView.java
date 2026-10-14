@@ -100,7 +100,9 @@ public final class HomeView extends LinearLayout {
     private int acTemp = -1;
     private int fanLevel = -1, fanMin = 1, fanMax = 11;
     private long localTempUntil, localFanUntil;
-    private TextView fanTv, outTv, acBtn, autoBtn;
+    private TextView fanTv, outTv, acBtn, autoBtn, inTv;
+    private ImageView inIcon;
+    private View insideRow;
     private FrameLayout frontFogBtn, rearFogBtn;
     private ImageView outIcon;
 
@@ -204,6 +206,17 @@ public final class HomeView extends LinearLayout {
         status.addView(outTv, Ui.margins(Ui.lp(-2, -2), dp(6), 0, 0, 0));
         p.addView(status, Ui.margins(new LayoutParams(-1, -2), 0, dp(14), 0, 0));
 
+        // temperatura interna, sotto quella esterna
+        LinearLayout inside = Ui.row(c);
+        inside.addView(Ui.spacer(c));
+        inIcon = Ui.icon(c, R.drawable.ic_thermo, t.sub, 22);
+        inside.addView(inIcon);
+        inTv = Ui.text(c, "", 20, t.sub, Ui.REGULAR);
+        inside.addView(inTv, Ui.margins(Ui.lp(-2, -2), dp(6), 0, 0, 0));
+        insideRow = inside;
+        inside.setVisibility(GONE);
+        p.addView(inside, Ui.margins(new LayoutParams(-1, -2), 0, dp(6), 0, 0));
+
         car = new CarView(c);
         p.addView(car, Ui.margins(Ui.lpWeight(-1, 0, 1), 0, dp(4), 0, dp(4)));
 
@@ -244,7 +257,9 @@ public final class HomeView extends LinearLayout {
         }
         rangeTv.setText(s.rangeKm > 0 && s.rangeKm < 2000 ? String.valueOf(s.rangeKm) : "—");
         if (s.soc >= 0 && s.soc <= 100) {
-            socTv.setText(Math.round(s.soc) + "%");
+            socTv.setText(prefs.socDecimals()
+                    ? String.format(Locale.getDefault(), "%.1f%%", s.soc)
+                    : Math.round(s.soc) + "%");
             battery.setValue(s.soc / 100f);
         }
         battery.setLimit(s.chargeLimit > 0 && s.chargeLimit < 100 ? s.chargeLimit / 100f : -1);
@@ -263,6 +278,10 @@ public final class HomeView extends LinearLayout {
         boolean outOk = s.outsideTemp > -60 && s.outsideTemp < 70;
         outIcon.setVisibility(outOk ? VISIBLE : GONE);
         outTv.setText(outOk ? s(R.string.outside_temp, String.format(Locale.getDefault(), "%.0f", s.outsideTemp)) : "");
+        boolean inOk = !Float.isNaN(s.insideTemp);
+        insideRow.setVisibility(inOk ? VISIBLE : GONE);
+        if (inOk) inTv.setText(s(R.string.inside_temp, String.format(Locale.getDefault(), "%.0f", s.insideTemp)));
+        showTyres(s);
         if (s.fanLevel >= 0 && SystemClock.uptimeMillis() > localFanUntil) {
             fanLevel = s.fanLevel;
             fanTv.setText(fanLabel(fanLevel));
@@ -276,6 +295,35 @@ public final class HomeView extends LinearLayout {
         styleToggle(rearFogBtn, s.rearFog, 0xFFFFB020);
     }
 
+
+    /** Pressioni sotto le ruote (se attivate nelle impostazioni e se l'auto le fornisce). */
+    private void showTyres(VehicleClient.State s) {
+        if (!prefs.showTpms() || !s.tpms) {
+            car.setTyres(null, null, null, 0, 0, 0);
+            return;
+        }
+        String unit = s.tyreUnit == VehicleClient.TYRE_KPA ? "kPa" : s.tyreUnit == VehicleClient.TYRE_PSI ? "psi" : "bar";
+        String front = tyre(s, 0, s.tyreUnit) + " · " + tyre(s, 1, s.tyreUnit);
+        String rear = tyre(s, 2, s.tyreUnit) + " · " + tyre(s, 3, s.tyreUnit);
+        int warn = 0xFFFFB020;
+        car.setTyres(front, rear, unit,
+                tyreWarn(s, 0) || tyreWarn(s, 1) ? warn : t.text,
+                tyreWarn(s, 2) || tyreWarn(s, 3) ? warn : t.text, t.sub);
+    }
+
+    private static String tyre(VehicleClient.State s, int i, int unit) {
+        float kpa = s.tyreKpa[i];
+        if (Float.isNaN(kpa)) return "—";
+        if (unit == VehicleClient.TYRE_KPA) return String.valueOf(Math.round(kpa));
+        if (unit == VehicleClient.TYRE_PSI) return String.valueOf(Math.round(kpa / 6.895f));
+        return String.format(Locale.getDefault(), "%.1f", kpa / 100f);
+    }
+
+    /** Stati del TPMS: 2 bassa, 3 perdita, 4 alta, 5 temperatura alta, 6 squilibrio, 10 perdita rapida. */
+    private static boolean tyreWarn(VehicleClient.State s, int i) {
+        int st = s.tyreStatus[i];
+        return st == 2 || st == 3 || st == 4 || st == 5 || st == 6 || st == 10;
+    }
 
     private String chargeText(VehicleClient.State s) {
         String kw = s.chargeKw > 0.3f ? String.format(Locale.getDefault(), " · %.1f kW", s.chargeKw) : "";

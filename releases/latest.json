@@ -1,6 +1,6 @@
 {
-  "version": "0.2.2",
-  "apk": "releases/MG4Launcher-SWI69-0.2.2.apk",
-  "size": 417747,
-  "notes": "Nome corretto del software (SWI69) e del repository (Mg4-Launcher-SWI69): il launcher passa da solo al nuovo repository per gli aggiornamenti."
+  "version": "0.2.3",
+  "apk": "releases/MG4Launcher-SWI69-0.2.3.apk",
+  "size": 421843,
+  "notes": "Percentuale della batteria con decimali e pressione degli pneumatici (TPMS) sotto le ruote, attivabili nelle impostazioni; temperatura interna sotto quella esterna."
 }

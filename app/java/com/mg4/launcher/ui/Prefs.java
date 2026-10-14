@@ -92,6 +92,25 @@ public final class Prefs {
         sp.edit().putStringSet("hiddenApps", s).apply();
     }
 
+    // --- riquadro auto ---
+    /** Percentuale della batteria con un decimale (es. 88,1%). */
+    public boolean socDecimals() {
+        return sp.getBoolean("socDecimali", false);
+    }
+
+    public void setSocDecimals(boolean on) {
+        sp.edit().putBoolean("socDecimali", on).apply();
+    }
+
+    /** Pressione degli pneumatici (TPMS) sotto le ruote dell'auto disegnata. */
+    public boolean showTpms() {
+        return sp.getBoolean("mostraTpms", false);
+    }
+
+    public void setShowTpms(boolean on) {
+        sp.edit().putBoolean("mostraTpms", on).apply();
+    }
+
     // --- aggiornamenti da GitHub ---
     public static final String DEFAULT_REPO = "ernestomicco2026-cell/Mg4-Launcher-SWI69";
 
