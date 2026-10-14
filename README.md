@@ -21,7 +21,7 @@
 ---
 <img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.6-notte.png" />
 <img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.6-giorno.png" />
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – guida a destra" src="screenshots/MG4Launcher-SWI69-0.2.5-guida-a-destra.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – guida a destra" src="screenshots/MG4Launcher-SWI69-0.2.6-guida-a-destra.png" />
 <img width="1920" alt="Impostazioni MG4 Launcher SWI69 0.2.6 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.6-impostazioni-notte.png" />
 <img width="1920" alt="Impostazioni MG4 Launcher SWI69 0.2.6 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.6-impostazioni-giorno.png" />
 
