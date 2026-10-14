@@ -24,6 +24,7 @@ S = {
     "drive_left": ["Guida a sinistra", "Left-hand drive", "Volante a la izquierda", "Linkslenker", "Volante à esquerda", "Conduite à gauche", "Soldan direksiyon"],
     "drive_right": ["Guida a destra", "Right-hand drive", "Volante a la derecha", "Rechtslenker", "Volante à direita", "Conduite à droite", "Sağdan direksiyon"],
     "set_soc_decimals": ["Percentuale batteria con decimali", "Battery percentage with decimals", "Porcentaje de batería con decimales", "Akkustand mit Nachkommastelle", "Percentagem da bateria com decimais", "Pourcentage de batterie avec décimales", "Ondalıklı batarya yüzdesi"],
+    "set_show_inside_temp": ["Temperatura interna", "Inside temperature", "Temperatura interior", "Innentemperatur", "Temperatura interior", "Température intérieure", "İç sıcaklık"],
     "set_show_tpms": ["Pressione pneumatici (TPMS) sotto le ruote", "Tyre pressure (TPMS) under the wheels", "Presión de neumáticos (TPMS) bajo las ruedas", "Reifendruck (RDKS) unter den Rädern", "Pressão dos pneus (TPMS) sob as rodas", "Pression des pneus (TPMS) sous les roues", "Tekerleklerin altında lastik basıncı (TPMS)"],
     "outside_temp": ["%1$s° esterni", "%1$s° outside", "%1$s° fuera", "%1$s° außen", "%1$s° exterior", "%1$s° dehors", "Dışarı %1$s°"],
     "charge_full_at": ["piena alle %1$s", "full at %1$s", "llena a las %1$s", "voll um %1$s", "cheia às %1$s", "pleine à %1$s", "%1$s'de dolu"],

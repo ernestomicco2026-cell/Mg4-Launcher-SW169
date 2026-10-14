@@ -128,6 +128,15 @@ public final class Prefs {
         sp.edit().putBoolean("socDecimali", on).apply();
     }
 
+    /** Temperatura interna sotto quella esterna (molte auto non la forniscono: spenta di default). */
+    public boolean showInsideTemp() {
+        return sp.getBoolean("mostraTempInterna", false);
+    }
+
+    public void setShowInsideTemp(boolean on) {
+        sp.edit().putBoolean("mostraTempInterna", on).apply();
+    }
+
     /** Pressione degli pneumatici (TPMS) sotto le ruote dell'auto disegnata. */
     public boolean showTpms() {
         return sp.getBoolean("mostraTpms", false);

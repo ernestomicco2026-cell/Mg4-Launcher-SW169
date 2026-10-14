@@ -18,6 +18,7 @@
     <string name="drive_left" formatted="false">Volante à esquerda</string>
     <string name="drive_right" formatted="false">Volante à direita</string>
     <string name="set_soc_decimals" formatted="false">Percentagem da bateria com decimais</string>
+    <string name="set_show_inside_temp" formatted="false">Temperatura interior</string>
     <string name="set_show_tpms" formatted="false">Pressão dos pneus (TPMS) sob as rodas</string>
     <string name="outside_temp">%1$s° exterior</string>
     <string name="charge_full_at">cheia às %1$s</string>

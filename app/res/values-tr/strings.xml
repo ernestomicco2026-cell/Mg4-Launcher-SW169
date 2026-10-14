@@ -18,6 +18,7 @@
     <string name="drive_left" formatted="false">Soldan direksiyon</string>
     <string name="drive_right" formatted="false">Sağdan direksiyon</string>
     <string name="set_soc_decimals" formatted="false">Ondalıklı batarya yüzdesi</string>
+    <string name="set_show_inside_temp" formatted="false">İç sıcaklık</string>
     <string name="set_show_tpms" formatted="false">Tekerleklerin altında lastik basıncı (TPMS)</string>
     <string name="outside_temp">Dışarı %1$s°</string>
     <string name="charge_full_at">%1$s\'de dolu</string>

@@ -67,6 +67,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         appliedLocale = Lang.apply(this, prefs.language());
         catalog = new AppCatalog(this);
         vehicle = new VehicleClient(this);
+        vehicle.setReadInsideTemp(prefs.showInsideTemp());
         media = new MediaClient(this);
         nav = new NavClient(this);
         updater = new Updater(this);
@@ -384,6 +385,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         } else if (home != null) {
             home.applyCarLook();
             home.refreshNav();
+            vehicle.setReadInsideTemp(prefs.showInsideTemp());
             home.onVehicle(vehicle.last());   // decimali della batteria e pressioni subito aggiornati
         }
     }

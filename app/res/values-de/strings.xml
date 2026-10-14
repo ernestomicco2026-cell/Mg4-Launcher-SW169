@@ -18,6 +18,7 @@
     <string name="drive_left" formatted="false">Linkslenker</string>
     <string name="drive_right" formatted="false">Rechtslenker</string>
     <string name="set_soc_decimals" formatted="false">Akkustand mit Nachkommastelle</string>
+    <string name="set_show_inside_temp" formatted="false">Innentemperatur</string>
     <string name="set_show_tpms" formatted="false">Reifendruck (RDKS) unter den Rädern</string>
     <string name="outside_temp">%1$s° außen</string>
     <string name="charge_full_at">voll um %1$s</string>

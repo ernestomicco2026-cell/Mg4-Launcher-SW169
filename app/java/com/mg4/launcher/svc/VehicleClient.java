@@ -295,7 +295,7 @@ public final class VehicleClient {
             }
         }
         readLamps(s);
-        readInside(s);
+        if (readInsideTemp) readInside(s);
         readTyres(s);
         readBms(s);
         last = s;
@@ -334,6 +334,13 @@ public final class VehicleClient {
         Diag.putQuiet("veicolo.consumo.ultimoKm", lastKm);
         Diag.put("veicolo.consumo.altri", "reale " + bms.getFloat(CarBms.VEH_ACTU_ELEC_CSUMP)
                 + " · mediaBatteria " + bms.getFloat(CarBms.BAT_ELEC_ENRG_AVG_RATE));
+    }
+
+    /** La temperatura interna si legge solo se l'opzione è attiva nelle impostazioni. */
+    private volatile boolean readInsideTemp;
+
+    public void setReadInsideTemp(boolean on) {
+        readInsideTemp = on;
     }
 
     /** Temperatura interna: prima quella reale per il sedile del guidatore, poi quella "ambiente" del clima. */

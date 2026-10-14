@@ -93,6 +93,11 @@ public final class SettingsView extends FrameLayout {
             prefs.setSocDecimals(on);
             host.settingsChanged(false);
         }), top(14));
+        // temperatura interna sotto quella esterna
+        col.addView(toggleRow(c, c.getString(R.string.set_show_inside_temp), prefs.showInsideTemp(), on -> {
+            prefs.setShowInsideTemp(on);
+            host.settingsChanged(false);
+        }), top(14));
         // pressione degli pneumatici (TPMS) sotto le ruote dell'auto
         col.addView(toggleRow(c, c.getString(R.string.set_show_tpms), prefs.showTpms(), on -> {
             prefs.setShowTpms(on);

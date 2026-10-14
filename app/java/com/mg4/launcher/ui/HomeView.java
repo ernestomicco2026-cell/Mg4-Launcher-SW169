@@ -331,9 +331,13 @@ public final class HomeView extends LinearLayout {
         boolean outOk = s.outsideTemp > -60 && s.outsideTemp < 70;
         outIcon.setVisibility(outOk ? VISIBLE : GONE);
         outTv.setText(outOk ? s(R.string.outside_temp, String.format(Locale.getDefault(), "%.0f", s.outsideTemp)) : "");
-        boolean inOk = !Float.isNaN(s.insideTemp);
-        insideRow.setVisibility(inOk ? VISIBLE : GONE);
-        if (inOk) inTv.setText(s(R.string.inside_temp, String.format(Locale.getDefault(), "%.0f", s.insideTemp)));
+        // temperatura interna: solo se attivata; "— °" quando l'auto non fornisce il dato (mai 0°)
+        boolean inOn = prefs.showInsideTemp();
+        insideRow.setVisibility(inOn ? VISIBLE : GONE);
+        if (inOn) {
+            boolean inOk = !Float.isNaN(s.insideTemp) && s.insideTemp != 0f;
+            inTv.setText(s(R.string.inside_temp, inOk ? String.format(Locale.getDefault(), "%.0f", s.insideTemp) : "—"));
+        }
         showTyres(s);
         if (s.fanLevel >= 0 && SystemClock.uptimeMillis() > localFanUntil) {
             fanLevel = s.fanLevel;

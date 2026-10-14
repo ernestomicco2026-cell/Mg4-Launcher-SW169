@@ -239,6 +239,12 @@ public final class MediaClient {
             return ps != null && ps.getState() == PlaybackState.STATE_PLAYING;
         }
 
+        boolean isPaused() {
+            MediaController c = controller;
+            PlaybackState ps = c == null ? null : c.getPlaybackState();
+            return ps != null && ps.getState() == PlaybackState.STATE_PAUSED;
+        }
+
         MediaController.TransportControls controls() {
             MediaController c = controller;
             return c == null ? null : c.getTransportControls();
@@ -431,6 +437,7 @@ public final class MediaClient {
         else if (online.isPlaying()) active = SRC_ONLINE;
         else if (remote.isPlaying() && s.deviceType != 0) active = s.deviceType == DEV_AAUTO ? SRC_AAUTO : SRC_CARPLAY;
         Diag.put("media.attiva", sourceName(ctx, active));
+        checkHijack(active);
 
         // di default si vede la sorgente in riproduzione, altrimenti la radio
         int shown = chosen != 0 ? chosen : (active != 0 ? active : SRC_RADIO);
@@ -765,6 +772,7 @@ public final class MediaClient {
 
     public void selectSource(int src) {
         chosen = src;
+        if (src == SRC_RADIO) markRadioByUser();
         post(() -> {
             try {
                 if (src == SRC_CARPLAY || src == SRC_AAUTO) {
@@ -797,8 +805,75 @@ public final class MediaClient {
      * Cambia banda (FM / DAB) come l'app Radio: azione "sorgente successiva/precedente" della sessione,
      * che riprende l'ultima stazione ascoltata su quella banda. Ordine delle bande: DAB, FM, AM.
      */
+    // --- ripresa automatica: dopo una notifica il sistema a volte rimette la radio al posto della musica ---
+    private static final long HIJACK_WINDOW_MS = 2500, RESUME_DELAY_MS = 2500, RADIO_USER_MS = 6000;
+    private int prevActive;                    // sorgente in riproduzione al giro precedente
+    private int lastMedia;                     // ultima sorgente musicale in riproduzione (BT, USB, Online)
+    private long lastMediaAt;                  // quando era ancora in riproduzione
+    private volatile long radioUserAt;         // ultimo comando radio dato dall'utente dal launcher
+    private boolean resumePending;
+    private final java.util.ArrayDeque<Long> resumes = new java.util.ArrayDeque<>();
+
+    private Browser musicBrowser(int src) {
+        return src == SRC_BT ? bt : src == SRC_USB ? usb : src == SRC_ONLINE ? online : null;
+    }
+
+    /** L'utente ha scelto o comandato la radio dal launcher: in quel caso la radio non va mai "corretta". */
+    private void markRadioByUser() {
+        radioUserAt = android.os.SystemClock.uptimeMillis();
+    }
+
+    /** Chiamata a ogni giro di poll(), sul thread di lavoro. */
+    private void checkHijack(int active) {
+        long now = android.os.SystemClock.uptimeMillis();
+        if (active == SRC_BT || active == SRC_USB || active == SRC_ONLINE) {
+            lastMedia = active;          // vale anche se la musica è partita dall'app di sistema
+            lastMediaAt = now;
+        }
+        boolean radioJustStarted = active == SRC_RADIO && prevActive != SRC_RADIO;
+        prevActive = active;
+        if (!radioJustStarted || resumePending || lastMedia == 0) return;
+        Browser b = musicBrowser(lastMedia);
+        if (b == null) return;
+        // la musica suonava fino a un attimo fa, ora è in pausa e la radio è partita senza un comando dal launcher
+        if (now - lastMediaAt > HIJACK_WINDOW_MS) return;
+        if (now - radioUserAt < RADIO_USER_MS) return;
+        if (chosen == SRC_RADIO && now - radioUserAt < 60_000) return;
+        final int src = lastMedia;
+        resumePending = true;
+        bg.postDelayed(() -> resumeIfStillHijacked(src), RESUME_DELAY_MS);
+    }
+
+    private void resumeIfStillHijacked(int src) {
+        resumePending = false;
+        Browser b = musicBrowser(src);
+        String what = sourceName(ctx, src) + " dopo cambio a RADIO";
+        if (b == null || !radioMbs.isPlaying() || !b.isPaused()) return;   // risolto da solo o cambiato dall'utente
+        if (android.os.SystemClock.uptimeMillis() - radioUserAt < RADIO_USER_MS) return;
+        long now = android.os.SystemClock.uptimeMillis();
+        while (!resumes.isEmpty() && now - resumes.peekFirst() > 60_000) resumes.pollFirst();
+        if (resumes.size() >= 2) {
+            Diag.put("media.ripresaAuto", what + " (saltata: già 2 riprese nell'ultimo minuto)");
+            return;
+        }
+        resumes.addLast(now);
+        MediaController.TransportControls tc = b.controls();
+        if (tc == null) {
+            Diag.put("media.ripresaAuto", what + " (fallita: sessione non collegata)");
+            return;
+        }
+        tc.play();   // stesso comando di selectSource(): a mano funziona
+        chosen = src;
+        Diag.put("media.ripresaAuto", what + " (inviata)");
+        bg.postDelayed(() -> {
+            Diag.put("media.ripresaAuto", what + (b.isPlaying() ? " (riuscita)" : " (fallita)"));
+            poll();
+        }, 3000);
+    }
+
     public void switchBand(int band) {
         chosen = SRC_RADIO;
+        markRadioByUser();
         post(() -> {
             try {
                 int cur = last.radioBand;
@@ -824,6 +899,7 @@ public final class MediaClient {
     /** Sintonizza una stazione dei preferiti e passa alla radio. */
     public void tune(Station st) {
         chosen = SRC_RADIO;
+        markRadioByUser();
         post(() -> {
             try {
                 IBinder b = radio.binder();
@@ -924,6 +1000,7 @@ public final class MediaClient {
 
     /** FM: ricerca completa delle stazioni (scan dell'app Radio). DAB: aggiorna l'elenco dal servizio. */
     public void searchStations() {
+        markRadioByUser();
         int band = last.radioBand;
         post(() -> {
             try {
@@ -1077,6 +1154,7 @@ public final class MediaClient {
     // ---- play / pausa / salto ------------------------------------------------------------------
 
     public void playPause() {
+        if (last.source == SRC_RADIO) markRadioByUser();
         post(() -> {
             State s = last;
             try {
@@ -1098,6 +1176,7 @@ public final class MediaClient {
     }
 
     public void skip(boolean forward) {
+        if (last.source == SRC_RADIO) markRadioByUser();
         post(() -> {
             State s = last;
             try {
