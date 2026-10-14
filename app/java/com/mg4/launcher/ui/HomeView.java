@@ -135,6 +135,9 @@ public final class HomeView extends LinearLayout {
         return Ui.dp(getContext(), v);
     }
 
+    /** Spazio lasciato in alto a sinistra per la spia luci del sistema (circa 100 × 70 px dal bordo dello schermo). */
+    private static final int SYSTEM_LIGHT_INSET = 64;
+
     /** Misura di un comando toccabile (segue l'impostazione "Dimensione comandi"). */
     private int tp(float v) {
         return Ui.tp(getContext(), v);
@@ -175,6 +178,9 @@ public final class HomeView extends LinearLayout {
         // autonomia a sinistra, orologio grande quanto l'autonomia a destra
         LinearLayout head = Ui.row(c);
         head.setGravity(Gravity.BOTTOM);
+        // angolo in alto a sinistra libero: lì il sistema dell'auto disegna sempre la spia delle luci
+        // (anche con la barra di stato nascosta), che altrimenti finirebbe sopra l'autonomia
+        head.setPadding(dp(SYSTEM_LIGHT_INSET), 0, 0, 0);
         rangeTv = Ui.text(c, "—", 76, t.text, Ui.LIGHT);
         rangeTv.setLetterSpacing(-0.03f);
         head.addView(rangeTv);
