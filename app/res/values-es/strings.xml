@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Listo</string>
     <string name="edit_desc" formatted="false">Elige qué apps instaladas mostrar</string>
     <string name="launcher_settings" formatted="false">Ajustes del launcher</string>
-    <string name="sec_car" formatted="false">COCHE</string>
+    <string name="sec_car" formatted="false">Coche</string>
     <string name="sec_installed" formatted="false">INSTALADAS POR TI</string>
     <string name="tap_toggle" formatted="false">toca para mostrar u ocultar</string>
     <string name="app_vehicle" formatted="false">Vehículo</string>
@@ -171,4 +171,37 @@
     <string name="upd_banner_sub" formatted="false">Se instala en pocos segundos</string>
     <string name="upd_banner_later" formatted="false">Más tarde</string>
     <string name="upd_banner_update" formatted="false">Actualizar</string>
+    <string name="set_menu_title" formatted="false">Ajustes</string>
+    <string name="sec_car_sub" formatted="false">Color, techo</string>
+    <string name="sec_home" formatted="false">Inicio</string>
+    <string name="sec_home_sub" formatted="false">Batería, neumáticos, temperaturas</string>
+    <string name="sec_look" formatted="false">Apariencia</string>
+    <string name="sec_look_sub" formatted="false">Tema, tamaño, idioma</string>
+    <string name="sec_drive" formatted="false">Conducción</string>
+    <string name="sec_drive_sub" formatted="false">Posición de conducción, inicio MG</string>
+    <string name="sec_system" formatted="false">Sistema</string>
+    <string name="sec_system_sub" formatted="false">Actualizaciones, registros, diagnóstico</string>
+    <string name="set_bodywork" formatted="false">CARROCERÍA</string>
+    <string name="set_black_roof_sub" formatted="false">Como las versiones con techo en contraste</string>
+    <string name="set_home_card" formatted="false">PANEL DEL COCHE</string>
+    <string name="set_soc_decimals_sub">P. ej. 88,1 % en lugar de 88 %</string>
+    <string name="set_tpms_title" formatted="false">Presión de neumáticos (TPMS)</string>
+    <string name="set_tpms_sub" formatted="false">Bajo las ruedas del coche dibujado, en la unidad del cuadro</string>
+    <string name="set_inside_sub" formatted="false">Debajo de la exterior · «— °» si el coche no la proporciona</string>
+    <string name="drive_hint" formatted="false">Con el volante a la derecha el inicio se refleja: coche y climatización del lado del conductor.</string>
+    <string name="set_original_label" formatted="false">INICIO ORIGINAL</string>
+    <string name="set_original_sub" formatted="false">Para usar las funciones del inicio de serie</string>
+    <string name="btn_open" formatted="false">Abrir</string>
+    <string name="btn_check" formatted="false">Buscar</string>
+    <string name="btn_install" formatted="false">Instalar</string>
+    <string name="btn_save" formatted="false">Guardar</string>
+    <string name="btn_back" formatted="false">Atrás</string>
+    <string name="upd_new_short">Nueva versión %1$s</string>
+    <string name="upd_installed_ver">Instalada %1$s</string>
+    <string name="upd_current" formatted="false">Versión actualizada</string>
+    <string name="upd_unknown" formatted="false">Actualizaciones aún no comprobadas</string>
+    <string name="set_diag_section" formatted="false">DIAGNÓSTICO</string>
+    <string name="set_diag_title" formatted="false">Diagnóstico de servicios del coche</string>
+    <string name="set_diag_sub" formatted="false">Valores leídos del coche y errores recientes</string>
+    <string name="save_log_sub" formatted="false">Escribe un registro completo en la memoria (y en el USB)</string>
 </resources>

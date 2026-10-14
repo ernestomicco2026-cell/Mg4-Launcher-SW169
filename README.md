@@ -2,7 +2,7 @@
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.2.5](releases/MG4Launcher-SWI69-0.2.5.apk)**
+**Ultima versione / Latest version: [0.2.6](releases/MG4Launcher-SWI69-0.2.6.apk)**
 
 <a href="https://www.paypal.com/pool/9tv7fQ36nA?sr=wccr"><img alt="Sostieni il progetto con PayPal · Support the project with PayPal" src="https://img.shields.io/badge/Sostieni%20il%20progetto-PayPal-0070BA?style=for-the-badge&logo=paypal&logoColor=white"></a>
 
@@ -19,11 +19,13 @@
 > The MG / MG4 names only identify the compatible car (SWI69 infotainment). Install and use it at your own risk.
 
 ---
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.5 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.5-notte.png" />
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.5 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.5-giorno.png" />
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.5 – guida a destra" src="screenshots/MG4Launcher-SWI69-0.2.5-guida-a-destra.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.6-notte.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.6-giorno.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – guida a destra" src="screenshots/MG4Launcher-SWI69-0.2.5-guida-a-destra.png" />
+<img width="1920" alt="Impostazioni MG4 Launcher SWI69 0.2.6 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.6-impostazioni-notte.png" />
+<img width="1920" alt="Impostazioni MG4 Launcher SWI69 0.2.6 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.6-impostazioni-giorno.png" />
 
-<sub>Anteprima della grafica 0.2.5 (tema notte, giorno e guida a destra, con decimali e pressione pneumatici attivi): i valori sono di esempio · Preview of the 0.2.5 design (night, day and right-hand drive, decimals and tyre pressure on): values are examples.</sub>
+<sub>Anteprima della grafica 0.2.6 (home di notte, di giorno e con guida a destra; nuove impostazioni di notte e di giorno): i valori sono di esempio · Preview of the 0.2.6 design (home at night, by day and with right-hand drive; new settings at night and by day): values are examples.</sub>
 
 ---
 
@@ -79,8 +81,8 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
 ### Cosa fa
 
 - **Auto e batteria** (a sinistra): autonomia e **orologio** grandi, barra batteria con la percentuale accanto e la
-  tacca del limite di ricarica, stato di ricarica e V2L, temperatura esterna e interna; nelle impostazioni si attivano la percentuale
-  con un decimale e la pressione degli pneumatici (TPMS) sotto le ruote. La tua MG4 ricolorabile con gli 8 colori della gamma, tetto nero opzionale.
+  tacca del limite di ricarica, stato di ricarica e V2L, temperatura esterna; nelle impostazioni si attivano la percentuale
+  con un decimale, la pressione degli pneumatici (TPMS) sotto le ruote e la temperatura interna. La tua MG4 ricolorabile con gli 8 colori della gamma, tetto nero opzionale.
   Tocca l'auto o V2L → app Energia. Tieni premuta l'auto → impostazioni del launcher.
 - **Mappa / Media / CarPlay** (a destra):
   - **Mappa**: la SWI69 non ha un navigatore MG, si naviga con **CarPlay / Android Auto**. Senza guida una scheda
@@ -108,8 +110,10 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
 - **Guida a destra o a sinistra**: automatica dalla configurazione dell'auto o scelta nelle impostazioni; con la
   guida a destra la home si specchia, con auto e clima dal lato del guidatore. Sulle auto che mostrano sempre la
   spia luci del sistema in alto a sinistra, quell'angolo resta libero.
-- **Impostazioni** (tieni premuta l'auto): colore dell'auto, tetto nero, tema (automatico, notte, giorno),
-  **lingua**, aggiornamenti, diagnostica con **Salva log**.
+- **Impostazioni** (tieni premuta l'auto), divise in sezioni con un menu laterale: **Auto** (colore, tetto nero),
+  **Home** (decimali, pressione pneumatici, temperatura interna), **Aspetto** (tema, dimensione comandi, lingua),
+  **Guida** (posizione di guida, home MG originale), **Sistema** (aggiornamenti, invio e salvataggio log, diagnostica).
+  In fondo al menu sono sempre visibili la versione e, quando c'è, la nuova versione con **Installa**.
   Si aprono anche dall'ingranaggio in alto a destra nella pagina App.
 - **Lingue**: italiano, inglese, spagnolo, tedesco, portoghese, francese e turco. Con **Come l'auto** (predefinita)
   il launcher usa la lingua di sistema e si aggiorna da solo quando la cambi nell'auto; altrimenti scegli una lingua
@@ -118,6 +122,9 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
 - **Aggiornamenti**: le nuove versioni si scaricano e si installano dalle impostazioni, senza computer. Quando ne
   esce una, compare in basso a destra un piccolo avviso con **Aggiorna** / **Più tardi** (sparisce da solo; "Più tardi"
   lo rimanda di un giorno).
+- **Musica che riprende da sola**: se una notifica del telefono fa passare la musica Bluetooth (o USB / online)
+  alla radio, il launcher rimette in riproduzione la tua musica dopo qualche secondo. Non interviene se la radio
+  l'hai scelta tu.
 - **Invio dei log**: il launcher invia in automatico la diagnostica allo sviluppatore
   (all'avvio, ogni 30 minuti e con **Salva log**), per poter correggere i problemi senza dover raccogliere i file a mano.
   Contiene solo versione, valori letti dai servizi dell'auto ed errori: niente posizione, telaio o dati del telefono.
@@ -132,7 +139,7 @@ Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file 
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SWI69-0.2.5.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SWI69-0.2.6.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -149,7 +156,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.5.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.6.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -162,8 +169,8 @@ e gli aggiornamenti successivi si fanno dalle impostazioni del launcher, senza c
 
 ### Aggiornamenti
 
-Impostazioni del launcher → **Aggiornamenti** → **Controlla aggiornamenti**.
-Se c'è una versione più nuova compare **Scarica e installa**: il launcher la installa da solo e si riavvia.
+Impostazioni del launcher → **Sistema** → **Aggiornamenti** → **Controlla**.
+Se c'è una versione più nuova compare **Installa** (anche in fondo al menu delle impostazioni): il launcher la installa da solo e si riavvia.
 Serve che l'auto sia collegata a internet (connettività dell'auto o hotspot del telefono).
 Gli aggiornamenti arrivano solo da questo repository: una versione SWI68 non viene mai proposta.
 Chi ha una versione precedente alla 0.1.3 deve installare una volta a mano una versione più recente (chiavetta o adb).
@@ -204,6 +211,18 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
 
 
 ### Versioni
+
+#### 0.2.6 — 14 ottobre 2026
+- **Nuove impostazioni**: menu delle sezioni a sinistra (Auto, Home, Aspetto, Guida, Sistema) e contenuto a destra,
+  senza scorrere. Righe grandi con una breve spiegazione, interruttori e pulsanti che seguono "Dimensione comandi",
+  colori del tema giorno/notte. Con la guida a destra il menu passa a destra.
+- **Versione sempre visibile** in fondo al menu, con **Installa** quando è disponibile una nuova versione.
+- **Musica Bluetooth che passava alla radio dopo una notifica**: se la radio parte da sola subito dopo la pausa
+  della musica (Bluetooth, USB o online), dopo circa 2,5 secondi il launcher rimette in play la sorgente che stavi
+  ascoltando. Non interviene se la radio l'hai scelta tu (sorgente, banda, stazione) e al massimo 2 volte al minuto.
+- **Temperatura interna** attivabile dalle impostazioni (sezione Home), spenta di serie. Quando è accesa e l'auto non
+  fornisce il dato compare "— °", mai 0°.
+- Diagnostica: nuove voci per la ripresa automatica della musica.
 
 #### 0.2.5 — 14 ottobre 2026
 - **Dimensione comandi** nelle impostazioni: Normale, Grande (×1,15) e Molto grande (×1,3), solo per i comandi toccabili.
@@ -308,8 +327,8 @@ it should work on **every version with the Color Radio**. Reports from other ver
 ### Features
 
 - **Car and battery** (left): large range and **clock**, battery bar with the percentage next to it and a
-  charge-limit mark, charging and V2L status, outside and inside temperature; the settings turn on the percentage with one
-  decimal and the tyre pressure (TPMS) under the wheels. Your MG4, recolourable with the 8 factory colours, optional black roof.
+  charge-limit mark, charging and V2L status, outside temperature; the settings turn on the percentage with one
+  decimal, the tyre pressure (TPMS) under the wheels and the inside temperature. Your MG4, recolourable with the 8 factory colours, optional black roof.
   Tap the car or V2L → Energy app. Long-press the car → launcher settings.
 - **Map / Media / CarPlay** (right):
   - **Map**: SWI69 has no MG navigator, navigation is done with **CarPlay / Android Auto**. When not guiding, a card
@@ -335,11 +354,15 @@ it should work on **every version with the Color Radio**. Reports from other ver
 - **Right- or left-hand drive**: automatic from the car configuration or chosen in the settings; with right-hand
   drive the home screen is mirrored, with car and climate on the driver's side. On cars that always show the
   system light indicator at the top left, that corner is kept free.
-- **Settings** (long-press the car): car colour, black roof, theme, **language**, updates,
-  diagnostics with **Salva log** (save log). Also available from the gear at the top right of the Apps page.
+- **Settings** (long-press the car), split into sections with a side menu: **Car** (colour, black roof),
+  **Home** (decimals, tyre pressure, inside temperature), **Appearance** (theme, control size, language),
+  **Driving** (driving side, original MG home), **System** (updates, log upload and saving, diagnostics).
+  The version, and a new version with **Install** when available, are always shown at the bottom of the menu. Also available from the gear at the top right of the Apps page.
 - **Full screen**: status bar and MG dock hidden (swipe from the edge to bring them back).
 - **Updates**: new versions download and install from the settings, no computer needed. When one is out, a small
   notice with **Update** / **Later** appears at the bottom right (it hides by itself; "Later" waits a day).
+- **Music that resumes by itself**: if a phone notification makes the Bluetooth (or USB / online) music switch to
+  the radio, the launcher resumes your music after a few seconds. It does nothing if you chose the radio yourself.
 - **Log upload**: the launcher automatically sends its diagnostics to the developer (at start,
   every 30 minutes and with **Save log**). Only version, values read from the car services and errors: no location,
   VIN or phone data. It can be turned off in the settings (**Log upload**).
@@ -357,7 +380,7 @@ There are two ways to install it: from a USB stick, if you can open a file manag
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SWI69-0.2.5.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SWI69-0.2.6.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -373,7 +396,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.5.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.6.apk
    ```
 2. Make it the default home:
    ```bash
@@ -386,8 +409,8 @@ and later updates are installed from the launcher settings, with no USB stick or
 
 ### Updates
 
-Launcher settings → **Aggiornamenti** (Updates) → **Controlla aggiornamenti** (Check for updates).
-If a newer version exists, **Scarica e installa** (Download and install) appears: the launcher installs it and restarts.
+Launcher settings → **System** → **Updates** → **Check**.
+If a newer version exists, **Install** appears (also at the bottom of the settings menu): the launcher installs it and restarts.
 The car needs an internet connection (car connectivity or phone hotspot). Updates come only from this repository:
 a SWI68 build is never offered. Anyone on a version older than 0.1.3 must install a newer one once by hand
 (USB stick or adb).
@@ -409,6 +432,18 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 that does not work.
 
 ### Changelog
+
+#### 0.2.6 — 14 October 2026
+- **New settings**: section menu on the left (Car, Home, Appearance, Driving, System) and content on the right,
+  no scrolling. Large rows with a short explanation, switches and buttons that follow "Control size", day/night
+  theme colours. With right-hand drive the menu moves to the right.
+- **Version always visible** at the bottom of the menu, with **Install** when a new version is available.
+- **Bluetooth music switching to the radio after a notification**: if the radio starts on its own right after the
+  music (Bluetooth, USB or online) pauses, after about 2.5 seconds the launcher resumes the source you were
+  listening to. It does nothing if you chose the radio yourself (source, band, station), and at most twice a minute.
+- **Inside temperature** can be turned on in the settings (Home section), off by default. When on and the car does
+  not provide it, "— °" is shown, never 0°.
+- Diagnostics: new entries for the automatic music resume.
 
 #### 0.2.5 — 14 October 2026
 - **Control size** in the settings: Normal, Large (×1.15) and Extra large (×1.3), touch controls only.

@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Bitti</string>
     <string name="edit_desc" formatted="false">Gösterilecek yüklü uygulamaları seçin</string>
     <string name="launcher_settings" formatted="false">Başlatıcı ayarları</string>
-    <string name="sec_car" formatted="false">ARAÇ</string>
+    <string name="sec_car" formatted="false">Araç</string>
     <string name="sec_installed" formatted="false">SİZİN YÜKLEDİKLERİNİZ</string>
     <string name="tap_toggle" formatted="false">göstermek veya gizlemek için dokunun</string>
     <string name="app_vehicle" formatted="false">Araç</string>
@@ -171,4 +171,37 @@
     <string name="upd_banner_sub" formatted="false">Birkaç saniyede yüklenir</string>
     <string name="upd_banner_later" formatted="false">Sonra</string>
     <string name="upd_banner_update" formatted="false">Güncelle</string>
+    <string name="set_menu_title" formatted="false">Ayarlar</string>
+    <string name="sec_car_sub" formatted="false">Renk, tavan</string>
+    <string name="sec_home" formatted="false">Ana ekran</string>
+    <string name="sec_home_sub" formatted="false">Batarya, lastikler, sıcaklıklar</string>
+    <string name="sec_look" formatted="false">Görünüm</string>
+    <string name="sec_look_sub" formatted="false">Tema, boyut, dil</string>
+    <string name="sec_drive" formatted="false">Sürüş</string>
+    <string name="sec_drive_sub" formatted="false">Direksiyon konumu, MG ana ekranı</string>
+    <string name="sec_system" formatted="false">Sistem</string>
+    <string name="sec_system_sub" formatted="false">Güncellemeler, günlükler, tanılama</string>
+    <string name="set_bodywork" formatted="false">KAROSER</string>
+    <string name="set_black_roof_sub" formatted="false">Kontrast tavanlı versiyonlar gibi</string>
+    <string name="set_home_card" formatted="false">ARAÇ PANELİ</string>
+    <string name="set_soc_decimals_sub">Örn. %88 yerine %88,1</string>
+    <string name="set_tpms_title" formatted="false">Lastik basıncı (TPMS)</string>
+    <string name="set_tpms_sub" formatted="false">Çizili aracın tekerleklerinin altında, gösterge birimiyle</string>
+    <string name="set_inside_sub" formatted="false">Dış sıcaklığın altında · araç vermezse «— °»</string>
+    <string name="drive_hint" formatted="false">Sağdan direksiyonda ana ekran ters çevrilir: araç ve klima sürücü tarafında.</string>
+    <string name="set_original_label" formatted="false">ORİJİNAL ANA EKRAN</string>
+    <string name="set_original_sub" formatted="false">Standart ana ekranın özelliklerini kullanmak için</string>
+    <string name="btn_open" formatted="false">Aç</string>
+    <string name="btn_check" formatted="false">Denetle</string>
+    <string name="btn_install" formatted="false">Yükle</string>
+    <string name="btn_save" formatted="false">Kaydet</string>
+    <string name="btn_back" formatted="false">Geri</string>
+    <string name="upd_new_short">Yeni sürüm %1$s</string>
+    <string name="upd_installed_ver">Yüklü %1$s</string>
+    <string name="upd_current" formatted="false">Sürüm güncel</string>
+    <string name="upd_unknown" formatted="false">Güncellemeler henüz denetlenmedi</string>
+    <string name="set_diag_section" formatted="false">TANILAMA</string>
+    <string name="set_diag_title" formatted="false">Araç servisleri tanılaması</string>
+    <string name="set_diag_sub" formatted="false">Araçtan okunan değerler ve son hatalar</string>
+    <string name="save_log_sub" formatted="false">Belleğe (ve USB belleğe) tam bir günlük yazar</string>
 </resources>

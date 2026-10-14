@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Terminé</string>
     <string name="edit_desc" formatted="false">Choisissez les apps installées à afficher</string>
     <string name="launcher_settings" formatted="false">Réglages du launcher</string>
-    <string name="sec_car" formatted="false">VOITURE</string>
+    <string name="sec_car" formatted="false">Voiture</string>
     <string name="sec_installed" formatted="false">INSTALLÉES PAR VOUS</string>
     <string name="tap_toggle" formatted="false">touchez pour afficher ou masquer</string>
     <string name="app_vehicle" formatted="false">Véhicule</string>
@@ -171,4 +171,37 @@
     <string name="upd_banner_sub" formatted="false">S\'installe en quelques secondes</string>
     <string name="upd_banner_later" formatted="false">Plus tard</string>
     <string name="upd_banner_update" formatted="false">Mettre à jour</string>
+    <string name="set_menu_title" formatted="false">Réglages</string>
+    <string name="sec_car_sub" formatted="false">Couleur, toit</string>
+    <string name="sec_home" formatted="false">Accueil</string>
+    <string name="sec_home_sub" formatted="false">Batterie, pneus, températures</string>
+    <string name="sec_look" formatted="false">Apparence</string>
+    <string name="sec_look_sub" formatted="false">Thème, taille, langue</string>
+    <string name="sec_drive" formatted="false">Conduite</string>
+    <string name="sec_drive_sub" formatted="false">Position de conduite, accueil MG</string>
+    <string name="sec_system" formatted="false">Système</string>
+    <string name="sec_system_sub" formatted="false">Mises à jour, journaux, diagnostic</string>
+    <string name="set_bodywork" formatted="false">CARROSSERIE</string>
+    <string name="set_black_roof_sub" formatted="false">Comme les versions à toit contrasté</string>
+    <string name="set_home_card" formatted="false">PANNEAU VOITURE</string>
+    <string name="set_soc_decimals_sub">Ex. 88,1 % au lieu de 88 %</string>
+    <string name="set_tpms_title" formatted="false">Pression des pneus (TPMS)</string>
+    <string name="set_tpms_sub" formatted="false">Sous les roues de la voiture dessinée, dans l\'unité du combiné</string>
+    <string name="set_inside_sub" formatted="false">Sous la température extérieure · « — ° » si la voiture ne la fournit pas</string>
+    <string name="drive_hint" formatted="false">En conduite à droite, l\'accueil est inversé : voiture et climatisation côté conducteur.</string>
+    <string name="set_original_label" formatted="false">ACCUEIL D\'ORIGINE</string>
+    <string name="set_original_sub" formatted="false">Pour utiliser les fonctions de l\'accueil d\'origine</string>
+    <string name="btn_open" formatted="false">Ouvrir</string>
+    <string name="btn_check" formatted="false">Vérifier</string>
+    <string name="btn_install" formatted="false">Installer</string>
+    <string name="btn_save" formatted="false">Enregistrer</string>
+    <string name="btn_back" formatted="false">Retour</string>
+    <string name="upd_new_short">Nouvelle version %1$s</string>
+    <string name="upd_installed_ver">Installée %1$s</string>
+    <string name="upd_current" formatted="false">Version à jour</string>
+    <string name="upd_unknown" formatted="false">Mises à jour pas encore vérifiées</string>
+    <string name="set_diag_section" formatted="false">DIAGNOSTIC</string>
+    <string name="set_diag_title" formatted="false">Diagnostic des services du véhicule</string>
+    <string name="set_diag_sub" formatted="false">Valeurs lues dans la voiture et erreurs récentes</string>
+    <string name="save_log_sub" formatted="false">Écrit un journal complet dans la mémoire (et sur la clé USB)</string>
 </resources>

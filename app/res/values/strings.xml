@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Done</string>
     <string name="edit_desc" formatted="false">Choose which installed apps to show</string>
     <string name="launcher_settings" formatted="false">Launcher settings</string>
-    <string name="sec_car" formatted="false">CAR</string>
+    <string name="sec_car" formatted="false">Car</string>
     <string name="sec_installed" formatted="false">INSTALLED BY YOU</string>
     <string name="tap_toggle" formatted="false">tap to show or hide</string>
     <string name="app_vehicle" formatted="false">Vehicle</string>
@@ -171,4 +171,37 @@
     <string name="upd_banner_sub" formatted="false">Installs in a few seconds</string>
     <string name="upd_banner_later" formatted="false">Later</string>
     <string name="upd_banner_update" formatted="false">Update</string>
+    <string name="set_menu_title" formatted="false">Settings</string>
+    <string name="sec_car_sub" formatted="false">Colour, roof</string>
+    <string name="sec_home" formatted="false">Home</string>
+    <string name="sec_home_sub" formatted="false">Battery, tyres, temperatures</string>
+    <string name="sec_look" formatted="false">Appearance</string>
+    <string name="sec_look_sub" formatted="false">Theme, size, language</string>
+    <string name="sec_drive" formatted="false">Driving</string>
+    <string name="sec_drive_sub" formatted="false">Driving side, MG home</string>
+    <string name="sec_system" formatted="false">System</string>
+    <string name="sec_system_sub" formatted="false">Updates, logs, diagnostics</string>
+    <string name="set_bodywork" formatted="false">BODYWORK</string>
+    <string name="set_black_roof_sub" formatted="false">Like the versions with a contrasting roof</string>
+    <string name="set_home_card" formatted="false">CAR PANEL</string>
+    <string name="set_soc_decimals_sub">E.g. 88.1% instead of 88%</string>
+    <string name="set_tpms_title" formatted="false">Tyre pressure (TPMS)</string>
+    <string name="set_tpms_sub" formatted="false">Under the wheels of the drawn car, in the cluster unit</string>
+    <string name="set_inside_sub" formatted="false">Below the outside one · «— °» if the car does not provide it</string>
+    <string name="drive_hint" formatted="false">With right-hand drive the home is mirrored: car and climate on the driver\'s side.</string>
+    <string name="set_original_label" formatted="false">ORIGINAL HOME</string>
+    <string name="set_original_sub" formatted="false">To use the features of the stock home</string>
+    <string name="btn_open" formatted="false">Open</string>
+    <string name="btn_check" formatted="false">Check</string>
+    <string name="btn_install" formatted="false">Install</string>
+    <string name="btn_save" formatted="false">Save</string>
+    <string name="btn_back" formatted="false">Back</string>
+    <string name="upd_new_short">New version %1$s</string>
+    <string name="upd_installed_ver">Installed %1$s</string>
+    <string name="upd_current" formatted="false">Up to date</string>
+    <string name="upd_unknown" formatted="false">Updates not checked yet</string>
+    <string name="set_diag_section" formatted="false">DIAGNOSTICS</string>
+    <string name="set_diag_title" formatted="false">Car services diagnostics</string>
+    <string name="set_diag_sub" formatted="false">Values read from the car and recent errors</string>
+    <string name="save_log_sub" formatted="false">Writes a full log to storage (and to the USB stick)</string>
 </resources>

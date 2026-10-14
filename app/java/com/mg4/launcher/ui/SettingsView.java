@@ -1,23 +1,33 @@
 package com.mg4.launcher.ui;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.mg4.launcher.R;
+import com.mg4.launcher.svc.CarFeatures;
 import com.mg4.launcher.svc.Diag;
+import com.mg4.launcher.svc.LogUploader;
 import com.mg4.launcher.svc.Updater;
 
-/** Impostazioni del launcher (si aprono tenendo premuta l'auto o dalla griglia app). */
+/**
+ * Impostazioni a schermo intero: menu delle sezioni a sinistra (a destra con la guida a destra), contenuto della
+ * sezione dall'altra parte, versione e stato degli aggiornamenti sempre visibili in fondo al menu.
+ * Interruttori e pulsanti seguono "Dimensione comandi" (Ui.K).
+ */
 public final class SettingsView extends FrameLayout {
 
     public interface Host {
@@ -29,351 +39,540 @@ public final class SettingsView extends FrameLayout {
 
         Updater updater();
 
-        com.mg4.launcher.svc.LogUploader logs();
+        LogUploader logs();
     }
+
+    private static final int SEC_CAR = 0, SEC_HOME = 1, SEC_LOOK = 2, SEC_DRIVE = 3, SEC_SYSTEM = 4;
+    private static final int[] SEC_ICON = {R.drawable.ic_car, R.drawable.ic_home, R.drawable.ic_palette, R.drawable.ic_steering, R.drawable.ic_gear};
+    private static final int[] SEC_NAME = {R.string.sec_car, R.string.sec_home, R.string.sec_look, R.string.sec_drive, R.string.sec_system};
+    private static final int[] SEC_SUB = {R.string.sec_car_sub, R.string.sec_home_sub, R.string.sec_look_sub, R.string.sec_drive_sub, R.string.sec_system_sub};
+    /** Spazio in alto a sinistra per la spia luci del sistema (come nella home). */
+    private static final int SYSTEM_LIGHT_INSET = 64;
+    private static final long QUIET_CHECK_MS = 30 * 60_000L;
+
+    /** Sezione aperta: resta la stessa quando la schermata si ricostruisce (tema, lingua, dimensione…). */
+    private static int section = SEC_CAR;
+    /** Ultimo risultato del controllo aggiornamenti, condiviso tra le aperture. */
+    private static Updater.Release lastRelease;
+    private static long lastQuietCheck;
+    private static String lastStatus;
 
     private final Theme t;
     private final Prefs prefs;
     private final Host host;
     private final Handler main = new Handler(Looper.getMainLooper());
-    private TextView diag;
-    private final LinearLayout colorRow, themeRow, navRow, scaleRow, driveRow;
-    private LinearLayout langRow;
-    private TextView logUpload;
-    private final TextView colorName;
-    private TextView updStatus, updInstall, updCheck, logBtn, logStatus;
-    private Updater.Release found;
+    private final boolean rhd, sysIndicator;
+
+    private final LinearLayout menuItems;
+    private final FrameLayout footer;
+    private final LinearLayout content;
+    private boolean diagOpen;
+
+    // viste aggiornate di continuo
+    private TextView diagText, logUploadSub, logSaveSub, updSub;
+    private View logSaveBtn, updCheckBtn, updInstallBtn;
 
     public SettingsView(Context c, Theme t, Prefs prefs, Host host) {
         super(c);
         this.t = t;
         this.prefs = prefs;
         this.host = host;
-        setBackgroundColor(t.day ? 0x66000000 : 0xB3000000);
+        boolean carRhd = CarFeatures.isRightHandDrive(c);
+        String side = prefs.driveSide();
+        rhd = Prefs.DRIVE_RIGHT.equals(side) || (Prefs.DRIVE_AUTO.equals(side) && carRhd);
+        sysIndicator = CarFeatures.hasSystemFogIndicator(c) || carRhd;
+
+        setBackgroundColor(t.bg);
         setClickable(true);
-        setOnClickListener(v -> host.closeSettings());
 
         LinearLayout card = Ui.row(c);
-        card.setGravity(Gravity.TOP);
+        card.setGravity(Gravity.NO_GRAVITY);
         card.setBackground(Ui.round(t.panel, dp(28)));
-        card.setPadding(dp(36), dp(28), dp(28), dp(28));
-        card.setClickable(true);
-        LayoutParams lp = new LayoutParams(dp(1500), dp(580), Gravity.CENTER);
-        addView(card, lp);
+        card.setClipToOutline(true);
+        LayoutParams clp = new LayoutParams(-1, -1);
+        clp.setMargins(dp(20), dp(20), dp(20), dp(20));
+        addView(card, clp);
 
-        // --- colonna impostazioni ---
-        ScrollView left = new ScrollView(c);
-        LinearLayout col = Ui.column(c);
-        left.addView(col);
-        card.addView(left, Ui.lpWeight(0, -1, 1.15f));
+        // --- menu delle sezioni ---
+        LinearLayout menu = Ui.column(c);
+        menu.setBackgroundColor(t.day ? 0xFFF6F7F9 : 0xFF111317);
+        menu.setPadding(dp(24), dp(30), dp(24), dp(24));
+        TextView title = Ui.text(c, c.getString(R.string.set_menu_title), 32, t.text, Ui.MEDIUM);
+        title.setPadding(dp(12) + (sysIndicator && !rhd ? dp(SYSTEM_LIGHT_INSET) : 0), 0, dp(12), dp(26));
+        menu.addView(title);
+        menuItems = Ui.column(c);
+        menu.addView(menuItems);
+        menu.addView(new View(c), Ui.lpWeight(-1, 0, 1));
+        footer = new FrameLayout(c);
+        menu.addView(footer, new LinearLayout.LayoutParams(-1, -2));
 
-        LinearLayout titleRow = Ui.row(c);
-        titleRow.addView(Ui.text(c, c.getString(R.string.set_title), 30, t.text, Ui.MEDIUM));
-        col.addView(titleRow);
+        View sep = new View(c);
+        sep.setBackgroundColor(t.track);
 
-        col.addView(label(c, c.getString(R.string.set_car_color)), top(22));
-        colorRow = Ui.row(c);
-        col.addView(colorRow, top(10));
-        colorName = Ui.text(c, "", 18, t.sub, Ui.REGULAR);
-        col.addView(colorName, top(8));
+        // --- contenuto ---
+        content = Ui.column(c);
+        int insetLeft = sysIndicator && rhd ? dp(SYSTEM_LIGHT_INSET) : 0;
+        content.setPadding(dp(44) + insetLeft, dp(34), dp(44), dp(30));
 
-        LinearLayout roof = Ui.row(c);
-        roof.addView(Ui.text(c, c.getString(R.string.set_black_roof), 20, t.text, Ui.REGULAR), Ui.lpWeight(0, -2, 1));
-        Switch sw = new Switch(c);
-        sw.setChecked(prefs.blackRoof());
-        sw.setOnCheckedChangeListener((b, on) -> {
-            prefs.setBlackRoof(on);
-            host.settingsChanged(false);
-        });
-        roof.addView(sw);
-        col.addView(roof, top(18));
+        if (!rhd) {
+            card.addView(menu, new LinearLayout.LayoutParams(dp(440), -1));
+            card.addView(sep, new LinearLayout.LayoutParams(dp(1), -1));
+            card.addView(content, Ui.lpWeight(0, -1, 1));
+        } else {
+            card.addView(content, Ui.lpWeight(0, -1, 1));
+            card.addView(sep, new LinearLayout.LayoutParams(dp(1), -1));
+            card.addView(menu, new LinearLayout.LayoutParams(dp(440), -1));
+        }
 
-        // percentuale della batteria con un decimale
-        col.addView(toggleRow(c, c.getString(R.string.set_soc_decimals), prefs.socDecimals(), on -> {
-            prefs.setSocDecimals(on);
-            host.settingsChanged(false);
-        }), top(14));
-        // temperatura interna sotto quella esterna
-        col.addView(toggleRow(c, c.getString(R.string.set_show_inside_temp), prefs.showInsideTemp(), on -> {
-            prefs.setShowInsideTemp(on);
-            host.settingsChanged(false);
-        }), top(14));
-        // pressione degli pneumatici (TPMS) sotto le ruote dell'auto
-        col.addView(toggleRow(c, c.getString(R.string.set_show_tpms), prefs.showTpms(), on -> {
-            prefs.setShowTpms(on);
-            host.settingsChanged(false);
-        }), top(14));
-
-        col.addView(label(c, c.getString(R.string.set_theme)), top(24));
-        themeRow = Ui.row(c);
-        col.addView(themeRow, top(10));
-
-        // dimensione dei comandi toccabili (pulsanti, icone e testo dei pulsanti)
-        col.addView(label(c, c.getString(R.string.set_ui_size)), top(24));
-        scaleRow = Ui.row(c);
-        col.addView(scaleRow, top(10));
-
-        // posizione di guida: con la guida a destra la home si specchia
-        col.addView(label(c, c.getString(R.string.set_drive_side)), top(24));
-        driveRow = Ui.row(c);
-        col.addView(driveRow, top(10));
-
-        // lingua: "Come l'auto" segue la lingua di sistema, oppure una delle lingue tradotte
-        col.addView(label(c, c.getString(R.string.set_language)), top(24));
-        android.widget.HorizontalScrollView ls = new android.widget.HorizontalScrollView(c);
-        ls.setHorizontalScrollBarEnabled(false);
-        langRow = Ui.row(c);
-        ls.addView(langRow);
-        col.addView(ls, Ui.margins(new LinearLayout.LayoutParams(-1, -2), 0, dp(10), 0, 0));
-
-        // SWI69: niente navigatore MG, si usa sempre quello del telefono (CarPlay / Android Auto):
-        // la scelta del navigatore predefinito non serve e non si mostra
-        navRow = Ui.row(c);
-
-        // invio automatico dei log nel repository privato dei log
-        col.addView(label(c, c.getString(R.string.log_upload_label)), top(24));
-        LinearLayout lr = Ui.row(c);
-        lr.addView(Ui.text(c, c.getString(R.string.log_upload_on), 20, t.text, Ui.REGULAR), Ui.lpWeight(0, -2, 1));
-        Switch ls2 = new Switch(c);
-        ls2.setChecked(host.logs().enabled());
-        ls2.setEnabled(com.mg4.launcher.svc.LogUploader.configured());
-        ls2.setOnCheckedChangeListener((b, on) -> host.logs().setEnabled(on));
-        lr.addView(ls2);
-        col.addView(lr, top(10));
-        logUpload = Ui.text(c, "", 15, t.sub, Ui.REGULAR);
-        col.addView(logUpload, top(6));
-
-        TextView original = Ui.text(c, c.getString(R.string.set_open_original), 19, t.text, Ui.MEDIUM);
-        original.setGravity(Gravity.CENTER_VERTICAL);
-        original.setPadding(dp(22), 0, dp(22), 0);
-        original.setMinHeight(dp(56));
-        original.setBackground(Ui.pressable(c, t.chip, 16, t));
-        original.setClickable(true);
-        original.setOnClickListener(v -> host.openOriginalHome());
-        col.addView(original, top(28));
-
-        buildUpdates(c, col);
-
-        // --- colonna diagnostica ---
-        LinearLayout right = Ui.column(c);
-        LinearLayout rh = Ui.row(c);
-        rh.addView(label(c, c.getString(R.string.set_diag)), Ui.lpWeight(0, -2, 1));
-        logBtn = button(c, c.getString(R.string.save_log), false, v -> saveLog());
-        logBtn.setMinHeight(dp(48));
-        rh.addView(logBtn, Ui.margins(Ui.lp(-2, dp(48)), 0, 0, dp(10), 0));
-        rh.addView(Ui.iconButton(c, t, R.drawable.ic_close, t.text, t.chip, 56, 26, 28, c.getString(R.string.close), v -> host.closeSettings()));
-        right.addView(rh);
-        ScrollView ds = new ScrollView(c);
-        ds.setBackground(Ui.round(t.bg, dp(16)));
-        diag = Ui.text(c, "", 13, t.sub, Typeface.MONOSPACE);
-        diag.setPadding(dp(16), dp(14), dp(16), dp(14));
-        diag.setTextIsSelectable(true);
-        ds.addView(diag);
-        right.addView(ds, Ui.margins(Ui.lpWeight(-1, 0, 1), 0, dp(12), 0, 0));
-        logStatus = Ui.text(c, c.getString(R.string.log_hint), 14, t.sub, Ui.REGULAR);
-        right.addView(logStatus, Ui.margins(new LinearLayout.LayoutParams(-1, -2), 0, dp(10), 0, 0));
-        card.addView(right, Ui.margins(Ui.lpWeight(0, -1, 1f), dp(32), 0, 0, 0));
-
-        buildSwatches();
-    }
-
-    // ---- aggiornamenti da GitHub ----------------------------------------------------------------
-
-    private void buildUpdates(Context c, LinearLayout col) {
         Updater up = host.updater();
-        col.addView(label(c, c.getString(R.string.set_updates)), top(30));
-        col.addView(Ui.text(c, "MG4 Launcher " + up.currentVersion() + " · " + prefs.updateRepo(), 17, t.text, Ui.REGULAR), top(10));
-
-        LinearLayout btns = Ui.row(c);
-        updCheck = button(c, c.getString(R.string.upd_check_btn), false, v -> up.check(prefs.updateRepo(), prefs.githubToken()));
-        btns.addView(updCheck, Ui.margins(Ui.lp(-2, dp(56)), 0, 0, dp(12), 0));
-        updInstall = button(c, c.getString(R.string.upd_install_btn), true, v -> up.install(found, prefs.githubToken()));
-        updInstall.setVisibility(GONE);
-        btns.addView(updInstall, Ui.lp(-2, dp(56)));
-        col.addView(btns, top(12));
-
-        updStatus = Ui.text(c, "", 16, t.sub, Ui.REGULAR);
-        col.addView(updStatus, top(10));
-
         up.setListener((text, r, busy) -> {
-            if (r != null) found = r;
-            updStatus.setText(text);
-            updCheck.setEnabled(!busy);
-            updCheck.setAlpha(busy ? 0.5f : 1f);
-            boolean canInstall = !busy && found != null && found.newer && found.apkUrl != null;
-            updInstall.setVisibility(canInstall ? VISIBLE : GONE);
-            if (canInstall) updInstall.setText(getContext().getString(R.string.upd_install_ver, found.tag));
+            if (r != null) lastRelease = r;
+            lastStatus = text;
+            refreshUpdateViews(busy);
         });
-        updStatus.setText(c.getString(up.isBusy() ? R.string.upd_busy : R.string.upd_idle));
+        if (SystemClock.elapsedRealtime() - lastQuietCheck > QUIET_CHECK_MS || lastQuietCheck == 0) {
+            lastQuietCheck = SystemClock.elapsedRealtime();
+            up.checkQuiet(prefs.updateRepo(), r -> {
+                if (r != null) lastRelease = r;
+                refreshUpdateViews(up.isBusy());
+            });
+        }
+
+        buildMenu();
+        buildFooter(up.isBusy());
+        showSection(section);
     }
 
-    private TextView button(Context c, String text, boolean primary, View.OnClickListener l) {
-        TextView b = Ui.text(c, text, 18, primary ? t.onAccent : t.text, Ui.MEDIUM);
-        b.setGravity(Gravity.CENTER);
-        b.setPadding(dp(22), 0, dp(22), 0);
-        b.setMinHeight(dp(56));
-        b.setBackground(Ui.pressable(c, primary ? t.accent : t.chip, 16, t));
-        b.setClickable(true);
-        b.setOnClickListener(l);
-        return b;
+    // =========================================================================================
+    // Menu
+    // =========================================================================================
+
+    private void buildMenu() {
+        Context c = getContext();
+        menuItems.removeAllViews();
+        for (int i = 0; i < SEC_NAME.length; i++) {
+            final int idx = i;
+            boolean on = i == section;
+            FrameLayout item = new FrameLayout(c);
+            item.setBackground(Ui.pressable(c, on ? t.chip : 0x00000000, 20, t));
+            item.setClickable(true);
+            item.setOnClickListener(v -> {
+                if (section == idx && !diagOpen) return;
+                section = idx;
+                diagOpen = false;
+                buildMenu();
+                showSection(idx);
+            });
+            if (on) {
+                View bar = new View(c);
+                bar.setBackground(Ui.round(t.text, dp(3)));
+                item.addView(bar, new LayoutParams(dp(5), dp(44), Gravity.CENTER_VERTICAL | (rhd ? Gravity.RIGHT : Gravity.LEFT)));
+            }
+            LinearLayout r = Ui.row(c);
+            r.setPadding(dp(20), 0, dp(20), 0);
+            FrameLayout box = new FrameLayout(c);
+            box.setBackground(Ui.round(on ? t.text : t.chip, dp(16)));
+            box.addView(Ui.icon(c, SEC_ICON[i], on ? t.panel : t.text, 28), new LayoutParams(dp(28), dp(28), Gravity.CENTER));
+            r.addView(box, Ui.lp(dp(52), dp(52)));
+            LinearLayout tx = Ui.column(c);
+            tx.addView(Ui.oneLine(Ui.text(c, c.getString(SEC_NAME[i]), 23, t.text, on ? Ui.MEDIUM : Ui.REGULAR)));
+            TextView sub = Ui.oneLine(Ui.text(c, c.getString(SEC_SUB[i]), 15, t.sub, Ui.REGULAR));
+            tx.addView(sub, Ui.margins(new LinearLayout.LayoutParams(-2, -2), 0, dp(4), 0, 0));
+            r.addView(tx, Ui.margins(Ui.lpWeight(0, -2, 1), dp(18), 0, 0, 0));
+            item.addView(r, new LayoutParams(-1, -1));
+            item.setContentDescription(c.getString(SEC_NAME[i]));
+            menuItems.addView(item, Ui.margins(new LinearLayout.LayoutParams(-1, dp(92)), 0, 0, 0, dp(8)));
+        }
+    }
+
+    /** Riquadro in fondo al menu: versione installata, oppure nuova versione con "Installa". */
+    private void buildFooter(boolean busy) {
+        Context c = getContext();
+        footer.removeAllViews();
+        Updater up = host.updater();
+        Updater.Release r = lastRelease;
+        boolean newer = r != null && r.newer && r.apkUrl != null;
+        LinearLayout box = Ui.row(c);
+        box.setPadding(dp(18), dp(14), dp(14), dp(14));
+        box.setMinimumHeight(dp(70));
+        if (newer) {
+            box.setBackground(Ui.round(t.text, dp(20)));
+            box.addView(Ui.icon(c, R.drawable.ic_download, t.panel, 28));
+            LinearLayout tx = Ui.column(c);
+            tx.addView(Ui.oneLine(Ui.text(c, c.getString(R.string.upd_new_short, r.tag), 18, t.panel, Ui.MEDIUM)));
+            String sub = busy && lastStatus != null ? lastStatus : c.getString(R.string.upd_installed_ver, up.currentVersion());
+            tx.addView(Ui.oneLine(Ui.text(c, sub, 14, t.panel, Ui.REGULAR)), Ui.margins(new LinearLayout.LayoutParams(-2, -2), 0, dp(4), 0, 0));
+            tx.getChildAt(1).setAlpha(0.75f);
+            box.addView(tx, Ui.margins(Ui.lpWeight(0, -2, 1), dp(14), 0, dp(10), 0));
+            TextView inst = Ui.text(c, c.getString(R.string.btn_install), Ui.ts(18), t.text, Ui.MEDIUM);
+            inst.setGravity(Gravity.CENTER);
+            inst.setPadding(tp(20), 0, tp(20), 0);
+            inst.setBackground(Ui.pressable(c, t.panel, 14 * Ui.K, t));
+            inst.setClickable(!busy);
+            inst.setAlpha(busy ? 0.5f : 1f);
+            inst.setOnClickListener(v -> up.install(r, prefs.githubToken()));
+            box.addView(inst, Ui.lp(-2, tp(52)));
+        } else {
+            box.setBackground(Ui.round(t.chip, dp(20)));
+            boolean known = r != null;
+            box.addView(Ui.icon(c, known ? R.drawable.ic_check : R.drawable.ic_info, known ? t.battery : t.sub, 26));
+            LinearLayout tx = Ui.column(c);
+            tx.addView(Ui.oneLine(Ui.text(c, "MG4 Launcher " + up.currentVersion(), 18, t.text, Ui.MEDIUM)));
+            String sub = busy && lastStatus != null ? lastStatus : c.getString(known ? R.string.upd_current : R.string.upd_unknown);
+            tx.addView(Ui.oneLine(Ui.text(c, sub, 14, t.sub, Ui.REGULAR)), Ui.margins(new LinearLayout.LayoutParams(-2, -2), 0, dp(4), 0, 0));
+            box.addView(tx, Ui.margins(Ui.lpWeight(0, -2, 1), dp(14), 0, 0, 0));
+        }
+        footer.addView(box, new LayoutParams(-1, -2));
+    }
+
+    private void refreshUpdateViews(boolean busy) {
+        buildFooter(busy);
+        if (updSub != null) {
+            Context c = getContext();
+            updSub.setVisibility(VISIBLE);
+            updSub.setText(lastStatus != null ? lastStatus
+                    : lastRelease == null ? c.getString(R.string.upd_unknown)
+                    : lastRelease.newer ? c.getString(R.string.upd_new, lastRelease.tag)
+                    : c.getString(R.string.upd_current));
+            updCheckBtn.setEnabled(!busy);
+            updCheckBtn.setAlpha(busy ? 0.5f : 1f);
+            boolean canInstall = !busy && lastRelease != null && lastRelease.newer && lastRelease.apkUrl != null;
+            updInstallBtn.setVisibility(canInstall ? VISIBLE : GONE);
+        }
+    }
+
+    // =========================================================================================
+    // Contenuto delle sezioni
+    // =========================================================================================
+
+    private void showSection(int s) {
+        Context c = getContext();
+        content.removeAllViews();
+        diagText = null;
+        logUploadSub = null;
+        logSaveSub = null;
+        updSub = null;
+
+        // intestazione: titolo + chiudi
+        LinearLayout head = Ui.row(c);
+        if (diagOpen) {
+            head.addView(Ui.iconButton(c, t, R.drawable.ic_chev_left, t.text, t.chip, 64, 30, 32, c.getString(R.string.btn_back), v -> {
+                diagOpen = false;
+                showSection(section);
+            }), Ui.margins(Ui.lp(tp(64), tp(64)), 0, 0, dp(20), 0));
+        }
+        head.addView(Ui.oneLine(Ui.text(c, c.getString(diagOpen ? R.string.set_diag_title : SEC_NAME[s]), 34, t.text, Ui.MEDIUM)), Ui.lpWeight(0, -2, 1));
+        head.addView(Ui.iconButton(c, t, R.drawable.ic_close, t.text, t.chip, 64, 30, 32, c.getString(R.string.close), v -> host.closeSettings()));
+        content.addView(head, new LinearLayout.LayoutParams(-1, -2));
+
+        if (diagOpen) {
+            buildDiag(c);
+            refreshTick.run();
+            return;
+        }
+
+        ScrollView sv = new ScrollView(c);
+        sv.setVerticalScrollBarEnabled(false);
+        sv.setOverScrollMode(OVER_SCROLL_NEVER);
+        LinearLayout col = Ui.column(c);
+        col.setPadding(0, dp(26), 0, 0);
+        sv.addView(col, new FrameLayout.LayoutParams(-1, -2));
+        content.addView(sv, Ui.lpWeight(-1, 0, 1));
+
+        switch (s) {
+            case SEC_CAR: buildCar(c, col); break;
+            case SEC_HOME: buildHome(c, col); break;
+            case SEC_LOOK: buildLook(c, col); break;
+            case SEC_DRIVE: buildDrive(c, col); break;
+            default: buildSystem(c, col); break;
+        }
+        refreshTick.run();
+    }
+
+    private void buildCar(Context c, LinearLayout col) {
+        col.addView(label(c, c.getString(R.string.set_car_color)));
+        LinearLayout sw = Ui.row(c);
+        int sel = prefs.carColorIndex();
+        for (int i = 0; i < Prefs.CAR_COLORS.length; i++) {
+            final int idx = i;
+            sw.addView(swatch(c, Prefs.CAR_COLOR_VALUES[i], i == sel, Prefs.CAR_COLORS[i], v -> {
+                prefs.setCarColorIndex(idx);
+                host.settingsChanged(false);
+                showSection(SEC_CAR);
+            }), Ui.margins(Ui.lp(tp(72), tp(72)), 0, 0, dp(16), 0));
+        }
+        col.addView(sw, top(14));
+        col.addView(Ui.text(c, Prefs.CAR_COLORS[sel], 18, t.sub, Ui.REGULAR), top(14));
+
+        col.addView(label(c, c.getString(R.string.set_bodywork)), top(30));
+        LinearLayout card = card(c);
+        card.addView(row(c, c.getString(R.string.set_black_roof), c.getString(R.string.set_black_roof_sub),
+                toggle(c, prefs.blackRoof(), on -> {
+                    prefs.setBlackRoof(on);
+                    host.settingsChanged(false);
+                    showSection(SEC_CAR);
+                }), true));
+        col.addView(card, topFull(14));
+
+        // anteprima dell'auto con colore e tetto scelti
+        CarView car = new CarView(c);
+        car.setLook(Prefs.CAR_COLOR_VALUES[sel], prefs.blackRoof(), t);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dp(520), dp(230));
+        lp.gravity = rhd ? Gravity.LEFT : Gravity.RIGHT;
+        lp.topMargin = dp(10);
+        col.addView(car, lp);
+    }
+
+    private void buildHome(Context c, LinearLayout col) {
+        col.addView(label(c, c.getString(R.string.set_home_card)));
+        LinearLayout card = card(c);
+        card.addView(row(c, c.getString(R.string.set_soc_decimals), c.getString(R.string.set_soc_decimals_sub),
+                toggle(c, prefs.socDecimals(), on -> {
+                    prefs.setSocDecimals(on);
+                    host.settingsChanged(false);
+                }), false));
+        card.addView(row(c, c.getString(R.string.set_tpms_title), c.getString(R.string.set_tpms_sub),
+                toggle(c, prefs.showTpms(), on -> {
+                    prefs.setShowTpms(on);
+                    host.settingsChanged(false);
+                }), false));
+        card.addView(row(c, c.getString(R.string.set_show_inside_temp), c.getString(R.string.set_inside_sub),
+                toggle(c, prefs.showInsideTemp(), on -> {
+                    prefs.setShowInsideTemp(on);
+                    host.settingsChanged(false);
+                }), true));
+        col.addView(card, topFull(14));
+    }
+
+    private void buildLook(Context c, LinearLayout col) {
+        col.addView(label(c, c.getString(R.string.set_theme)));
+        String mode = prefs.themeMode();
+        String[][] modes = {{Prefs.THEME_AUTO, c.getString(R.string.theme_auto)}, {Prefs.THEME_NIGHT, c.getString(R.string.theme_night)}, {Prefs.THEME_DAY, c.getString(R.string.theme_day)}};
+        Flow f = new Flow(c);
+        for (String[] m : modes) {
+            f.addView(choice(c, m[1], m[0].equals(mode), v -> {
+                if (m[0].equals(prefs.themeMode())) return;
+                prefs.setThemeMode(m[0]);
+                host.settingsChanged(true);
+            }));
+        }
+        col.addView(f, topFull(14));
+
+        col.addView(label(c, c.getString(R.string.set_ui_size)), top(28));
+        int[] names = {R.string.ui_size_normal, R.string.ui_size_large, R.string.ui_size_xlarge};
+        f = new Flow(c);
+        for (int i = 0; i < names.length; i++) {
+            final int idx = i;
+            f.addView(choice(c, c.getString(names[i]), prefs.uiScale() == i, v -> {
+                if (prefs.uiScale() == idx) return;
+                prefs.setUiScale(idx);
+                host.settingsChanged(true);   // ricostruisce home e impostazioni con la nuova dimensione
+            }));
+        }
+        col.addView(f, topFull(14));
+
+        col.addView(label(c, c.getString(R.string.set_language)), top(28));
+        String cur = prefs.language();
+        f = new Flow(c);
+        f.addView(choice(c, c.getString(R.string.lang_auto) + " · " + Lang.systemName(), Lang.AUTO.equals(cur), v -> setLang(Lang.AUTO)));
+        for (int i = 0; i < Lang.CODES.length; i++) {
+            final String code = Lang.CODES[i];
+            f.addView(choice(c, Lang.NAMES[i], code.equals(cur), v -> setLang(code)));
+        }
+        col.addView(f, topFull(14));
+    }
+
+    private void setLang(String code) {
+        if (code.equals(prefs.language())) return;
+        prefs.setLanguage(code);
+        host.settingsChanged(true);   // riapplica la lingua e ricostruisce l'interfaccia
+    }
+
+    private void buildDrive(Context c, LinearLayout col) {
+        col.addView(label(c, c.getString(R.string.set_drive_side)));
+        boolean carRight = CarFeatures.isRightHandDrive(c);
+        String[][] sides = {
+                {Prefs.DRIVE_AUTO, c.getString(R.string.drive_auto) + " · " + c.getString(carRight ? R.string.drive_right : R.string.drive_left)},
+                {Prefs.DRIVE_LEFT, c.getString(R.string.drive_left)},
+                {Prefs.DRIVE_RIGHT, c.getString(R.string.drive_right)}};
+        Flow f = new Flow(c);
+        for (String[] m : sides) {
+            f.addView(choice(c, m[1], m[0].equals(prefs.driveSide()), v -> {
+                if (m[0].equals(prefs.driveSide())) return;
+                prefs.setDriveSide(m[0]);
+                host.settingsChanged(true);   // ricostruisce la home (e le impostazioni) nella nuova disposizione
+            }));
+        }
+        col.addView(f, topFull(14));
+        col.addView(Ui.text(c, c.getString(R.string.drive_hint), 17, t.sub, Ui.REGULAR), top(14));
+
+        col.addView(label(c, c.getString(R.string.set_original_label)), top(30));
+        LinearLayout card = card(c);
+        card.addView(row(c, c.getString(R.string.set_open_original), c.getString(R.string.set_original_sub),
+                button(c, c.getString(R.string.btn_open), v -> host.openOriginalHome()), true));
+        col.addView(card, topFull(14));
+    }
+
+    private void buildSystem(Context c, LinearLayout col) {
+        Updater up = host.updater();
+        col.addView(label(c, c.getString(R.string.set_updates)));
+        LinearLayout card = card(c);
+        LinearLayout btns = Ui.row(c);
+        updInstallBtn = button(c, c.getString(R.string.btn_install), v -> {
+            if (lastRelease != null) up.install(lastRelease, prefs.githubToken());
+        });
+        ((TextView) updInstallBtn).setTextColor(t.panel);
+        updInstallBtn.setBackground(Ui.pressable(c, t.text, 16 * Ui.K, t));
+        btns.addView(updInstallBtn, Ui.margins(Ui.lp(-2, tp(60)), 0, 0, dp(12), 0));
+        updCheckBtn = button(c, c.getString(R.string.btn_check), v -> up.check(prefs.updateRepo(), prefs.githubToken()));
+        btns.addView(updCheckBtn, Ui.lp(-2, tp(60)));
+        LinearLayout ur = row(c, "MG4 Launcher " + up.currentVersion(), "", btns, true);
+        updSub = (TextView) ((ViewGroup) ur.getChildAt(0)).getChildAt(1);
+        card.addView(ur);
+        col.addView(card, topFull(14));
+
+        col.addView(label(c, c.getString(R.string.set_diag_section)), top(30));
+        card = card(c);
+        LinearLayout lr = row(c, c.getString(R.string.log_upload_on), "", toggle(c, host.logs().enabled(), on -> host.logs().setEnabled(on)), false);
+        if (!LogUploader.configured()) lr.getChildAt(1).setEnabled(false);
+        logUploadSub = (TextView) ((ViewGroup) lr.getChildAt(0)).getChildAt(1);
+        card.addView(lr);
+        logSaveBtn = button(c, c.getString(R.string.btn_save), v -> saveLog());
+        LinearLayout sr = row(c, c.getString(R.string.save_log), c.getString(R.string.save_log_sub), logSaveBtn, false);
+        logSaveSub = (TextView) ((ViewGroup) sr.getChildAt(0)).getChildAt(1);
+        card.addView(sr);
+        LinearLayout dr = row(c, c.getString(R.string.set_diag_title), c.getString(R.string.set_diag_sub),
+                Ui.icon(c, R.drawable.ic_chev_right, t.sub, Math.round(30 * Ui.K)), true);
+        dr.setBackground(Ui.pressable(c, 0x00000000, 0, t));
+        dr.setClickable(true);
+        dr.setOnClickListener(v -> {
+            diagOpen = true;
+            showSection(SEC_SYSTEM);
+        });
+        card.addView(dr);
+        col.addView(card, topFull(14));
+
+        refreshUpdateViews(up.isBusy());
+    }
+
+    private void buildDiag(Context c) {
+        ScrollView ds = new ScrollView(c);
+        ds.setBackground(Ui.round(t.chip, dp(22)));
+        diagText = Ui.text(c, "", 14, t.sub, Typeface.MONOSPACE);
+        diagText.setPadding(dp(22), dp(18), dp(22), dp(18));
+        diagText.setTextIsSelectable(true);
+        diagText.setLineSpacing(0, 1.15f);
+        ds.addView(diagText);
+        content.addView(ds, Ui.margins(Ui.lpWeight(-1, 0, 1), 0, dp(24), 0, 0));
     }
 
     /** Salva il log completo (in background) e mostra dove è finito. */
     private void saveLog() {
-        logBtn.setEnabled(false);
-        logBtn.setAlpha(0.5f);
-        logStatus.setText(getContext().getString(R.string.log_saving));
+        logSaveBtn.setEnabled(false);
+        logSaveBtn.setAlpha(0.5f);
+        if (logSaveSub != null) logSaveSub.setText(getContext().getString(R.string.log_saving));
         Context app = getContext().getApplicationContext();
         new Thread(() -> {
             Diag.Saved r = Diag.saveLog(app);
             main.post(() -> {
-                logBtn.setEnabled(true);
-                logBtn.setAlpha(1f);
+                if (logSaveBtn != null) {
+                    logSaveBtn.setEnabled(true);
+                    logSaveBtn.setAlpha(1f);
+                }
+                if (logSaveSub == null) return;
                 if (r.paths.isEmpty()) {
-                    logStatus.setText(app.getString(R.string.log_failed));
+                    logSaveSub.setText(app.getString(R.string.log_failed));
                     return;
                 }
-                StringBuilder sb = new StringBuilder(app.getString(r.onUsb ? R.string.log_saved_usb : R.string.log_saved)).append('\n');
-                for (String path : r.paths) sb.append(path).append('\n');
-                if (!r.onUsb) sb.append(app.getString(R.string.log_usb_hint));
-                logStatus.setText(sb.toString().trim());
+                StringBuilder sb = new StringBuilder(app.getString(r.onUsb ? R.string.log_saved_usb : R.string.log_saved)).append(' ');
+                sb.append(r.paths.get(0));
+                if (!r.onUsb) sb.append('\n').append(app.getString(R.string.log_usb_hint));
+                logSaveSub.setSingleLine(false);
+                logSaveSub.setText(sb.toString());
             });
         }, "mg4-log").start();
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        main.removeCallbacks(refreshDiag);
-        refreshDiag.run();
-    }
+    // =========================================================================================
+    // Elementi grafici
+    // =========================================================================================
 
     private int dp(float v) {
         return Ui.dp(getContext(), v);
+    }
+
+    private int tp(float v) {
+        return Ui.tp(getContext(), v);
     }
 
     private LinearLayout.LayoutParams top(int m) {
         return Ui.margins(new LinearLayout.LayoutParams(-2, -2), 0, dp(m), 0, 0);
     }
 
+    private LinearLayout.LayoutParams topFull(int m) {
+        return Ui.margins(new LinearLayout.LayoutParams(-1, -2), 0, dp(m), 0, 0);
+    }
+
     private TextView label(Context c, String s) {
-        TextView tv = Ui.text(c, s, 14, t.sub, Ui.MEDIUM);
+        TextView tv = Ui.text(c, s.toUpperCase(java.util.Locale.getDefault()), 15, t.sub, Ui.MEDIUM);
         tv.setLetterSpacing(0.08f);
         return tv;
     }
 
-    private void buildSwatches() {
-        Context c = getContext();
-        colorRow.removeAllViews();
-        int sel = prefs.carColorIndex();
-        for (int i = 0; i < Prefs.CAR_COLORS.length; i++) {
-            final int idx = i;
-            colorRow.addView(swatch(c, Prefs.CAR_COLOR_VALUES[i], i == sel, Prefs.CAR_COLORS[i], v -> {
-                prefs.setCarColorIndex(idx);
-                buildSwatches();
-                host.settingsChanged(false);
-            }), Ui.margins(Ui.lp(dp(56), dp(56)), 0, 0, dp(12), 0));
-        }
-        colorName.setText(Prefs.CAR_COLORS[sel]);
-
-        navRow.removeAllViews();
-        String nav = prefs.navApp();
-        String[][] navs = {{Prefs.NAV_AUTO, c.getString(R.string.theme_auto)}, {Prefs.NAV_PHONE, c.getString(R.string.phone)}};
-        for (String[] m : navs) {
-            boolean on = m[0].equals(nav);
-            TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);
-            b.setGravity(Gravity.CENTER);
-            b.setPadding(dp(22), 0, dp(22), 0);
-            b.setMinHeight(dp(52));
-            b.setBackground(on ? Ui.round(t.text, dp(14)) : Ui.pressable(c, t.chip, 14, t));
-            b.setClickable(true);
-            b.setOnClickListener(v -> {
-                prefs.setNavApp(m[0]);
-                buildSwatches();
-                host.settingsChanged(false);
-            });
-            navRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
-        }
-
-        themeRow.removeAllViews();
-        String mode = prefs.themeMode();
-        String[][] modes = {{Prefs.THEME_AUTO, c.getString(R.string.theme_auto)}, {Prefs.THEME_NIGHT, c.getString(R.string.theme_night)}, {Prefs.THEME_DAY, c.getString(R.string.theme_day)}};
-        for (String[] m : modes) {
-            boolean on = m[0].equals(mode);
-            TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);
-            b.setGravity(Gravity.CENTER);
-            b.setPadding(dp(22), 0, dp(22), 0);
-            b.setMinHeight(dp(52));
-            b.setBackground(on ? Ui.round(t.text, dp(14)) : Ui.pressable(c, t.chip, 14, t));
-            b.setClickable(true);
-            b.setOnClickListener(v -> {
-                prefs.setThemeMode(m[0]);
-                host.settingsChanged(true);
-            });
-            themeRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
-        }
-        scaleRow.removeAllViews();
-        int[] scaleNames = {R.string.ui_size_normal, R.string.ui_size_large, R.string.ui_size_xlarge};
-        for (int i = 0; i < scaleNames.length; i++) {
-            final int idx = i;
-            boolean on = prefs.uiScale() == i;
-            TextView b = Ui.text(c, c.getString(scaleNames[i]), 18, on ? t.panel : t.text, Ui.MEDIUM);
-            b.setGravity(Gravity.CENTER);
-            b.setPadding(dp(22), 0, dp(22), 0);
-            b.setMinHeight(dp(52));
-            b.setBackground(on ? Ui.round(t.text, dp(14)) : Ui.pressable(c, t.chip, 14, t));
-            b.setClickable(true);
-            b.setOnClickListener(v -> {
-                prefs.setUiScale(idx);
-                host.settingsChanged(true);   // ricostruisce la home con la nuova dimensione
-            });
-            scaleRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
-        }
-        driveRow.removeAllViews();
-        boolean carRight = com.mg4.launcher.svc.CarFeatures.isRightHandDrive(c);
-        String[][] sides = {
-                {Prefs.DRIVE_AUTO, c.getString(R.string.drive_auto) + " · " + c.getString(carRight ? R.string.drive_right : R.string.drive_left)},
-                {Prefs.DRIVE_LEFT, c.getString(R.string.drive_left)},
-                {Prefs.DRIVE_RIGHT, c.getString(R.string.drive_right)}};
-        for (String[] m : sides) {
-            boolean on = m[0].equals(prefs.driveSide());
-            TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);
-            b.setGravity(Gravity.CENTER);
-            b.setPadding(dp(22), 0, dp(22), 0);
-            b.setMinHeight(dp(52));
-            b.setBackground(on ? Ui.round(t.text, dp(14)) : Ui.pressable(c, t.chip, 14, t));
-            b.setClickable(true);
-            b.setOnClickListener(v -> {
-                prefs.setDriveSide(m[0]);
-                host.settingsChanged(true);   // ricostruisce la home nella nuova disposizione
-            });
-            driveRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
-        }
-        buildLanguages(c);
+    private LinearLayout card(Context c) {
+        LinearLayout l = Ui.column(c);
+        l.setBackground(Ui.round(t.chip, dp(22)));
+        l.setClipToOutline(true);
+        return l;
     }
 
-    /** Lingua: "Come l'auto (lingua attuale)" + le lingue tradotte, ognuna scritta nella propria lingua. */
-    private void buildLanguages(Context c) {
-        langRow.removeAllViews();
-        String cur = prefs.language();
-        java.util.List<String[]> opts = new java.util.ArrayList<>();
-        opts.add(new String[]{Lang.AUTO, c.getString(R.string.lang_auto) + " · " + Lang.systemName()});
-        for (int i = 0; i < Lang.CODES.length; i++) opts.add(new String[]{Lang.CODES[i], Lang.NAMES[i]});
-        for (String[] m : opts) {
-            boolean on = m[0].equals(cur);
-            TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);
-            b.setGravity(Gravity.CENTER);
-            b.setPadding(dp(20), 0, dp(20), 0);
-            b.setMinHeight(dp(52));
-            b.setBackground(on ? Ui.round(t.text, dp(14)) : Ui.pressable(c, t.chip, 14, t));
-            b.setClickable(true);
-            b.setOnClickListener(v -> {
-                if (m[0].equals(prefs.language())) return;
-                prefs.setLanguage(m[0]);
-                host.settingsChanged(true);   // riapplica la lingua e ricostruisce l'interfaccia
-            });
-            langRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
+    /** Riga grande: titolo + spiegazione a sinistra, comando a destra; separatore sotto se non è l'ultima. */
+    private LinearLayout row(Context c, String title, String sub, View right, boolean last) {
+        LinearLayout r = Ui.row(c);
+        r.setMinimumHeight(tp(96));
+        r.setPadding(dp(28), dp(14), dp(28), dp(14));
+        if (!last) {
+            GradientDrawable line = new GradientDrawable();
+            line.setColor(t.chip);
+            r.setBackground(new android.graphics.drawable.LayerDrawable(new android.graphics.drawable.Drawable[]{
+                    new android.graphics.drawable.ColorDrawable(t.track), line}) {{
+                setLayerInset(1, 0, 0, 0, dp(1));
+            }});
         }
+        LinearLayout tx = Ui.column(c);
+        tx.addView(Ui.text(c, title, 24, t.text, Ui.REGULAR));
+        TextView st = Ui.text(c, sub, 17, t.sub, Ui.REGULAR);
+        tx.addView(st, Ui.margins(new LinearLayout.LayoutParams(-2, -2), 0, dp(6), 0, 0));
+        if (sub.isEmpty()) st.setVisibility(GONE);
+        r.addView(tx, Ui.margins(Ui.lpWeight(0, -2, 1), 0, 0, dp(20), 0));
+        r.addView(right);
+        return r;
+    }
+
+    /** Pulsante secondario di una riga (sfondo pannello sulla scheda). */
+    private TextView button(Context c, String text, View.OnClickListener l) {
+        TextView b = Ui.text(c, text, Ui.ts(20), t.text, Ui.MEDIUM);
+        b.setGravity(Gravity.CENTER);
+        b.setPadding(tp(26), 0, tp(26), 0);
+        b.setMinHeight(tp(60));
+        b.setBackground(Ui.pressable(c, t.panel, 16 * Ui.K, t));
+        b.setClickable(true);
+        b.setOnClickListener(l);
+        b.setLayoutParams(Ui.lp(-2, tp(60)));
+        return b;
+    }
+
+    /** Scelta a pulsanti (tema, dimensione, lingua, guida): selezionata = colori invertiti. */
+    private TextView choice(Context c, String text, boolean on, View.OnClickListener l) {
+        TextView b = Ui.text(c, text, Ui.ts(20), on ? t.panel : t.text, Ui.MEDIUM);
+        b.setGravity(Gravity.CENTER);
+        b.setPadding(tp(26), 0, tp(26), 0);
+        b.setSingleLine(true);
+        b.setBackground(on ? Ui.round(t.text, tp(16)) : Ui.pressable(c, t.chip, 16 * Ui.K, t));
+        b.setClickable(true);
+        b.setOnClickListener(l);
+        b.setLayoutParams(new ViewGroup.LayoutParams(-2, tp(60)));
+        return b;
     }
 
     private View swatch(Context c, int color, boolean selected, String desc, View.OnClickListener l) {
@@ -389,46 +588,137 @@ public final class SettingsView extends FrameLayout {
         return f;
     }
 
-    /** Stato dell'invio dei log, nella lingua del launcher. */
     private interface OnToggle {
         void changed(boolean on);
     }
 
-    /** Riga "testo ……… interruttore", come quella del tetto nero. */
-    private LinearLayout toggleRow(Context c, String label, boolean checked, OnToggle l) {
-        LinearLayout r = Ui.row(c);
-        r.addView(Ui.text(c, label, 20, t.text, Ui.REGULAR), Ui.lpWeight(0, -2, 1));
-        Switch sw = new Switch(c);
-        sw.setChecked(checked);
-        sw.setOnCheckedChangeListener((b, on) -> l.changed(on));
-        r.addView(sw);
-        return r;
+    private Toggle toggle(Context c, boolean on, OnToggle l) {
+        Toggle tg = new Toggle(c, on, l);
+        tg.setLayoutParams(Ui.lp(tp(76), tp(44)));
+        return tg;
     }
+
+    /** Interruttore disegnato con i colori del tema (acceso = colore testo, spento = binario). */
+    private final class Toggle extends View {
+        private boolean on;
+        private final Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final RectF r = new RectF();
+
+        Toggle(Context c, boolean on, OnToggle l) {
+            super(c);
+            this.on = on;
+            setClickable(true);
+            setOnClickListener(v -> {
+                this.on = !this.on;
+                invalidate();
+                l.changed(this.on);
+            });
+        }
+
+        @Override
+        public void setEnabled(boolean enabled) {
+            super.setEnabled(enabled);
+            setAlpha(enabled ? 1f : 0.4f);
+        }
+
+        @Override
+        protected void onDraw(Canvas cv) {
+            float w = getWidth(), h = getHeight(), pad = h * 4f / 44f, d = h - 2 * pad;
+            r.set(0, 0, w, h);
+            p.setColor(on ? t.text : t.track);
+            cv.drawRoundRect(r, h / 2, h / 2, p);
+            p.setColor(on ? t.panel : t.sub);
+            float cx = on ? w - pad - d / 2 : pad + d / 2;
+            cv.drawCircle(cx, h / 2, d / 2, p);
+        }
+    }
+
+    /** Riga di pulsanti che va a capo quando non c'è spazio (lingue, guida a dimensioni grandi). */
+    private final class Flow extends ViewGroup {
+        private final int gap = dp(12);
+
+        Flow(Context c) {
+            super(c);
+        }
+
+        @Override
+        protected void onMeasure(int ws, int hs) {
+            int max = MeasureSpec.getSize(ws);
+            int x = 0, y = 0, lineH = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                View v = getChildAt(i);
+                v.measure(MeasureSpec.makeMeasureSpec(max, MeasureSpec.AT_MOST), MeasureSpec.makeMeasureSpec(v.getLayoutParams().height, MeasureSpec.EXACTLY));
+                if (x > 0 && x + v.getMeasuredWidth() > max) {
+                    x = 0;
+                    y += lineH + gap;
+                    lineH = 0;
+                }
+                x += v.getMeasuredWidth() + gap;
+                lineH = Math.max(lineH, v.getMeasuredHeight());
+            }
+            setMeasuredDimension(max, y + lineH);
+        }
+
+        @Override
+        protected void onLayout(boolean changed, int l, int tt, int rr, int b) {
+            int max = rr - l, x = 0, y = 0, lineH = 0;
+            for (int i = 0; i < getChildCount(); i++) {
+                View v = getChildAt(i);
+                int w = v.getMeasuredWidth(), h = v.getMeasuredHeight();
+                if (x > 0 && x + w > max) {
+                    x = 0;
+                    y += lineH + gap;
+                    lineH = 0;
+                }
+                int left = rhd ? max - x - w : x;   // con la guida a destra le scelte partono da destra
+                v.layout(left, y, left + w, y + h);
+                x += w + gap;
+                lineH = Math.max(lineH, h);
+            }
+        }
+    }
+
+    // =========================================================================================
+    // Aggiornamento continuo (stato log e diagnostica)
+    // =========================================================================================
 
     private String logUploadText() {
         Context c = getContext();
-        if (!com.mg4.launcher.svc.LogUploader.configured()) return c.getString(R.string.log_upload_nokey);
+        if (!LogUploader.configured()) return c.getString(R.string.log_upload_nokey);
         if (!host.logs().enabled()) return c.getString(R.string.log_upload_off);
-        String st = com.mg4.launcher.svc.LogUploader.status();
+        String st = LogUploader.status();
         if (st.startsWith("ok ")) return c.getString(R.string.log_upload_last, st.substring(3));
         if (st.startsWith("errore ")) return c.getString(R.string.log_upload_error, st.substring(7));
         return c.getString(R.string.log_upload_never);
     }
 
-    private final Runnable refreshDiag = new Runnable() {
+    private final Runnable refreshTick = new Runnable() {
         @Override
         public void run() {
-            String d = Diag.dump();
-            diag.setText(d.isEmpty() ? getContext().getString(R.string.diag_waiting) : d);
-            logUpload.setText(logUploadText());
+            main.removeCallbacks(this);
+            if (diagText == null && logUploadSub == null) return;
+            if (diagText != null) {
+                String d = Diag.dump();
+                diagText.setText(d.isEmpty() ? getContext().getString(R.string.diag_waiting) : d);
+            }
+            if (logUploadSub != null) {
+                logUploadSub.setVisibility(VISIBLE);
+                logUploadSub.setText(logUploadText());
+            }
             if (isAttachedToWindow()) main.postDelayed(this, 1000);
         }
     };
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        refreshTick.run();
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        main.removeCallbacks(refreshDiag);
+        main.removeCallbacks(refreshTick);
         host.updater().setListener(null);
     }
 }

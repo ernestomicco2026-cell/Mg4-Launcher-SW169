@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Fine</string>
     <string name="edit_desc" formatted="false">Scegli quali app installate mostrare</string>
     <string name="launcher_settings" formatted="false">Impostazioni del launcher</string>
-    <string name="sec_car" formatted="false">AUTO</string>
+    <string name="sec_car" formatted="false">Auto</string>
     <string name="sec_installed" formatted="false">INSTALLATE DA TE</string>
     <string name="tap_toggle" formatted="false">tocca per mostrare o nascondere</string>
     <string name="app_vehicle" formatted="false">Veicolo</string>
@@ -171,4 +171,37 @@
     <string name="upd_banner_sub" formatted="false">Si installa in pochi secondi</string>
     <string name="upd_banner_later" formatted="false">Più tardi</string>
     <string name="upd_banner_update" formatted="false">Aggiorna</string>
+    <string name="set_menu_title" formatted="false">Impostazioni</string>
+    <string name="sec_car_sub" formatted="false">Colore, tetto</string>
+    <string name="sec_home" formatted="false">Home</string>
+    <string name="sec_home_sub" formatted="false">Batteria, pneumatici, temperature</string>
+    <string name="sec_look" formatted="false">Aspetto</string>
+    <string name="sec_look_sub" formatted="false">Tema, dimensione, lingua</string>
+    <string name="sec_drive" formatted="false">Guida</string>
+    <string name="sec_drive_sub" formatted="false">Posizione di guida, home MG</string>
+    <string name="sec_system" formatted="false">Sistema</string>
+    <string name="sec_system_sub" formatted="false">Aggiornamenti, log, diagnostica</string>
+    <string name="set_bodywork" formatted="false">CARROZZERIA</string>
+    <string name="set_black_roof_sub" formatted="false">Come le versioni con tetto a contrasto</string>
+    <string name="set_home_card" formatted="false">RIQUADRO AUTO</string>
+    <string name="set_soc_decimals_sub">Es. 88,1% invece di 88%</string>
+    <string name="set_tpms_title" formatted="false">Pressione pneumatici (TPMS)</string>
+    <string name="set_tpms_sub" formatted="false">Sotto le ruote dell\'auto disegnata, nell\'unità del quadro</string>
+    <string name="set_inside_sub" formatted="false">Sotto quella esterna · «— °» se l\'auto non la fornisce</string>
+    <string name="drive_hint" formatted="false">Con la guida a destra la home si specchia: auto e clima dal lato del guidatore.</string>
+    <string name="set_original_label" formatted="false">HOME ORIGINALE</string>
+    <string name="set_original_sub" formatted="false">Per usare le funzioni della home di serie</string>
+    <string name="btn_open" formatted="false">Apri</string>
+    <string name="btn_check" formatted="false">Controlla</string>
+    <string name="btn_install" formatted="false">Installa</string>
+    <string name="btn_save" formatted="false">Salva</string>
+    <string name="btn_back" formatted="false">Indietro</string>
+    <string name="upd_new_short">Nuova versione %1$s</string>
+    <string name="upd_installed_ver">Installata %1$s</string>
+    <string name="upd_current" formatted="false">Versione aggiornata</string>
+    <string name="upd_unknown" formatted="false">Aggiornamenti non ancora controllati</string>
+    <string name="set_diag_section" formatted="false">DIAGNOSTICA</string>
+    <string name="set_diag_title" formatted="false">Diagnostica servizi auto</string>
+    <string name="set_diag_sub" formatted="false">Valori letti dall\'auto ed errori recenti</string>
+    <string name="save_log_sub" formatted="false">Scrive un log completo nella memoria (e sulla chiavetta USB)</string>
 </resources>
