@@ -13,6 +13,10 @@
     <string name="ui_size_normal" formatted="false">Normal</string>
     <string name="ui_size_large" formatted="false">Groß</string>
     <string name="ui_size_xlarge" formatted="false">Sehr groß</string>
+    <string name="set_drive_side" formatted="false">LENKRADPOSITION</string>
+    <string name="drive_auto" formatted="false">Wie im Auto</string>
+    <string name="drive_left" formatted="false">Linkslenker</string>
+    <string name="drive_right" formatted="false">Rechtslenker</string>
     <string name="set_soc_decimals" formatted="false">Akkustand mit Nachkommastelle</string>
     <string name="set_show_tpms" formatted="false">Reifendruck (RDKS) unter den Rädern</string>
     <string name="outside_temp">%1$s° außen</string>

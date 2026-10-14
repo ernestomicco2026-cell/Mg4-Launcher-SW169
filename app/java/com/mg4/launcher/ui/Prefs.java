@@ -107,6 +107,17 @@ public final class Prefs {
         return UI_SCALES[uiScale()];
     }
 
+    // --- posizione di guida: "auto" (dalla configurazione dell'auto), "left", "right" ---
+    public static final String DRIVE_AUTO = "auto", DRIVE_LEFT = "left", DRIVE_RIGHT = "right";
+
+    public String driveSide() {
+        return sp.getString("posizioneGuida", DRIVE_AUTO);
+    }
+
+    public void setDriveSide(String v) {
+        sp.edit().putString("posizioneGuida", v).apply();
+    }
+
     // --- riquadro auto ---
     /** Percentuale della batteria con un decimale (es. 88,1%). */
     public boolean socDecimals() {

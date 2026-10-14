@@ -30,6 +30,13 @@ public final class CarFeatures {
         return v;
     }
 
+    /** Guida a destra secondo l'auto (impostazione di sistema "wheel_position": 1 sinistra, 2 destra). */
+    public static boolean isRightHandDrive(Context c) {
+        int v = android.provider.Settings.System.getInt(c.getContentResolver(), "wheel_position", -1);
+        Diag.put("auto.config.guida", v == 2 ? "destra (2)" : v == 1 ? "sinistra (1)" : "non indicata (" + v + ")");
+        return v == 2;
+    }
+
     /** Spia del retronebbia fissa nella barra di sistema, in alto a sinistra (sopra a qualsiasi app). */
     public static boolean hasSystemFogIndicator(Context c) {
         String[] keys = {"systemui_state_rearfog__", "systemui_state_rearfognew__",

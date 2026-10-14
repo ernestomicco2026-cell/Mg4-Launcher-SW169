@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -119,12 +120,25 @@ public final class HomeView extends LinearLayout {
         int pad = dp(20);
         setPadding(pad, pad, pad, pad);
 
+        // guida a destra: la home si specchia (auto e clima dal lato del guidatore)
+        boolean carRhd = com.mg4.launcher.svc.CarFeatures.isRightHandDrive(c);
+        String side = prefs.driveSide();
+        rhd = Prefs.DRIVE_RIGHT.equals(side) || (Prefs.DRIVE_AUTO.equals(side) && carRhd);
+        // spia luci fissa del sistema in alto a sinistra: dalla configurazione dell'auto, o auto con guida a destra
+        sysIndicator = com.mg4.launcher.svc.CarFeatures.hasSystemFogIndicator(c) || carRhd;
+
         LinearLayout top = Ui.row(c);
         top.setGravity(Gravity.FILL_VERTICAL);
         addView(top, Ui.lpWeight(LayoutParams.MATCH_PARENT, 0, 1f));
-        top.addView(buildCarPanel(c), new LayoutParams(dp(720), LayoutParams.MATCH_PARENT));
+        View carPanel = buildCarPanel(c);
         right = buildRightPanel(c);
-        top.addView(right, Ui.margins(Ui.lpWeight(0, LayoutParams.MATCH_PARENT, 1f), dp(16), 0, 0, 0));
+        if (!rhd) {
+            top.addView(carPanel, new LayoutParams(dp(720), LayoutParams.MATCH_PARENT));
+            top.addView(right, Ui.margins(Ui.lpWeight(0, LayoutParams.MATCH_PARENT, 1f), dp(16), 0, 0, 0));
+        } else {
+            top.addView(right, Ui.lpWeight(0, LayoutParams.MATCH_PARENT, 1f));
+            top.addView(carPanel, Ui.margins(new LayoutParams(dp(720), LayoutParams.MATCH_PARENT), dp(16), 0, 0, 0));
+        }
         addView(buildBottomBar(c), Ui.margins(new LayoutParams(LayoutParams.MATCH_PARENT, tp(100)), 0, dp(14), 0, 0));
 
         applyCarLook();
@@ -137,6 +151,30 @@ public final class HomeView extends LinearLayout {
 
     /** Spazio lasciato in alto a sinistra per la spia luci del sistema (circa 100 × 70 px dal bordo dello schermo). */
     private static final int SYSTEM_LIGHT_INSET = 64;
+    /** true = disposizione per guida a destra (specchiata). */
+    private boolean rhd;
+    /** true = l'auto mostra la spia luci fissa in alto a sinistra: quell'angolo resta libero. */
+    private boolean sysIndicator;
+
+    /**
+     * Specchia una riga (guida a destra): ordine dei figli invertito e margini sinistra/destra scambiati,
+     * ma ogni figlio resta da sinistra a destra (le frecce ‹ › non si invertono).
+     */
+    private static void mirrorRow(LinearLayout row) {
+        row.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        for (int i = 0; i < row.getChildCount(); i++) {
+            View ch = row.getChildAt(i);
+            ch.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+            ViewGroup.LayoutParams lp = ch.getLayoutParams();
+            if (lp instanceof ViewGroup.MarginLayoutParams) {
+                ViewGroup.MarginLayoutParams m = (ViewGroup.MarginLayoutParams) lp;
+                int l = m.leftMargin, r = m.rightMargin;
+                m.setMarginStart(l);
+                m.setMarginEnd(r);
+                ch.setLayoutParams(m);
+            }
+        }
+    }
 
     /** Misura di un comando toccabile (segue l'impostazione "Dimensione comandi"). */
     private int tp(float v) {
@@ -180,7 +218,7 @@ public final class HomeView extends LinearLayout {
         head.setGravity(Gravity.BOTTOM);
         // angolo in alto a sinistra libero solo sulle auto che hanno la spia del retronebbia fissa nella barra di
         // sistema (dipende dalla configurazione dell'auto): resta visibile anche con la barra nascosta
-        if (com.mg4.launcher.svc.CarFeatures.hasSystemFogIndicator(c)) head.setPadding(dp(SYSTEM_LIGHT_INSET), 0, 0, 0);
+        if (sysIndicator && !rhd) head.setPadding(dp(SYSTEM_LIGHT_INSET), 0, 0, 0);
         rangeTv = Ui.text(c, "—", 76, t.text, Ui.LIGHT);
         rangeTv.setLetterSpacing(-0.03f);
         head.addView(rangeTv);
@@ -476,7 +514,7 @@ public final class HomeView extends LinearLayout {
         navCard.setClickable(true);
         navCard.setOnClickListener(v -> openNavigation());
         FrameLayout.LayoutParams cl = new FrameLayout.LayoutParams(-2, -2, Gravity.TOP | Gravity.START);
-        cl.setMargins(dp(20), dp(20), dp(20), 0);
+        cl.setMargins(dp(20) + (sysIndicator && rhd ? dp(SYSTEM_LIGHT_INSET) : 0), dp(20), dp(20), 0);
         f.addView(navCard, cl);
 
         navEta = Ui.row(c);
@@ -603,7 +641,8 @@ public final class HomeView extends LinearLayout {
         srcRow = Ui.row(c);
         srcRow.setBackground(Ui.round(t.overlay, dp(16)));
         srcRow.setPadding(dp(6), dp(6), dp(6), dp(6));
-        col.addView(srcRow, new LayoutParams(-2, tp(48) + dp(12)));
+        // guida a destra: il pannello Media è in alto a sinistra, quindi la riga sorgenti lascia libero l'angolo
+        col.addView(srcRow, Ui.margins(new LayoutParams(-2, tp(48) + dp(12)), sysIndicator && rhd ? dp(SYSTEM_LIGHT_INSET) : 0, 0, 0, 0));
 
         // copertina / logo + informazioni + comandi
         LinearLayout main = Ui.row(c);
@@ -1173,6 +1212,7 @@ public final class HomeView extends LinearLayout {
         bar.addView(shortcut(c, R.drawable.ic_radio, s(R.string.src_radio), v -> host.launch(MgApps.RADIO_PKG, MgApps.RADIO_CLS)));
         bar.addView(shortcut(c, R.drawable.ic_gear, s(R.string.settings), v -> host.launch(MgApps.SETTINGS_PKG, MgApps.SETTINGS_CLS)));
         // le app si aprono scorrendo la home verso sinistra: niente pulsante dedicato
+        if (rhd) mirrorRow(bar);   // guida a destra: clima vicino al guidatore, scorciatoie a sinistra
         return bar;
     }
 

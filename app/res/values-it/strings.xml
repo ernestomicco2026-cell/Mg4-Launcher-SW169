@@ -13,6 +13,10 @@
     <string name="ui_size_normal" formatted="false">Normale</string>
     <string name="ui_size_large" formatted="false">Grande</string>
     <string name="ui_size_xlarge" formatted="false">Molto grande</string>
+    <string name="set_drive_side" formatted="false">POSIZIONE DI GUIDA</string>
+    <string name="drive_auto" formatted="false">Come l\'auto</string>
+    <string name="drive_left" formatted="false">Guida a sinistra</string>
+    <string name="drive_right" formatted="false">Guida a destra</string>
     <string name="set_soc_decimals" formatted="false">Percentuale batteria con decimali</string>
     <string name="set_show_tpms" formatted="false">Pressione pneumatici (TPMS) sotto le ruote</string>
     <string name="outside_temp">%1$s° esterni</string>

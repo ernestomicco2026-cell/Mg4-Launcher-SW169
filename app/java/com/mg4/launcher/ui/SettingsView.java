@@ -37,7 +37,7 @@ public final class SettingsView extends FrameLayout {
     private final Host host;
     private final Handler main = new Handler(Looper.getMainLooper());
     private TextView diag;
-    private final LinearLayout colorRow, themeRow, navRow, scaleRow;
+    private final LinearLayout colorRow, themeRow, navRow, scaleRow, driveRow;
     private LinearLayout langRow;
     private TextView logUpload;
     private final TextView colorName;
@@ -107,6 +107,11 @@ public final class SettingsView extends FrameLayout {
         col.addView(label(c, c.getString(R.string.set_ui_size)), top(24));
         scaleRow = Ui.row(c);
         col.addView(scaleRow, top(10));
+
+        // posizione di guida: con la guida a destra la home si specchia
+        col.addView(label(c, c.getString(R.string.set_drive_side)), top(24));
+        driveRow = Ui.row(c);
+        col.addView(driveRow, top(10));
 
         // lingua: "Come l'auto" segue la lingua di sistema, oppure una delle lingue tradotte
         col.addView(label(c, c.getString(R.string.set_language)), top(24));
@@ -318,6 +323,26 @@ public final class SettingsView extends FrameLayout {
                 host.settingsChanged(true);   // ricostruisce la home con la nuova dimensione
             });
             scaleRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
+        }
+        driveRow.removeAllViews();
+        boolean carRight = com.mg4.launcher.svc.CarFeatures.isRightHandDrive(c);
+        String[][] sides = {
+                {Prefs.DRIVE_AUTO, c.getString(R.string.drive_auto) + " · " + c.getString(carRight ? R.string.drive_right : R.string.drive_left)},
+                {Prefs.DRIVE_LEFT, c.getString(R.string.drive_left)},
+                {Prefs.DRIVE_RIGHT, c.getString(R.string.drive_right)}};
+        for (String[] m : sides) {
+            boolean on = m[0].equals(prefs.driveSide());
+            TextView b = Ui.text(c, m[1], 18, on ? t.panel : t.text, Ui.MEDIUM);
+            b.setGravity(Gravity.CENTER);
+            b.setPadding(dp(22), 0, dp(22), 0);
+            b.setMinHeight(dp(52));
+            b.setBackground(on ? Ui.round(t.text, dp(14)) : Ui.pressable(c, t.chip, 14, t));
+            b.setClickable(true);
+            b.setOnClickListener(v -> {
+                prefs.setDriveSide(m[0]);
+                host.settingsChanged(true);   // ricostruisce la home nella nuova disposizione
+            });
+            driveRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
         }
         buildLanguages(c);
     }
