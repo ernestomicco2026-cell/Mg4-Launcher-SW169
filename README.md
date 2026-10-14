@@ -284,6 +284,11 @@ Servizi del software **SWI69 Color Radio** (ricavati dall'analisi del firmware `
 | Batteria, autonomia, ricarica, V2L | `com.saicmotor.caradapter` → `queryClient(4)` → `ICarEvService` | come la home originale (carapi) |
 | Clima, ventola, temperatura esterna | stesso hub → `queryClient(7)` → `ICarHvacService` | 16–30 °C a mezzi gradi, ventola 1–11 / auto |
 | Limite di ricarica, potenza, consumo | CarService Android, manager `bms` | limite: codice 1–6 = 40–90%, altrimenti 100% |
+| A/C, AUTO | hub → `queryClient(7)` → `ICarHvacService` (7/8, 9/10) | comandi "cambia stato" |
+| Fendinebbia | hub → `queryClient(13)` → `ICarLampService`; presenza da `queryClient(2)` → `ICarConfigService` | set(1) = premuto, 1 = acceso |
+| Pressione pneumatici (TPMS) | hub → `queryClient(8)` → `ICarVehicleSettingService` (92–95, zone 1–4); unità da `queryClient(5)` → `ICarIpkService`; in alternativa CarService, manager `property` (`TIRE_PRESSURE`, `SENSOR_TIRE_PRESURE_*`) | in verifica: per ora l'auto restituisce 0 |
+| Temperatura interna | CarService, manager `hvac` (`HVAC_TEMPERATURE_CURRENT`) | su SWI69 non fornita (0): nascosta |
+| Bluetooth / Wi-Fi (indicatori) | API Android standard | |
 | USB / Online | MediaBrowserService di `com.saicmotor.media` | |
 | Bluetooth | `A2dpMediaBrowserService` di `com.android.bluetooth` | |
 | Radio | sessione `RadioMBService` + `IRadioManager` di `com.saicmotor.radio` | DAB / FM, logo DAB |
