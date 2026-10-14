@@ -1,6 +1,6 @@
 {
-  "version": "0.2.5",
-  "apk": "releases/MG4Launcher-SWI69-0.2.5.apk",
-  "size": 430035,
-  "notes": "Dimensione comandi (Normale / Grande / Molto grande), posizione di guida con home specchiata per la guida a destra, angolo libero per la spia luci del sistema, correzione della musica online."
+  "version": "0.2.6",
+  "apk": "releases/MG4Launcher-SWI69-0.2.6.apk",
+  "size": 446493,
+  "notes": "Nuove impostazioni a sezioni con versione e Installa sempre visibili, musica Bluetooth che riprende da sola se passa alla radio dopo una notifica, temperatura interna attivabile dalle impostazioni."
 }
