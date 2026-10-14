@@ -23,6 +23,9 @@
     <uses-permission android:name="android.car.permission.CAR_HVAC" />
     <uses-permission android:name="android.car.permission.CAR_POWER" />
     <uses-permission android:name="android.car.permission.CAR_RADIO" />
+    <!-- pressioni degli pneumatici (TPMS) lette dal CarService: dati "dettagliati" del veicolo, solo lettura -->
+    <uses-permission android:name="android.car.permission.CAR_ENGINE_DETAILED" />
+    <uses-permission android:name="android.car.permission.CAR_TIRES" />
     <!-- telecamere: EvsService della home originale -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 

@@ -1,6 +1,6 @@
 {
-  "version": "0.2.3",
-  "apk": "releases/MG4Launcher-SWI69-0.2.3.apk",
+  "version": "0.2.4",
+  "apk": "releases/MG4Launcher-SWI69-0.2.4.apk",
   "size": 421843,
-  "notes": "Percentuale della batteria con decimali e pressione degli pneumatici (TPMS) sotto le ruote, attivabili nelle impostazioni; temperatura interna sotto quella esterna."
+  "notes": "Temperatura interna nascosta quando non disponibile; pressione pneumatici letta anche dal sistema auto di Android."
 }

@@ -2,7 +2,7 @@
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.2.3](releases/MG4Launcher-SWI69-0.2.3.apk)**
+**Ultima versione / Latest version: [0.2.4](releases/MG4Launcher-SWI69-0.2.4.apk)**
 
 > ⚠️ **Compatibilità / Compatibility:** solo infotainment **SWI69 Color Radio** · only **SWI69 Color Radio** infotainment.
 > Garantita al momento su **MG4 standard MY23 R45**; usando i dati della FICM originale dovrebbe funzionare su tutte
@@ -112,7 +112,7 @@ Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file 
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SWI69-0.2.3.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SWI69-0.2.4.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -129,7 +129,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.3.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.4.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -189,6 +189,11 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 `media.radio.sessione` e `radio.corrente`, poi manda il log salvato.
 
 ### Versioni
+
+#### 0.2.4 — 14 ottobre 2026
+- Temperatura interna nascosta quando l'auto non la fornisce (prima poteva comparire "0° interni").
+- Pressione pneumatici: se il servizio dell'auto restituisce 0, il launcher prova a leggerla dal sistema auto di Android
+  (nuovi permessi di sola lettura `CAR_TIRES` e `CAR_ENGINE_DETAILED`, concessi dalla firma di sistema).
 
 #### 0.2.3 — 14 ottobre 2026
 - **Percentuale della batteria con un decimale** (es. 88,1%), attivabile nelle impostazioni.
@@ -354,7 +359,7 @@ There are two ways to install it: from a USB stick, if you can open a file manag
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SWI69-0.2.3.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SWI69-0.2.4.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -370,7 +375,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.3.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.4.apk
    ```
 2. Make it the default home:
    ```bash
@@ -406,6 +411,11 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 without testing on a car, so the saved log is the quickest way to fix anything that does not work.
 
 ### Changelog
+
+#### 0.2.4 — 14 October 2026
+- Inside temperature hidden when the car does not provide it (it could show "0° inside").
+- Tyre pressure: if the car service returns 0, the launcher tries the Android car system properties
+  (new read-only permissions `CAR_TIRES` and `CAR_ENGINE_DETAILED`, granted by the system signature).
 
 #### 0.2.3 — 14 October 2026
 - **Battery percentage with one decimal** (e.g. 88.1%), can be turned on in the settings.

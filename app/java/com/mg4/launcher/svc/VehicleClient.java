@@ -65,6 +65,12 @@ public final class VehicleClient {
     // temperatura dell'abitacolo dal CarService (CarHvacManager)
     private static final int HVAC_TEMP_ACTUAL = 358614274;      // ID_ZONED_TEMP_ACTUAL, per sedile
     private static final int HVAC_AMBIENT_TEMP = 358622506;     // ID_AC_AMBIENT_TEMPERATURE (SAIC)
+
+    // pneumatici dal CarService (seconda strada): TIRE_PRESSURE standard in kPa per ruota,
+    // e le proprietà SAIC SENSOR_TIRE_PRESURE_FL/FR/RL/RR
+    private static final int PROP_TIRE_PRESSURE = 392168201;
+    private static final int[] WHEEL_AREA = {0x1, 0x2, 0x8, 0x4};   // AS, AD, PS, PD (VehicleAreaWheel)
+    private static final int[] PROP_SENSOR_TIRE = {557847891, 557847892, 557847893, 557847894};   // FL, FR, RL, RR
     private static final int CONFIG_FRONT_FOG = 60;   // getFrontFrogConfigData: 0 = fendinebbia anteriori presenti
 
     /** Ventola come la barra del launcher: 0 = clima spento, 1..11, 15 = automatico. */
@@ -342,8 +348,9 @@ public final class VehicleClient {
         else if (plausible(ambient) && Math.abs(ambient - s.outsideTemp) > 0.4f) s.insideTemp = ambient;
     }
 
+    /** 0,0 esatto = "non disponibile" (è quello che restituisce l'auto quando il dato non c'è). */
     private static boolean plausible(float t) {
-        return !Float.isNaN(t) && t > -40 && t < 80;
+        return !Float.isNaN(t) && t != 0f && t > -40 && t < 80;
     }
 
     /** Pressioni degli pneumatici, normalizzate in kPa (il servizio può restituire bar, kPa o psi). */
@@ -377,8 +384,9 @@ public final class VehicleClient {
                 raw.append(z).append(": ").append(f).append(" / ").append(i).append(" st ").append(st)
                         .append(" ").append(tc).append("°  ");
             }
-            s.tpms = valid > 0 && tpmsConfig != 1;
             Diag.put("tpms.pneumatici", raw.toString().trim() + " · unità " + s.tyreUnit);
+            if (valid == 0) valid = readTyresFromCarService(s);
+            s.tpms = valid > 0 && tpmsConfig != 1;
         } catch (Exception e) {
             Diag.error("tpms", e.toString());
             forget(BIND_VS);
@@ -386,6 +394,25 @@ public final class VehicleClient {
     }
 
     private int tpmsConfig = Integer.MIN_VALUE;
+
+    /** Se il servizio dell'auto dà 0, prova le proprietà del CarService (servono CAR_TIRES / CAR_ENGINE_DETAILED). */
+    private int readTyresFromCarService(State s) {
+        StringBuilder raw = new StringBuilder();
+        int valid = 0;
+        for (int i = 0; i < 4; i++) {
+            float std = bms.propFloat(PROP_TIRE_PRESSURE, WHEEL_AREA[i]);
+            int saic = bms.propInt(PROP_SENSOR_TIRE[i], 0);
+            float kpa = toKpa(std);
+            if (Float.isNaN(kpa) && saic != Integer.MIN_VALUE) kpa = toKpa(saic);
+            if (!Float.isNaN(kpa)) {
+                s.tyreKpa[i] = kpa;
+                valid++;
+            }
+            raw.append(i + 1).append(": ").append(std).append(" / ").append(saic == Integer.MIN_VALUE ? "—" : String.valueOf(saic)).append("  ");
+        }
+        Diag.put("tpms.carservice", raw.toString().trim());
+        return valid;
+    }
 
     /** Valore grezzo → kPa: sotto 10 sono bar, fino a 80 psi, oltre kPa. NaN se non valido. */
     private static float toKpa(float v) {
