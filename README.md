@@ -17,7 +17,8 @@
 > The MG / MG4 names only identify the compatible car (SWI69 infotainment). Install and use it at your own risk.
 
 ---
-<img width="1179" height="444" alt="Senza nome" src="https://github.com/user-attachments/assets/c0b5f5ba-1c4c-48cd-a238-18fd6ab0b0bc" />
+<img width="1920" height="720" alt="MG4Launcher-SWI69-0 2 2-notte" src="https://github.com/user-attachments/assets/d3fa05fd-6e46-4ab7-ac93-482e9be71134" />
+
 ---
 
 ## Quale versione installare? / Which version should I install?
