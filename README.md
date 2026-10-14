@@ -4,6 +4,8 @@
 
 **Ultima versione / Latest version: [0.2.4](releases/MG4Launcher-SWI69-0.2.4.apk)**
 
+<a href="https://www.paypal.com/pool/9tv7fQ36nA?sr=wccr"><img alt="Sostieni il progetto con PayPal · Support the project with PayPal" src="https://img.shields.io/badge/Sostieni%20il%20progetto-PayPal-0070BA?style=for-the-badge&logo=paypal&logoColor=white"></a>
+
 > ⚠️ **Compatibilità / Compatibility:** solo infotainment **SWI69 Color Radio** · only **SWI69 Color Radio** infotainment.
 > Garantita al momento su **MG4 standard MY23 R45**; usando i dati della FICM originale dovrebbe funzionare su tutte
 > le versioni con **Color Radio** · Currently verified on **MG4 standard MY23 R45**; since it uses the original FICM's
@@ -23,6 +25,18 @@
 <sub>Anteprima della grafica 0.2.3 (tema notte e giorno, con decimali e pressione pneumatici attivi): i valori sono di esempio · Preview of the 0.2.3 design (night and day theme, decimals and tyre pressure on): values are examples.</sub>
 
 ---
+
+## Sostieni il progetto / Support the project
+
+MG4 Launcher è gratuito e lo resterà. Se ti è utile e ti va di contribuire alle ore passate a svilupparlo e a provarlo
+in auto, puoi lasciare una piccola offerta libera. È del tutto **facoltativa**: grazie anche solo per usarlo e per
+le segnalazioni.
+
+MG4 Launcher is free and will stay free. If you find it useful and would like to support the hours spent building and
+testing it in the car, you can leave a small donation of any amount. It is entirely **optional**: thank you just for
+using it and reporting issues.
+
+<a href="https://www.paypal.com/pool/9tv7fQ36nA?sr=wccr"><img alt="Sostieni il progetto con PayPal · Support the project with PayPal" src="https://img.shields.io/badge/Sostieni%20il%20progetto-PayPal-0070BA?style=for-the-badge&logo=paypal&logoColor=white"></a>
 
 ## Quale versione installare? / Which version should I install?
 
@@ -98,7 +112,7 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
 - **Aggiornamenti**: le nuove versioni si scaricano e si installano dalle impostazioni, senza computer. Quando ne
   esce una, compare in basso a destra un piccolo avviso con **Aggiorna** / **Più tardi** (sparisce da solo; "Più tardi"
   lo rimanda di un giorno).
-- **Invio dei log**: il launcher invia in automatico la diagnostica in un repository privato dello sviluppatore
+- **Invio dei log**: il launcher invia in automatico la diagnostica allo sviluppatore
   (all'avvio, ogni 30 minuti e con **Salva log**), per poter correggere i problemi senza dover raccogliere i file a mano.
   Contiene solo versione, valori letti dai servizi dell'auto ed errori: niente posizione, telaio o dati del telefono.
   Si disattiva nelle impostazioni (**Invio log**).
@@ -146,8 +160,7 @@ Impostazioni del launcher → **Aggiornamenti** → **Controlla aggiornamenti**.
 Se c'è una versione più nuova compare **Scarica e installa**: il launcher la installa da solo e si riavvia.
 Serve che l'auto sia collegata a internet (connettività dell'auto o hotspot del telefono).
 Gli aggiornamenti arrivano solo da questo repository: una versione SWI68 non viene mai proposta.
-Dalla 0.1.3 il controllo e il download passano da raw.githubusercontent.com, senza il limite di richieste delle API
-di GitHub. Chi ha una versione precedente alla 0.1.3 deve installarla una volta a mano (chiavetta o adb).
+Chi ha una versione precedente alla 0.1.3 deve installare una volta a mano una versione più recente (chiavetta o adb).
 Si possono installare anche da computer, con lo stesso comando dell'installazione.
 
 ### Tornare alla home MG originale
@@ -176,24 +189,20 @@ adb pull /sdcard/Android/data/com.mg4.launcher/files/diagnostica.txt
 
 ### Segnalare un problema
 
-Nelle impostazioni la colonna **Diagnostica servizi auto** mostra i valori grezzi letti da ogni servizio
-(veicolo, batteria, clima, media, radio, CarPlay) e gli errori recenti. Uno screenshot di quella colonna
+Nelle impostazioni la colonna **Diagnostica servizi auto** mostra i valori letti dall'auto e gli errori recenti. Uno screenshot di quella colonna
 o il file `diagnostica.txt` bastano per capire cosa succede.
 
 Con **Salva log** (in alto nella colonna Diagnostica) il launcher scrive un log completo — valori, errori, eventi
 recenti e logcat del launcher — in `Android/data/com.mg4.launcher/files/mg4-launcher-log-….txt`.
 Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartella.
 
-**Prima prova:** le versioni 0.1.x sono state costruite dal firmware, senza poterle provare sull'auto.
-In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `media.usb`, `media.bt`,
-`media.radio.sessione` e `radio.corrente`, poi manda il log salvato.
 
 ### Versioni
 
 #### 0.2.4 — 14 ottobre 2026
 - Temperatura interna nascosta quando l'auto non la fornisce (prima poteva comparire "0° interni").
 - Pressione pneumatici: se il servizio dell'auto restituisce 0, il launcher prova a leggerla dal sistema auto di Android
-  (nuovi permessi di sola lettura `CAR_TIRES` e `CAR_ENGINE_DETAILED`, concessi dalla firma di sistema).
+  (con un nuovo permesso di sola lettura).
 
 #### 0.2.3 — 14 ottobre 2026
 - **Percentuale della batteria con un decimale** (es. 88,1%), attivabile nelle impostazioni.
@@ -223,7 +232,7 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
   controllo ogni 6 ore; sparisce da sola e "Più tardi" la rimanda di 24 ore.
 
 #### 0.1.3 — 12 ottobre 2026
-- Aggiornamenti: il launcher legge la nuova versione e scarica l'APK da raw.githubusercontent.com.
+- Aggiornamenti più affidabili: niente più errore 403 durante il controllo.
 
 #### 0.1.2 — 12 ottobre 2026
 - Riquadro navigazione ridisegnato: scheda centrale con lo stato del telefono e pulsante per aprire CarPlay /
@@ -251,48 +260,15 @@ In Diagnostica controlla soprattutto `veicolo.stato`, `bms.stato`, `clima.*`, `m
 
 ### Compilare
 
-Nessun Gradle: `./build.sh` usa aapt2, javac (bytecode 8), D8 e firma con la chiave platform AOSP
-(la stessa del sistema dell'auto, build test-keys: identica su SWI68 e SWI69). L'APK esce in `build/`.
-La versione è in `version.properties`.
-
-**Invio dei log:** il token del repository privato dei log non è nel repository. Per compilare un APK che invia i log,
-metti il token (fine-grained, solo *Contents: read and write* sul repository dei log) in `tools/log-token.txt`, escluso
-da git: `build.sh` lo inserisce nell'APK. Senza quel file l'APK funziona uguale, ma non invia i log.
-
-**Testi e traduzioni:** sono tutti in `tools/strings.py` (una riga per testo, con le 7 lingue). Dopo una modifica
-esegui `python3 tools/gen_strings.py`, che rigenera `app/res/values*/strings.xml`.
-
-Prima di compilare metti in `tools/` i due file non inclusi nel repository:
-- `android.jar` (API 28) da [Sable/android-platforms](https://github.com/Sable/android-platforms);
-- `d8.jar`: è `lib/jadx-1.5.1-all.jar` di [jadx 1.5.1](https://github.com/skylot/jadx/releases/tag/v1.5.1), rinominato.
-
-`keys/platform.p12` è la chiave platform **pubblica** di test AOSP (password `android`).
-
-**Pubblicare una nuova versione:** aumenta `VERSION_CODE` e `VERSION_NAME` in `version.properties`, compila,
-copia l'APK in `releases/MG4Launcher-SWI69-X.Y.Z.apk`, aggiorna `releases/latest.json` (versione, nome del file
-e dimensione) e le Versioni qui sopra, poi commit e push. Il launcher controlla `releases/latest.json` e anche le
-Release di GitHub con un APK allegato, e propone la più recente.
-Per la Release di GitHub basta crearla con il tag `vX.Y.Z`: l'automazione `.github/workflows/allega-apk.yml`
-allega da sola `releases/MG4Launcher-SWI69-X.Y.Z.apk` (e, se la descrizione è vuota, usa le note di `latest.json`).
+Il launcher si compila con lo script `build.sh` incluso, senza Gradle; alcuni strumenti Android necessari non sono
+nel repository e vanno aggiunti in `tools/`. La versione è in `version.properties`, i testi delle 7 lingue in
+`tools/strings.py`. Gli APK pubblicati sono nella cartella `releases/`.
 
 ### Come comunica con l'auto
 
-Servizi del software **SWI69 Color Radio** (ricavati dall'analisi del firmware `SWI69-29958-1100R45`).
-
-| Funzione | Servizio | Note |
-|---|---|---|
-| Batteria, autonomia, ricarica, V2L | `com.saicmotor.caradapter` → `queryClient(4)` → `ICarEvService` | come la home originale (carapi) |
-| Clima, ventola, temperatura esterna | stesso hub → `queryClient(7)` → `ICarHvacService` | 16–30 °C a mezzi gradi, ventola 1–11 / auto |
-| Limite di ricarica, potenza, consumo | CarService Android, manager `bms` | limite: codice 1–6 = 40–90%, altrimenti 100% |
-| A/C, AUTO | hub → `queryClient(7)` → `ICarHvacService` (7/8, 9/10) | comandi "cambia stato" |
-| Fendinebbia | hub → `queryClient(13)` → `ICarLampService`; presenza da `queryClient(2)` → `ICarConfigService` | set(1) = premuto, 1 = acceso |
-| Pressione pneumatici (TPMS) | hub → `queryClient(8)` → `ICarVehicleSettingService` (92–95, zone 1–4); unità da `queryClient(5)` → `ICarIpkService`; in alternativa CarService, manager `property` (`TIRE_PRESSURE`, `SENSOR_TIRE_PRESURE_*`) | in verifica: per ora l'auto restituisce 0 |
-| Temperatura interna | CarService, manager `hvac` (`HVAC_TEMPERATURE_CURRENT`) | su SWI69 non fornita (0): nascosta |
-| Bluetooth / Wi-Fi (indicatori) | API Android standard | |
-| USB / Online | MediaBrowserService di `com.saicmotor.media` | |
-| Bluetooth | `A2dpMediaBrowserService` di `com.android.bluetooth` | |
-| Radio | sessione `RadioMBService` + `IRadioManager` di `com.saicmotor.radio` | DAB / FM, logo DAB |
-| CarPlay / Android Auto | `com.allgo.rui` + MediaBrowser `com.allgo.remoteui.mediabrowserservice` | metadati e indicazioni |
+Il launcher usa gli stessi servizi di sistema della home originale **SWI69 Color Radio**: veicolo e batteria, clima,
+luci, media, radio e CarPlay / Android Auto. Legge i dati e invia all'auto solo i comandi che tocchi tu (clima,
+fendinebbia, sorgenti e brani); non modifica nulla del sistema.
 
 La mappa di CarPlay / Android Auto non può essere mostrata dentro il launcher:
 il pannello Mappa mostra le indicazioni del telefono e apre CarPlay / Android Auto a schermo intero.
@@ -347,7 +323,7 @@ it should work on **every version with the Color Radio**. Reports from other ver
 - **Full screen**: status bar and MG dock hidden (swipe from the edge to bring them back).
 - **Updates**: new versions download and install from the settings, no computer needed. When one is out, a small
   notice with **Update** / **Later** appears at the bottom right (it hides by itself; "Later" waits a day).
-- **Log upload**: the launcher automatically sends its diagnostics to the developer's private repository (at start,
+- **Log upload**: the launcher automatically sends its diagnostics to the developer (at start,
   every 30 minutes and with **Save log**). Only version, values read from the car services and errors: no location,
   VIN or phone data. It can be turned off in the settings (**Log upload**).
 
@@ -396,8 +372,8 @@ and later updates are installed from the launcher settings, with no USB stick or
 Launcher settings → **Aggiornamenti** (Updates) → **Controlla aggiornamenti** (Check for updates).
 If a newer version exists, **Scarica e installa** (Download and install) appears: the launcher installs it and restarts.
 The car needs an internet connection (car connectivity or phone hotspot). Updates come only from this repository:
-a SWI68 build is never offered. Since 0.1.3 they are read from raw.githubusercontent.com, without the GitHub API rate
-limit; anyone on an older version must install 0.1.3 once by hand (USB stick or adb).
+a SWI68 build is never offered. Anyone on a version older than 0.1.3 must install a newer one once by hand
+(USB stick or adb).
 
 ### Going back to the original MG home
 
@@ -412,15 +388,15 @@ To remove the launcher completely: `adb uninstall com.mg4.launcher`. The origina
 ### Reporting a problem
 
 Settings → **Diagnostica servizi auto** shows the raw values read from each car service and recent errors;
-**Salva log** writes a full log to `Android/data/com.mg4.launcher/files/`. Versions 0.1.x were built from the firmware
-without testing on a car, so the saved log is the quickest way to fix anything that does not work.
+**Salva log** writes a full log to `Android/data/com.mg4.launcher/files/`: it is the quickest way to fix anything
+that does not work.
 
 ### Changelog
 
 #### 0.2.4 — 14 October 2026
 - Inside temperature hidden when the car does not provide it (it could show "0° inside").
 - Tyre pressure: if the car service returns 0, the launcher tries the Android car system properties
-  (new read-only permissions `CAR_TIRES` and `CAR_ENGINE_DETAILED`, granted by the system signature).
+  (with a new read-only permission).
 
 #### 0.2.3 — 14 October 2026
 - **Battery percentage with one decimal** (e.g. 88.1%), can be turned on in the settings.
@@ -449,7 +425,7 @@ without testing on a car, so the saved log is the quickest way to fix anything t
 - **Discreet new-version notice** at the bottom right with Update / Later, checked every 6 hours.
 
 #### 0.1.3 — 12 October 2026
-- Updates: the new version and the APK are read from raw.githubusercontent.com.
+- More reliable updates: no more 403 error while checking.
 
 #### 0.1.2 — 12 October 2026
 - Redesigned navigation card with phone status and an Open CarPlay / Android Auto button.
