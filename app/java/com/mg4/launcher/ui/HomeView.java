@@ -178,9 +178,9 @@ public final class HomeView extends LinearLayout {
         // autonomia a sinistra, orologio grande quanto l'autonomia a destra
         LinearLayout head = Ui.row(c);
         head.setGravity(Gravity.BOTTOM);
-        // angolo in alto a sinistra libero: lì il sistema dell'auto disegna sempre la spia delle luci
-        // (anche con la barra di stato nascosta), che altrimenti finirebbe sopra l'autonomia
-        head.setPadding(dp(SYSTEM_LIGHT_INSET), 0, 0, 0);
+        // angolo in alto a sinistra libero solo sulle auto che hanno la spia del retronebbia fissa nella barra di
+        // sistema (dipende dalla configurazione dell'auto): resta visibile anche con la barra nascosta
+        if (com.mg4.launcher.svc.CarFeatures.hasSystemFogIndicator(c)) head.setPadding(dp(SYSTEM_LIGHT_INSET), 0, 0, 0);
         rangeTv = Ui.text(c, "—", 76, t.text, Ui.LIGHT);
         rangeTv.setLetterSpacing(-0.03f);
         head.addView(rangeTv);
