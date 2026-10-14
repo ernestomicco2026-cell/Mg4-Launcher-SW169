@@ -2,7 +2,7 @@
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.2.4](releases/MG4Launcher-SWI69-0.2.4.apk)**
+**Ultima versione / Latest version: [0.2.5](releases/MG4Launcher-SWI69-0.2.5.apk)**
 
 <a href="https://www.paypal.com/pool/9tv7fQ36nA?sr=wccr"><img alt="Sostieni il progetto con PayPal · Support the project with PayPal" src="https://img.shields.io/badge/Sostieni%20il%20progetto-PayPal-0070BA?style=for-the-badge&logo=paypal&logoColor=white"></a>
 
@@ -19,10 +19,11 @@
 > The MG / MG4 names only identify the compatible car (SWI69 infotainment). Install and use it at your own risk.
 
 ---
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.3 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.3-notte.png" />
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.3 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.3-giorno.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.5 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.5-notte.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.5 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.5-giorno.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.5 – guida a destra" src="screenshots/MG4Launcher-SWI69-0.2.5-guida-a-destra.png" />
 
-<sub>Anteprima della grafica 0.2.3 (tema notte e giorno, con decimali e pressione pneumatici attivi): i valori sono di esempio · Preview of the 0.2.3 design (night and day theme, decimals and tyre pressure on): values are examples.</sub>
+<sub>Anteprima della grafica 0.2.5 (tema notte, giorno e guida a destra, con decimali e pressione pneumatici attivi): i valori sono di esempio · Preview of the 0.2.5 design (night, day and right-hand drive, decimals and tyre pressure on): values are examples.</sub>
 
 ---
 
@@ -102,6 +103,11 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
   **fendinebbia anteriori** (verde, solo se l'auto li ha), Telefono, Radio, Impostazioni.
 - **App**: scorri la home verso sinistra per le app dell'auto e quelle che installi tu,
   con le icone tutte nello stesso stile; scorri verso destra per tornare. Con **Modifica** scegli quali app installate mostrare.
+- **Dimensione comandi** (Normale / Grande / Molto grande): ingrandisce pulsanti, icone e testi dei pulsanti
+  in proporzione, per usarli meglio guidando.
+- **Guida a destra o a sinistra**: automatica dalla configurazione dell'auto o scelta nelle impostazioni; con la
+  guida a destra la home si specchia, con auto e clima dal lato del guidatore. Sulle auto che mostrano sempre la
+  spia luci del sistema in alto a sinistra, quell'angolo resta libero.
 - **Impostazioni** (tieni premuta l'auto): colore dell'auto, tetto nero, tema (automatico, notte, giorno),
   **lingua**, aggiornamenti, diagnostica con **Salva log**.
   Si aprono anche dall'ingranaggio in alto a destra nella pagina App.
@@ -126,7 +132,7 @@ Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file 
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SWI69-0.2.4.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SWI69-0.2.5.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -143,7 +149,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.4.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.5.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -198,6 +204,12 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
 
 
 ### Versioni
+
+#### 0.2.5 — 14 ottobre 2026
+- **Dimensione comandi** nelle impostazioni: Normale, Grande (×1,15) e Molto grande (×1,3), solo per i comandi toccabili.
+- **Posizione di guida** (come l'auto, sinistra o destra): con la guida a destra la home si specchia.
+- Angolo in alto a sinistra libero sulle auto che mostrano sempre la spia luci del sistema.
+- Musica online: il pulsante compare solo sulle auto dove la funzione è attiva (prima toccandolo spariva).
 
 #### 0.2.4 — 14 ottobre 2026
 - Temperatura interna nascosta quando l'auto non la fornisce (prima poteva comparire "0° interni").
@@ -318,6 +330,11 @@ it should work on **every version with the Color Radio**. Reports from other ver
   (green, only if fitted), Phone, Radio, Settings.
 - **Apps**: swipe the home screen left for the car's apps and the ones you install; swipe right to go back.
   Use **Modifica** (Edit) to choose which installed apps to show.
+- **Control size** (Normal / Large / Extra large): scales buttons, icons and button labels proportionally,
+  for easier use while driving.
+- **Right- or left-hand drive**: automatic from the car configuration or chosen in the settings; with right-hand
+  drive the home screen is mirrored, with car and climate on the driver's side. On cars that always show the
+  system light indicator at the top left, that corner is kept free.
 - **Settings** (long-press the car): car colour, black roof, theme, **language**, updates,
   diagnostics with **Salva log** (save log). Also available from the gear at the top right of the Apps page.
 - **Full screen**: status bar and MG dock hidden (swipe from the edge to bring them back).
@@ -340,7 +357,7 @@ There are two ways to install it: from a USB stick, if you can open a file manag
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SWI69-0.2.4.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SWI69-0.2.5.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -356,7 +373,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.4.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.5.apk
    ```
 2. Make it the default home:
    ```bash
@@ -392,6 +409,12 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 that does not work.
 
 ### Changelog
+
+#### 0.2.5 — 14 October 2026
+- **Control size** in the settings: Normal, Large (×1.15) and Extra large (×1.3), touch controls only.
+- **Driving side** (same as car, left or right): with right-hand drive the home screen is mirrored.
+- Top-left corner kept free on cars that always show the system light indicator.
+- Online music: the button only appears on cars where the feature is enabled (it used to disappear when tapped).
 
 #### 0.2.4 — 14 October 2026
 - Inside temperature hidden when the car does not provide it (it could show "0° inside").

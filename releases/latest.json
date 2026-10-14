@@ -1,6 +1,6 @@
 {
-  "version": "0.2.4",
-  "apk": "releases/MG4Launcher-SWI69-0.2.4.apk",
-  "size": 421843,
-  "notes": "Temperatura interna nascosta quando non disponibile; pressione pneumatici letta anche dal sistema auto di Android."
+  "version": "0.2.5",
+  "apk": "releases/MG4Launcher-SWI69-0.2.5.apk",
+  "size": 430035,
+  "notes": "Dimensione comandi (Normale / Grande / Molto grande), posizione di guida con home specchiata per la guida a destra, angolo libero per la spia luci del sistema, correzione della musica online."
 }
