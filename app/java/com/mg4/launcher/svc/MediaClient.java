@@ -419,7 +419,7 @@ public final class MediaClient {
         s.sources.add(SRC_RADIO);
         s.sources.add(SRC_USB);
         s.sources.add(SRC_BT);
-        if (online.ready()) s.sources.add(SRC_ONLINE);
+        if (online.ready() && onlineAvailable()) s.sources.add(SRC_ONLINE);
         if (s.deviceType == DEV_CARPLAY) s.sources.add(SRC_CARPLAY);
         if (s.deviceType == DEV_AAUTO) s.sources.add(SRC_AAUTO);
 
@@ -740,6 +740,29 @@ public final class MediaClient {
     }
 
     /** Mostra la sorgente e la avvia (play sulla sua sessione, come fa la home originale). */
+    // --- musica online: funziona solo se l'auto ha la funzione attiva (come l'app Media originale) ---
+    private static final String FEATURE_URI = "content://com.saicmotor.caradapter.featureprovider/feature/key/";
+    private static final String FEATURE_ONLINE = "media_Onlinemusic___";
+    private volatile String onlineFeature;      // valore della configurazione, null = non ancora letto / non leggibile
+    private volatile boolean onlineFeatureRead;
+    private volatile boolean onlineFailed;      // toccata ma non è partita: nascosta fino al riavvio del launcher
+
+    /** "0" = funzione assente sull'auto: il servizio esiste ma non riproduce nulla, quindi il pulsante non si mostra. */
+    private boolean onlineAvailable() {
+        if (!onlineFeatureRead) {
+            onlineFeatureRead = true;
+            try (android.database.Cursor q = ctx.getContentResolver().query(
+                    android.net.Uri.parse(FEATURE_URI + FEATURE_ONLINE), null, null, null, null)) {
+                if (q != null && q.moveToNext()) onlineFeature = q.getString(0);
+            } catch (Throwable e) {
+                Diag.error("media.online.funzione", e.toString());
+            }
+            Diag.put("media.online.funzione", onlineFeature == null ? "non leggibile" : onlineFeature + (("0".equals(onlineFeature)) ? " (assente)" : ""));
+        }
+        if (onlineFailed) return false;
+        return !"0".equals(onlineFeature);
+    }
+
     public void selectSource(int src) {
         chosen = src;
         post(() -> {
@@ -751,6 +774,17 @@ public final class MediaClient {
                     MediaController.TransportControls tc = b == null ? null : b.controls();
                     if (tc != null) tc.play();
                     else Diag.put("media.avvio", sourceName(ctx, src) + ": sessione non collegata");
+                    if (src == SRC_ONLINE) {
+                        // se dopo qualche secondo non è partita, la funzione non c'è: si torna alla radio e si nasconde
+                        bg.postDelayed(() -> {
+                            if (!online.isPlaying()) {
+                                onlineFailed = true;
+                                Diag.put("media.online", "non parte: nascosta");
+                                if (chosen == SRC_ONLINE) chosen = SRC_RADIO;
+                                poll();
+                            }
+                        }, 6000);
+                    }
                 }
             } catch (Exception e) {
                 Diag.error("media.avvio " + sourceName(ctx, src), e.toString());

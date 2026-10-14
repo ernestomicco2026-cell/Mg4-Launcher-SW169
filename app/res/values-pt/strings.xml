@@ -9,6 +9,10 @@
     <string name="v2l_on" formatted="false">Ativo</string>
     <string name="v2l_off" formatted="false">Desligado</string>
     <string name="inside_temp">%1$s° interior</string>
+    <string name="set_ui_size" formatted="false">TAMANHO DOS COMANDOS</string>
+    <string name="ui_size_normal" formatted="false">Normal</string>
+    <string name="ui_size_large" formatted="false">Grande</string>
+    <string name="ui_size_xlarge" formatted="false">Muito grande</string>
     <string name="set_soc_decimals" formatted="false">Percentagem da bateria com decimais</string>
     <string name="set_show_tpms" formatted="false">Pressão dos pneus (TPMS) sob as rodas</string>
     <string name="outside_temp">%1$s° exterior</string>

@@ -92,6 +92,21 @@ public final class Prefs {
         sp.edit().putStringSet("hiddenApps", s).apply();
     }
 
+    // --- dimensione dei comandi toccabili: 0 Normale, 1 Grande, 2 Molto grande ---
+    public static final float[] UI_SCALES = {1f, 1.15f, 1.3f};
+
+    public int uiScale() {
+        return Math.max(0, Math.min(UI_SCALES.length - 1, sp.getInt("dimensioneComandi", 0)));
+    }
+
+    public void setUiScale(int i) {
+        sp.edit().putInt("dimensioneComandi", i).apply();
+    }
+
+    public float uiScaleFactor() {
+        return UI_SCALES[uiScale()];
+    }
+
     // --- riquadro auto ---
     /** Percentuale della batteria con un decimale (es. 88,1%). */
     public boolean socDecimals() {

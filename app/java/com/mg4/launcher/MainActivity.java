@@ -152,6 +152,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
 
     private void build() {
         theme = Theme.resolve(this, prefs);
+        Ui.K = prefs.uiScaleFactor();   // dimensione dei comandi toccabili
         root.setBackgroundColor(theme.bg);
         root.removeAllViews();
         int keepPage = pager != null ? pager.page() : 0;

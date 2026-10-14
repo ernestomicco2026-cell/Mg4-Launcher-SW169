@@ -37,7 +37,7 @@ public final class SettingsView extends FrameLayout {
     private final Host host;
     private final Handler main = new Handler(Looper.getMainLooper());
     private TextView diag;
-    private final LinearLayout colorRow, themeRow, navRow;
+    private final LinearLayout colorRow, themeRow, navRow, scaleRow;
     private LinearLayout langRow;
     private TextView logUpload;
     private final TextView colorName;
@@ -102,6 +102,11 @@ public final class SettingsView extends FrameLayout {
         col.addView(label(c, c.getString(R.string.set_theme)), top(24));
         themeRow = Ui.row(c);
         col.addView(themeRow, top(10));
+
+        // dimensione dei comandi toccabili (pulsanti, icone e testo dei pulsanti)
+        col.addView(label(c, c.getString(R.string.set_ui_size)), top(24));
+        scaleRow = Ui.row(c);
+        col.addView(scaleRow, top(10));
 
         // lingua: "Come l'auto" segue la lingua di sistema, oppure una delle lingue tradotte
         col.addView(label(c, c.getString(R.string.set_language)), top(24));
@@ -296,6 +301,23 @@ public final class SettingsView extends FrameLayout {
                 host.settingsChanged(true);
             });
             themeRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
+        }
+        scaleRow.removeAllViews();
+        int[] scaleNames = {R.string.ui_size_normal, R.string.ui_size_large, R.string.ui_size_xlarge};
+        for (int i = 0; i < scaleNames.length; i++) {
+            final int idx = i;
+            boolean on = prefs.uiScale() == i;
+            TextView b = Ui.text(c, c.getString(scaleNames[i]), 18, on ? t.panel : t.text, Ui.MEDIUM);
+            b.setGravity(Gravity.CENTER);
+            b.setPadding(dp(22), 0, dp(22), 0);
+            b.setMinHeight(dp(52));
+            b.setBackground(on ? Ui.round(t.text, dp(14)) : Ui.pressable(c, t.chip, 14, t));
+            b.setClickable(true);
+            b.setOnClickListener(v -> {
+                prefs.setUiScale(idx);
+                host.settingsChanged(true);   // ricostruisce la home con la nuova dimensione
+            });
+            scaleRow.addView(b, Ui.margins(Ui.lp(-2, dp(52)), 0, 0, dp(10), 0));
         }
         buildLanguages(c);
     }

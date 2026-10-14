@@ -26,6 +26,22 @@ public final class Ui {
     public static final Typeface REGULAR = Typeface.create("sans-serif", Typeface.NORMAL);
     public static final Typeface MEDIUM = Typeface.create("sans-serif-medium", Typeface.NORMAL);
 
+    /**
+     * Dimensione dei comandi toccabili (impostazione "Dimensione comandi"): 1 Normale, 1,15 Grande, 1,3 Molto grande.
+     * Ingrandisce in proporzione pulsanti, icone e testo dentro i pulsanti; il resto della grafica non cambia.
+     */
+    public static float K = 1f;
+
+    /** Misura di un comando toccabile, in dp moltiplicati per K. */
+    public static int tp(Context c, float v) {
+        return dp(c, v * K);
+    }
+
+    /** Dimensione del testo dentro un comando toccabile (sp moltiplicati per K). */
+    public static float ts(float sp) {
+        return sp * K;
+    }
+
     public static int dp(Context c, float v) {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, v, c.getResources().getDisplayMetrics()));
     }
@@ -72,6 +88,9 @@ public final class Ui {
     /** Pulsante-icona tondo o arrotondato, area di tocco ≥ 56 px. */
     public static FrameLayout iconButton(Context c, Theme t, int res, int iconColor, int bgColor, int sizeDp, int iconDp,
                                          float radiusDp, String description, View.OnClickListener click) {
+        sizeDp = Math.round(sizeDp * K);
+        iconDp = Math.round(iconDp * K);
+        radiusDp = radiusDp * K;
         FrameLayout f = new FrameLayout(c);
         f.setBackground(pressable(c, bgColor, radiusDp, t));
         f.setContentDescription(description);

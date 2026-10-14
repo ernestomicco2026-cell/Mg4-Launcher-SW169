@@ -125,7 +125,7 @@ public final class HomeView extends LinearLayout {
         top.addView(buildCarPanel(c), new LayoutParams(dp(720), LayoutParams.MATCH_PARENT));
         right = buildRightPanel(c);
         top.addView(right, Ui.margins(Ui.lpWeight(0, LayoutParams.MATCH_PARENT, 1f), dp(16), 0, 0, 0));
-        addView(buildBottomBar(c), Ui.margins(new LayoutParams(LayoutParams.MATCH_PARENT, dp(100)), 0, dp(14), 0, 0));
+        addView(buildBottomBar(c), Ui.margins(new LayoutParams(LayoutParams.MATCH_PARENT, tp(100)), 0, dp(14), 0, 0));
 
         applyCarLook();
         selectTab(TAB_MEDIA, false);
@@ -133,6 +133,15 @@ public final class HomeView extends LinearLayout {
 
     private int dp(float v) {
         return Ui.dp(getContext(), v);
+    }
+
+    /** Misura di un comando toccabile (segue l'impostazione "Dimensione comandi"). */
+    private int tp(float v) {
+        return Ui.tp(getContext(), v);
+    }
+
+    private static float ts(float sp) {
+        return Ui.ts(sp);
     }
 
     /** Testo tradotto nella lingua del launcher. */
@@ -379,7 +388,7 @@ public final class HomeView extends LinearLayout {
         // in alto a destra, prima delle schede: pillola Bluetooth / Wi-Fi
         LinearLayout topRight = Ui.row(c);
         topRight.setGravity(Gravity.CENTER_VERTICAL);
-        topRight.addView(new ConnIndicator(c, t), Ui.margins(new LayoutParams(-2, dp(60)), 0, 0, dp(10), 0));
+        topRight.addView(new ConnIndicator(c, t), Ui.margins(new LayoutParams(-2, tp(48) + dp(12)), 0, 0, dp(10), 0));
         topRight.addView(tabs);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(-2, -2, Gravity.TOP | Gravity.END);
         lp.setMargins(0, dp(20), dp(20), 0);
@@ -388,13 +397,13 @@ public final class HomeView extends LinearLayout {
     }
 
     private TextView addTab(Context c, LinearLayout parent, String label, int which) {
-        TextView tv = Ui.text(c, label, 18, t.sub, Ui.MEDIUM);
+        TextView tv = Ui.text(c, label, ts(18), t.sub, Ui.MEDIUM);
         tv.setGravity(Gravity.CENTER);
-        tv.setPadding(dp(22), 0, dp(22), 0);
-        tv.setMinHeight(dp(48));
+        tv.setPadding(tp(22), 0, tp(22), 0);
+        tv.setMinHeight(tp(48));
         tv.setClickable(true);
         tv.setOnClickListener(v -> selectTab(which, true));
-        parent.addView(tv, Ui.margins(Ui.lp(-2, dp(48)), which == 0 ? 0 : dp(6), 0, 0, 0));
+        parent.addView(tv, Ui.margins(Ui.lp(-2, tp(48)), which == 0 ? 0 : dp(6), 0, 0, 0));
         return tv;
     }
 
@@ -482,13 +491,13 @@ public final class HomeView extends LinearLayout {
     }
 
     private TextView pill(Context c, int icon, String label, boolean primary, View.OnClickListener l) {
-        TextView tv = Ui.text(c, label, 20, primary ? t.onAccent : t.text, Ui.MEDIUM);
+        TextView tv = Ui.text(c, label, ts(20), primary ? t.onAccent : t.text, Ui.MEDIUM);
         tv.setGravity(Gravity.CENTER_VERTICAL);
-        tv.setPadding(dp(24), 0, dp(28), 0);
-        tv.setMinHeight(dp(64));
+        tv.setPadding(tp(24), 0, tp(28), 0);
+        tv.setMinHeight(tp(64));
         android.graphics.drawable.Drawable d = c.getDrawable(icon).mutate();
         d.setTint(primary ? t.onAccent : t.text);
-        d.setBounds(0, 0, dp(26), dp(26));
+        d.setBounds(0, 0, tp(26), tp(26));
         tv.setCompoundDrawables(d, null, null, null);
         tv.setCompoundDrawablePadding(dp(12));
         tv.setBackground(Ui.pressable(c, primary ? t.accent : t.overlay, 32, t));
@@ -507,7 +516,7 @@ public final class HomeView extends LinearLayout {
         navIdleBtn.setTextColor(phone ? t.onAccent : t.sub);
         android.graphics.drawable.Drawable d = c.getDrawable(R.drawable.ic_smartphone).mutate();
         d.setTint(phone ? t.onAccent : t.sub);
-        d.setBounds(0, 0, dp(26), dp(26));
+        d.setBounds(0, 0, tp(26), tp(26));
         navIdleBtn.setCompoundDrawables(d, null, null, null);
         navWith.removeAllViews();
         String pref = prefs.navApp();
@@ -517,10 +526,10 @@ public final class HomeView extends LinearLayout {
 
     private void addNavChip(Context c, String label, String value, String pref) {
         boolean def = value.equals(pref) || (Prefs.NAV_AUTO.equals(pref) && Prefs.NAV_PHONE.equals(value));
-        TextView chip = Ui.text(c, label, 16, def ? t.text : t.sub, Ui.MEDIUM);
+        TextView chip = Ui.text(c, label, ts(16), def ? t.text : t.sub, Ui.MEDIUM);
         chip.setGravity(Gravity.CENTER);
-        chip.setPadding(dp(18), 0, dp(18), 0);
-        chip.setMinHeight(dp(44));
+        chip.setPadding(tp(18), 0, tp(18), 0);
+        chip.setMinHeight(tp(44));
         chip.setBackground(Ui.pressable(c, def ? t.chip : t.overlay, 22, t));
         chip.setClickable(true);
         chip.setOnClickListener(v -> host.launchNavigator(value));
@@ -588,7 +597,7 @@ public final class HomeView extends LinearLayout {
         srcRow = Ui.row(c);
         srcRow.setBackground(Ui.round(t.overlay, dp(16)));
         srcRow.setPadding(dp(6), dp(6), dp(6), dp(6));
-        col.addView(srcRow, new LayoutParams(-2, dp(60)));
+        col.addView(srcRow, new LayoutParams(-2, tp(48) + dp(12)));
 
         // copertina / logo + informazioni + comandi
         LinearLayout main = Ui.row(c);
@@ -662,7 +671,7 @@ public final class HomeView extends LinearLayout {
         ctr.addView(Ui.iconButton(c, t, R.drawable.ic_prev, t.text, t.chip, 72, 30, 36, s(R.string.prev), v -> media.skip(false)));
         FrameLayout play = Ui.iconButton(c, t, R.drawable.ic_pause, t.panel, t.text, 92, 38, 46, s(R.string.play_pause), v -> media.playPause());
         playIcon = (ImageView) play.getChildAt(0);
-        ctr.addView(play, Ui.margins(Ui.lp(dp(92), dp(92)), dp(20), 0, dp(20), 0));
+        ctr.addView(play, Ui.margins(Ui.lp(tp(92), tp(92)), dp(20), 0, dp(20), 0));
         ctr.addView(Ui.iconButton(c, t, R.drawable.ic_next, t.text, t.chip, 72, 30, 36, s(R.string.next), v -> media.skip(true)));
         bandRow = Ui.row(c);
         bandRow.setBackground(Ui.round(t.chip, dp(16)));
@@ -672,10 +681,10 @@ public final class HomeView extends LinearLayout {
         int[] bandIds = {MediaClient.BAND_FM, MediaClient.BAND_DAB};
         for (int i = 0; i < 2; i++) {
             final int band = bandIds[i];
-            TextView b = Ui.text(c, bands[i], 18, t.sub, Ui.MEDIUM);
+            TextView b = Ui.text(c, bands[i], ts(18), t.sub, Ui.MEDIUM);
             b.setGravity(Gravity.CENTER);
-            b.setMinWidth(dp(76));
-            b.setPadding(dp(16), 0, dp(16), 0);
+            b.setMinWidth(tp(76));
+            b.setPadding(tp(16), 0, tp(16), 0);
             b.setClickable(true);
             b.setContentDescription(s(R.string.radio_band_desc, bands[i]));
             b.setOnClickListener(v -> {
@@ -684,7 +693,7 @@ public final class HomeView extends LinearLayout {
                 styleBands(band);
                 media.switchBand(band);
             });
-            bandRow.addView(b, Ui.margins(Ui.lp(-2, dp(46)), i == 0 ? 0 : dp(4), 0, 0, 0));
+            bandRow.addView(b, Ui.margins(Ui.lp(-2, tp(46)), i == 0 ? 0 : dp(4), 0, 0, 0));
             bandChips[i] = b;
         }
         info.addView(ctr, Ui.margins(new LayoutParams(-1, -2), 0, dp(20), 0, 0));
@@ -695,11 +704,11 @@ public final class HomeView extends LinearLayout {
         stationCol.setPadding(dp(10), dp(10), dp(10), dp(6));
         LinearLayout sh = Ui.row(c);
         sh.setGravity(Gravity.CENTER_VERTICAL);
-        sh.addView(bandRow, new LayoutParams(-2, dp(56)));
+        sh.addView(bandRow, new LayoutParams(-2, tp(46) + dp(10)));
         sh.addView(Ui.spacer(c));
-        stationAction = Ui.text(c, "", 16, t.text, Ui.MEDIUM);
+        stationAction = Ui.text(c, "", ts(16), t.text, Ui.MEDIUM);
         stationAction.setGravity(Gravity.CENTER);
-        stationAction.setPadding(dp(16), 0, dp(16), 0);
+        stationAction.setPadding(tp(16), 0, tp(16), 0);
         stationAction.setBackground(Ui.pressable(c, t.chip, 14, t));
         stationAction.setClickable(true);
         stationAction.setOnClickListener(v -> {
@@ -708,7 +717,7 @@ public final class HomeView extends LinearLayout {
                 android.widget.Toast.makeText(getContext(), s(R.string.list_searching), android.widget.Toast.LENGTH_SHORT).show();
             }
         });
-        sh.addView(stationAction, new LayoutParams(-2, dp(46)));
+        sh.addView(stationAction, new LayoutParams(-2, tp(46)));
         stationCol.addView(sh, new LayoutParams(-1, -2));
         stationInfo = Ui.oneLine(Ui.text(c, "", 14, t.sub, Ui.REGULAR));
         stationInfo.setPadding(dp(6), 0, dp(6), 0);
@@ -719,7 +728,7 @@ public final class HomeView extends LinearLayout {
         stationList = Ui.column(c);
         sv.addView(stationList);
         stationCol.addView(sv, Ui.lpWeight(-1, 0, 1));
-        main.addView(stationCol, Ui.margins(new LayoutParams(dp(340), -1), dp(24), 0, 0, 0));
+        main.addView(stationCol, Ui.margins(new LayoutParams(tp(340), -1), dp(24), 0, 0, 0));
 
         // preferiti radio con i loghi (FM e DAB)
         android.widget.HorizontalScrollView hs = new android.widget.HorizontalScrollView(c);
@@ -763,9 +772,9 @@ public final class HomeView extends LinearLayout {
             boolean compact = m.sources.size() > 4;
             for (int i = 0; i < m.sources.size(); i++) {
                 final int src = m.sources.get(i);
-                TextView b = Ui.text(c, sourceLabel(src), 17, t.sub, Ui.MEDIUM);
+                TextView b = Ui.text(c, sourceLabel(src), ts(17), t.sub, Ui.MEDIUM);
                 b.setGravity(Gravity.CENTER_VERTICAL);
-                b.setPadding(dp(compact ? 14 : 18), 0, dp(compact ? 16 : 22), 0);
+                b.setPadding(tp(compact ? 14 : 18), 0, tp(compact ? 16 : 22), 0);
                 b.setCompoundDrawablePadding(dp(10));
                 b.setClickable(true);
                 b.setTag(src);
@@ -796,7 +805,7 @@ public final class HomeView extends LinearLayout {
             b.setCompoundDrawablePadding(compact && !on ? 0 : dp(10));
             android.graphics.drawable.Drawable d = getContext().getDrawable(sourceIcon(src)).mutate();
             d.setTint(on ? t.panel : t.sub);
-            d.setBounds(0, 0, dp(22), dp(22));
+            d.setBounds(0, 0, tp(22), tp(22));
             b.setCompoundDrawables(d, null, null, null);
         }
     }
@@ -828,7 +837,7 @@ public final class HomeView extends LinearLayout {
             iv.setPadding(dp(8), dp(8), dp(8), dp(8));
             box.addView(iv, new FrameLayout.LayoutParams(-1, -1));
         } else {
-            TextView ini = Ui.text(c, initials(st), 18, t.text, Ui.MEDIUM);
+            TextView ini = Ui.text(c, initials(st), ts(18), t.text, Ui.MEDIUM);
             ini.setGravity(Gravity.CENTER);
             box.addView(ini, new FrameLayout.LayoutParams(-1, -1));
         }
@@ -838,10 +847,10 @@ public final class HomeView extends LinearLayout {
         FrameLayout.LayoutParams blp = new FrameLayout.LayoutParams(-2, -2, Gravity.BOTTOM | Gravity.END);
         blp.setMargins(0, 0, dp(5), dp(5));
         box.addView(band, blp);
-        tile.addView(box, new LayoutParams(dp(80), dp(80)));
-        TextView name = Ui.oneLine(Ui.text(c, st.label(), 14, current ? t.text : t.sub, Ui.MEDIUM));
+        tile.addView(box, new LayoutParams(tp(80), tp(80)));
+        TextView name = Ui.oneLine(Ui.text(c, st.label(), ts(14), current ? t.text : t.sub, Ui.MEDIUM));
         name.setGravity(Gravity.CENTER);
-        tile.addView(name, Ui.margins(new LayoutParams(dp(96), -2), 0, dp(6), 0, 0));
+        tile.addView(name, Ui.margins(new LayoutParams(tp(96), -2), 0, dp(6), 0, 0));
         tile.setPadding(dp(4), dp(4), dp(4), dp(4));
         return tile;
     }
@@ -864,7 +873,7 @@ public final class HomeView extends LinearLayout {
             TextView hint = Ui.text(getContext(), s(R.string.fav_hint),
                     16, t.sub, Ui.REGULAR);
             hint.setGravity(Gravity.CENTER_VERTICAL);
-            favRow.addView(hint, new LayoutParams(-2, dp(96)));
+            favRow.addView(hint, new LayoutParams(-2, tp(96)));
         }
         for (MediaClient.Station st : m.favorites) {
             favRow.addView(stationTile(getContext(), st, st.key.equals(m.stationKey)), Ui.margins(new LayoutParams(-2, -2), 0, 0, dp(8), 0));
@@ -892,7 +901,7 @@ public final class HomeView extends LinearLayout {
         for (MediaClient.Station st : m.stations) {
             boolean current = dab ? st.key.equals(m.stationKey) || (!st.name.isEmpty() && st.name.equalsIgnoreCase(m.title))
                     : st.khz == m.radioKhz;
-            stationList.addView(stationRow(c, st, current, media.isFavorite(st)), new LayoutParams(-1, dp(60)));
+            stationList.addView(stationRow(c, st, current, media.isFavorite(st)), new LayoutParams(-1, tp(60)));
         }
     }
 
@@ -920,17 +929,17 @@ public final class HomeView extends LinearLayout {
             iv.setPadding(dp(4), dp(4), dp(4), dp(4));
             box.addView(iv, new FrameLayout.LayoutParams(-1, -1));
         } else {
-            TextView ini = Ui.text(c, initials(st), 12, t.text, Ui.MEDIUM);
+            TextView ini = Ui.text(c, initials(st), ts(12), t.text, Ui.MEDIUM);
             ini.setGravity(Gravity.CENTER);
             box.addView(ini, new FrameLayout.LayoutParams(-1, -1));
         }
-        row.addView(box, new LayoutParams(dp(44), dp(44)));
+        row.addView(box, new LayoutParams(tp(44), tp(44)));
         LinearLayout txt = Ui.column(c);
-        txt.addView(Ui.oneLine(Ui.text(c, st.label(), 18, t.text, current ? Ui.MEDIUM : Ui.REGULAR)));
-        txt.addView(Ui.oneLine(Ui.text(c, st.detail(), 13, t.sub, Ui.REGULAR)));
+        txt.addView(Ui.oneLine(Ui.text(c, st.label(), ts(18), t.text, current ? Ui.MEDIUM : Ui.REGULAR)));
+        txt.addView(Ui.oneLine(Ui.text(c, st.detail(), ts(13), t.sub, Ui.REGULAR)));
         row.addView(txt, Ui.margins(Ui.lpWeight(0, -2, 1), dp(12), 0, dp(6), 0));
         if (fav) {
-            TextView star = Ui.text(c, "★", 18, t.text, Ui.REGULAR);
+            TextView star = Ui.text(c, "★", ts(18), t.text, Ui.REGULAR);
             star.setContentDescription(s(R.string.favorites));
             row.addView(star);
         }
@@ -1051,10 +1060,10 @@ public final class HomeView extends LinearLayout {
         phoneSub = Ui.text(c, "", 20, t.sub, Ui.REGULAR);
         phoneSub.setGravity(Gravity.CENTER);
         col.addView(phoneSub, Ui.margins(new LayoutParams(-2, -2), 0, dp(12), 0, 0));
-        TextView open = Ui.text(c, s(R.string.open), 20, t.onAccent, Ui.MEDIUM);
+        TextView open = Ui.text(c, s(R.string.open), ts(20), t.onAccent, Ui.MEDIUM);
         open.setGravity(Gravity.CENTER);
         open.setPadding(dp(40), 0, dp(40), 0);
-        open.setMinHeight(dp(60));
+        open.setMinHeight(tp(60));
         open.setBackground(Ui.pressable(c, t.accent, 30, t));
         open.setClickable(true);
         open.setOnClickListener(v -> media.openProjection());
@@ -1078,12 +1087,12 @@ public final class HomeView extends LinearLayout {
         tempBox.setBackground(Ui.round(t.chip, dp(20)));
         tempBox.addView(Ui.iconButton(c, t, R.drawable.ic_chev_left, t.text, 0, 68, 30, 20, s(R.string.temp_down),
                 v -> changeTemp(-1)));
-        tempTv = Ui.text(c, "—", 40, t.text, Ui.REGULAR);
+        tempTv = Ui.text(c, "—", ts(40), t.text, Ui.REGULAR);
         tempTv.setGravity(Gravity.CENTER);
-        tempBox.addView(tempTv, new LayoutParams(dp(112), -2));
+        tempBox.addView(tempTv, new LayoutParams(tp(112), -2));
         tempBox.addView(Ui.iconButton(c, t, R.drawable.ic_chev_right, t.text, 0, 68, 30, 20, s(R.string.temp_up),
                 v -> changeTemp(1)));
-        bar.addView(tempBox, new LayoutParams(-2, dp(76)));
+        bar.addView(tempBox, new LayoutParams(-2, tp(76)));
 
         // ventola: ‹ livello ›, tocca l'icona = app Clima, tieni premuto = accendi/spegni il clima
         LinearLayout fanGroup = Ui.row(c);
@@ -1094,11 +1103,11 @@ public final class HomeView extends LinearLayout {
         LinearLayout fanBox = Ui.row(c);
         fanBox.setGravity(Gravity.CENTER);
         ImageView fanIc = Ui.icon(c, R.drawable.ic_fan, t.accent, 30);
-        fanBox.addView(fanIc, new LayoutParams(dp(30), dp(30)));
-        fanTv = Ui.text(c, "—", 34, t.text, Ui.REGULAR);
+        fanBox.addView(fanIc, new LayoutParams(tp(30), tp(30)));
+        fanTv = Ui.text(c, "—", ts(34), t.text, Ui.REGULAR);
         fanTv.setGravity(Gravity.CENTER);
         fanBox.addView(fanTv, Ui.margins(new LayoutParams(-2, -2), dp(10), 0, 0, 0));
-        fanBox.setMinimumWidth(dp(118));
+        fanBox.setMinimumWidth(tp(118));
         fanBox.setClickable(true);
         fanBox.setContentDescription(s(R.string.climate));
         fanBox.setBackground(Ui.pressable(c, 0, 16, t));
@@ -1107,16 +1116,16 @@ public final class HomeView extends LinearLayout {
             vehicle.setHvacPower(vehicle.last().hvacPower != 1);
             return true;
         });
-        fanGroup.addView(fanBox, new LayoutParams(-2, dp(68)));
+        fanGroup.addView(fanBox, new LayoutParams(-2, tp(68)));
         fanGroup.addView(Ui.iconButton(c, t, R.drawable.ic_chev_right, t.text, 0, 68, 30, 20, s(R.string.fan_up),
                 v -> changeFan(1)));
-        bar.addView(fanGroup, Ui.margins(new LayoutParams(-2, dp(76)), dp(10), 0, 0, 0));
+        bar.addView(fanGroup, Ui.margins(new LayoutParams(-2, tp(76)), dp(10), 0, 0, 0));
 
         // A/C e AUTO (lo sbrinamento ha il tasto fisico in plancia)
         acBtn = toggleText(c, "A/C", s(R.string.ac_desc), v -> vehicle.toggleAc());
-        bar.addView(acBtn, Ui.margins(new LayoutParams(dp(76), dp(76)), dp(10), 0, 0, 0));
+        bar.addView(acBtn, Ui.margins(new LayoutParams(tp(76), tp(76)), dp(10), 0, 0, 0));
         autoBtn = toggleText(c, "AUTO", s(R.string.auto_desc), v -> vehicle.toggleAuto());
-        bar.addView(autoBtn, Ui.margins(new LayoutParams(dp(76), dp(76)), dp(8), 0, 0, 0));
+        bar.addView(autoBtn, Ui.margins(new LayoutParams(tp(76), tp(76)), dp(8), 0, 0, 0));
 
         bar.addView(Ui.divider(c, t.track, 48));
 
@@ -1127,11 +1136,11 @@ public final class HomeView extends LinearLayout {
         miniArt = Ui.icon(c, R.drawable.ic_radio, t.sub, 26);
         FrameLayout artBox = new FrameLayout(c);
         artBox.setBackground(Ui.round(t.chip, dp(12)));
-        artBox.addView(miniArt, new FrameLayout.LayoutParams(dp(26), dp(26), Gravity.CENTER));
-        mini.addView(artBox, new LayoutParams(dp(48), dp(48)));
+        artBox.addView(miniArt, new FrameLayout.LayoutParams(tp(26), tp(26), Gravity.CENTER));
+        mini.addView(artBox, new LayoutParams(tp(48), tp(48)));
         LinearLayout mt = Ui.column(c);
-        miniTitle = Ui.oneLine(Ui.text(c, "", 17, t.text, Ui.MEDIUM));
-        miniSub = Ui.oneLine(Ui.text(c, "", 14, t.sub, Ui.REGULAR));
+        miniTitle = Ui.oneLine(Ui.text(c, "", ts(17), t.text, Ui.MEDIUM));
+        miniSub = Ui.oneLine(Ui.text(c, "", ts(14), t.sub, Ui.REGULAR));
         mt.addView(miniTitle);
         mt.addView(miniSub, Ui.margins(new LayoutParams(-2, -2), 0, dp(2), 0, 0));
         mini.addView(mt, Ui.margins(Ui.lpWeight(0, -2, 1), dp(12), 0, dp(4), 0));
@@ -1148,9 +1157,9 @@ public final class HomeView extends LinearLayout {
         // fendinebbia (sulla MG4 si accendono solo dallo schermo)
         frontFogBtn = toggleIcon(c, R.drawable.ic_fog_front, s(R.string.fog_front), v -> vehicle.toggleFrontFog());
         frontFogBtn.setVisibility(GONE);
-        bar.addView(frontFogBtn, Ui.margins(new LayoutParams(dp(68), dp(68)), 0, 0, dp(8), 0));
+        bar.addView(frontFogBtn, Ui.margins(new LayoutParams(tp(68), tp(68)), 0, 0, dp(8), 0));
         rearFogBtn = toggleIcon(c, R.drawable.ic_fog_rear, s(R.string.fog_rear), v -> vehicle.toggleRearFog());
-        bar.addView(rearFogBtn, new LayoutParams(dp(68), dp(68)));
+        bar.addView(rearFogBtn, new LayoutParams(tp(68), tp(68)));
 
         bar.addView(Ui.divider(c, t.track, 48));
 
@@ -1163,7 +1172,7 @@ public final class HomeView extends LinearLayout {
 
     /** Pulsante a commutazione con testo (A/C, AUTO): acceso = colori invertiti. */
     private TextView toggleText(Context c, String label, String desc, View.OnClickListener l) {
-        TextView b = Ui.text(c, label, label.length() > 3 ? 17 : 20, t.text, Ui.MEDIUM);
+        TextView b = Ui.text(c, label, ts(label.length() > 3 ? 17 : 20), t.text, Ui.MEDIUM);
         b.setGravity(Gravity.CENTER);
         b.setContentDescription(desc);
         b.setClickable(true);
@@ -1202,7 +1211,7 @@ public final class HomeView extends LinearLayout {
 
     private View shortcut(Context c, int icon, String desc, View.OnClickListener l) {
         FrameLayout f = Ui.iconButton(c, t, icon, t.text, 0, 64, 30, 18, desc, l);
-        f.setLayoutParams(Ui.margins(Ui.lp(dp(64), dp(64)), dp(6), 0, 0, 0));
+        f.setLayoutParams(Ui.margins(Ui.lp(tp(64), tp(64)), dp(6), 0, 0, 0));
         return f;
     }
 

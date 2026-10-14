@@ -9,6 +9,10 @@
     <string name="v2l_on" formatted="false">Aktiv</string>
     <string name="v2l_off" formatted="false">Aus</string>
     <string name="inside_temp">%1$s° innen</string>
+    <string name="set_ui_size" formatted="false">GRÖSSE DER BEDIENELEMENTE</string>
+    <string name="ui_size_normal" formatted="false">Normal</string>
+    <string name="ui_size_large" formatted="false">Groß</string>
+    <string name="ui_size_xlarge" formatted="false">Sehr groß</string>
     <string name="set_soc_decimals" formatted="false">Akkustand mit Nachkommastelle</string>
     <string name="set_show_tpms" formatted="false">Reifendruck (RDKS) unter den Rädern</string>
     <string name="outside_temp">%1$s° außen</string>
