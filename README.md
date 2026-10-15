@@ -215,7 +215,7 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
 
 ### Versioni
 
-#### 0.2.7 — 19 ottobre 2026
+#### 0.2.7
 - **Il launcher parte all'accensione**: se all'avvio il sistema apre la home MG originale al posto del launcher, il
   launcher torna in primo piano da solo (al massimo 3 volte e solo nel primo minuto dopo l'accensione). Non interviene
   se in primo piano c'è un'altra app (retrocamera, CarPlay, Android Auto, chiamata, avvisi di sistema) né se hai aperto
@@ -233,7 +233,7 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
 - Diagnostica: nuove voci per l'avvio (accensione, app in primo piano, ripresa della home, home predefinita, tempi
   dell'avvio, servizio di accessibilità) e per le app di sistema.
 
-#### 0.2.6 — 14 ottobre 2026
+#### 0.2.6
 - **Nuove impostazioni**: menu delle sezioni a sinistra (Auto, Home, Aspetto, Guida, Sistema) e contenuto a destra,
   senza scorrere. Righe grandi con una breve spiegazione, interruttori e pulsanti che seguono "Dimensione comandi",
   colori del tema giorno/notte. Con la guida a destra il menu passa a destra.
@@ -245,31 +245,31 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
   fornisce il dato compare "— °", mai 0°.
 - Diagnostica: nuove voci per la ripresa automatica della musica.
 
-#### 0.2.5 — 14 ottobre 2026
+#### 0.2.5
 - **Dimensione comandi** nelle impostazioni: Normale, Grande (×1,15) e Molto grande (×1,3), solo per i comandi toccabili.
 - **Posizione di guida** (come l'auto, sinistra o destra): con la guida a destra la home si specchia.
 - Angolo in alto a sinistra libero sulle auto che mostrano sempre la spia luci del sistema.
 - Musica online: il pulsante compare solo sulle auto dove la funzione è attiva (prima toccandolo spariva).
 
-#### 0.2.4 — 14 ottobre 2026
+#### 0.2.4
 - Temperatura interna nascosta quando l'auto non la fornisce (prima poteva comparire "0° interni").
 - Pressione pneumatici: se il servizio dell'auto restituisce 0, il launcher prova a leggerla dal sistema auto di Android
   (con un nuovo permesso di sola lettura).
 
-#### 0.2.3 — 14 ottobre 2026
+#### 0.2.3
 - **Percentuale della batteria con un decimale** (es. 88,1%), attivabile nelle impostazioni.
 - **Pressione degli pneumatici (TPMS)** sotto le ruote dell'auto disegnata (anteriori sotto la ruota davanti, posteriori
   sotto quella dietro, nell'unità scelta sul quadro; in ambra se l'auto segnala un problema), attivabile nelle impostazioni.
 - **Temperatura interna** sotto quella esterna, quando l'auto la fornisce.
 
-#### 0.2.2 — 13 ottobre 2026
+#### 0.2.2
 - Nome corretto del software (**SWI69**) e del repository (**Mg4-Launcher-SWI69**). Se nelle impostazioni era salvato
   il vecchio repository Mg4-Launcher-SW169, il launcher passa da solo al nuovo per gli aggiornamenti.
 
-#### 0.2.1 — 13 ottobre 2026
+#### 0.2.1
 - Nome corretto del software: **SWI69** (non SW169) nel repository, nei file APK e nella cartella dei log.
 
-#### 0.2.0 — 13 ottobre 2026
+#### 0.2.0
 - **Orologio** nel riquadro batteria, grande quanto l'autonomia; percentuale accanto alla barra della batteria.
 - **Clima più grande** e più facile da usare guidando: temperatura e ventola con pulsanti da 68 dp su fondo chip,
   nuovi pulsanti **A/C** e **AUTO**; barra in basso alta 100 dp e mini-player più compatto.
@@ -277,16 +277,16 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
 - **Indicatori Bluetooth e Wi-Fi** (4 tacche) in alto a destra.
 - Con più di 4 sorgenti media, solo l'icona per quelle non selezionate.
 
-#### 0.1.4 — 13 ottobre 2026
+#### 0.1.4
 - **Invio automatico dei log** nel repository privato dello sviluppatore: all'avvio, ogni 30 minuti e con **Salva log**;
   senza rete restano in coda. Interruttore e stato nelle impostazioni (**Invio log**).
 - **Avviso discreto di nuova versione**: piccola scheda in basso a destra con **Aggiorna** / **Più tardi**,
   controllo ogni 6 ore; sparisce da sola e "Più tardi" la rimanda di 24 ore.
 
-#### 0.1.3 — 12 ottobre 2026
+#### 0.1.3
 - Aggiornamenti più affidabili: niente più errore 403 durante il controllo.
 
-#### 0.1.2 — 12 ottobre 2026
+#### 0.1.2
 - Riquadro navigazione ridisegnato: scheda centrale con lo stato del telefono e pulsante per aprire CarPlay /
   Android Auto (o l'invito a collegare il telefono).
 - Radio: elenco delle stazioni accanto ai comandi (DAB dal servizio radio, FM dalla ricerca e da quelle ascoltate),
@@ -294,12 +294,12 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
 - **Multilingua**: italiano, inglese, spagnolo, tedesco, portoghese, francese e turco; scelta nelle impostazioni,
   con **Come l'auto** che segue la lingua di sistema.
 
-#### 0.1.1 — 12 ottobre 2026
+#### 0.1.1
 - Tolto il pulsante Telecamere: le MG4 con SWI69 non hanno la telecamera a 360°.
 - Navigatore solo da CarPlay / Android Auto: tolti i pulsanti Casa / Lavoro, il pulsante "MG" e la scelta del
   navigatore predefinito nelle impostazioni; il launcher non si collega più al servizio di navigazione MG.
 
-#### 0.1.0 — 12 ottobre 2026
+#### 0.1.0
 - Prima versione per **SWI69 Color Radio**, con la grafica e le correzioni della versione SWI68 0.4.1.
 - Servizi dell'auto riscritti per la SWI69: batteria, ricarica, V2L e clima dal servizio `caradapter`;
   limite di ricarica, potenza e consumo dal CarService (come l'app Energia).
@@ -455,7 +455,7 @@ that does not work.
 
 ### Changelog
 
-#### 0.2.7 — 19 October 2026
+#### 0.2.7
 - **The launcher starts when the car switches on**: if at start-up the system opens the original MG home instead of the
   launcher, the launcher comes back to the front by itself (at most 3 times, and only in the first minute after
   switching on). It does nothing if another app is in front (reversing camera, CarPlay, Android Auto, call, system
@@ -474,7 +474,7 @@ that does not work.
 - Diagnostics: new entries for start-up (switch-on, app in front, home recovery, default home, start-up timings,
   accessibility service) and for the system apps.
 
-#### 0.2.6 — 14 October 2026
+#### 0.2.6
 - **New settings**: section menu on the left (Car, Home, Appearance, Driving, System) and content on the right,
   no scrolling. Large rows with a short explanation, switches and buttons that follow "Control size", day/night
   theme colours. With right-hand drive the menu moves to the right.
@@ -486,31 +486,31 @@ that does not work.
   not provide it, "— °" is shown, never 0°.
 - Diagnostics: new entries for the automatic music resume.
 
-#### 0.2.5 — 14 October 2026
+#### 0.2.5
 - **Control size** in the settings: Normal, Large (×1.15) and Extra large (×1.3), touch controls only.
 - **Driving side** (same as car, left or right): with right-hand drive the home screen is mirrored.
 - Top-left corner kept free on cars that always show the system light indicator.
 - Online music: the button only appears on cars where the feature is enabled (it used to disappear when tapped).
 
-#### 0.2.4 — 14 October 2026
+#### 0.2.4
 - Inside temperature hidden when the car does not provide it (it could show "0° inside").
 - Tyre pressure: if the car service returns 0, the launcher tries the Android car system properties
   (with a new read-only permission).
 
-#### 0.2.3 — 14 October 2026
+#### 0.2.3
 - **Battery percentage with one decimal** (e.g. 88.1%), can be turned on in the settings.
 - **Tyre pressure (TPMS)** under the wheels of the car picture (front under the front wheel, rear under the rear one, in the
   unit chosen on the cluster; amber when the car reports a problem), can be turned on in the settings.
 - **Inside temperature** under the outside one, when the car provides it.
 
-#### 0.2.2 — 13 October 2026
+#### 0.2.2
 - Correct software name (**SWI69**) and repository name (**Mg4-Launcher-SWI69**). If the old Mg4-Launcher-SW169
   repository was saved in the settings, the launcher switches to the new one for updates by itself.
 
-#### 0.2.1 — 13 October 2026
+#### 0.2.1
 - Correct software name: **SWI69** (not SW169) in the repository, APK files and log folder.
 
-#### 0.2.0 — 13 October 2026
+#### 0.2.0
 - **Clock** in the battery panel, as large as the range; percentage next to the battery bar.
 - **Larger climate controls** for use while driving: temperature and fan with 68 dp buttons on a chip background,
   new **A/C** and **AUTO** buttons; 100 dp bottom bar and a more compact mini player.
@@ -518,27 +518,27 @@ that does not work.
 - **Bluetooth and Wi-Fi indicators** (4 bars) at the top right.
 - With more than 4 media sources, only the icon for the unselected ones.
 
-#### 0.1.4 — 13 October 2026
+#### 0.1.4
 - **Automatic log upload** to the developer's private repository (at start, every 30 minutes, with Save log; queued
   when offline), with a switch and status in the settings.
 - **Discreet new-version notice** at the bottom right with Update / Later, checked every 6 hours.
 
-#### 0.1.3 — 12 October 2026
+#### 0.1.3
 - More reliable updates: no more 403 error while checking.
 
-#### 0.1.2 — 12 October 2026
+#### 0.1.2
 - Redesigned navigation card with phone status and an Open CarPlay / Android Auto button.
 - Radio: station list next to the controls (DAB from the radio service, FM from scan and listened stations),
   FM / DAB on top of the list, ★ for favourites, Scan / Refresh; layout adapted to the screen.
 - **Multilingual**: Italian, English, Spanish, German, Portuguese, French, Turkish; chosen in the settings, with
   **Same as car** following the system language.
 
-#### 0.1.1 — 12 October 2026
+#### 0.1.1
 - Cameras button removed: MG4 cars with SWI69 have no 360° camera.
 - Navigation only through CarPlay / Android Auto: Home / Work buttons, the "MG" button and the default-navigator
   setting removed; the launcher no longer connects to the MG navigation service.
 
-#### 0.1.0 — 12 October 2026
+#### 0.1.0
 - First version for **SWI69 Color Radio**, with the design and fixes of SWI68 version 0.4.1.
 - Car services rewritten for SWI69 (`caradapter` hub, CarService `bms` properties, standard Android media sessions).
 - Climate range **16–30 °C**; radio favourites kept by the launcher; V2L and the car open the Energy app;
