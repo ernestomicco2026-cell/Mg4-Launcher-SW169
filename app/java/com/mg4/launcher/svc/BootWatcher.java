@@ -39,6 +39,29 @@ public final class BootWatcher extends BroadcastReceiver {
         prefs(c).edit().putLong("homeOriginaleFinoA", System.currentTimeMillis() + ORIGINAL_GRACE_MS).apply();
     }
 
+    /** true se la home MG è stata aperta apposta dal launcher da poco (allora non si interviene). */
+    static boolean originalOpenedOnPurpose(Context c) {
+        try {
+            return System.currentTimeMillis() < prefs(c).getLong("homeOriginaleFinoA", 0);
+        } catch (Throwable e) {
+            return false;
+        }
+    }
+
+    /** Riporta in primo piano il nostro launcher come home. */
+    static void openOurs(Context ctx, int attempt, String via) {
+        try {
+            Intent i = new Intent(Intent.ACTION_MAIN)
+                    .addCategory(Intent.CATEGORY_HOME)
+                    .setComponent(new ComponentName(ctx.getPackageName(), ctx.getPackageName() + ".MainActivity"))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            ctx.startActivity(i);
+            Diag.put("avvio.homeRipresa", "riaperto il launcher (tentativo " + attempt + ", " + via + ")");
+        } catch (Throwable e) {
+            Diag.error("avvio.homeRipresa", e.toString());
+        }
+    }
+
     private static SharedPreferences prefs(Context c) {
         return c.getApplicationContext().getSharedPreferences("mg4launcher", Context.MODE_PRIVATE);
     }
@@ -51,6 +74,14 @@ public final class BootWatcher extends BroadcastReceiver {
         String time = new SimpleDateFormat("HH:mm:ss", Locale.ITALY).format(new Date());
         Diag.put("avvio.boot", "ricevuto alle " + time + " (" + (locked ? "locked" : "normale") + ")"
                 + " · " + (SystemClock.elapsedRealtime() / 1000) + " s dall'accensione");
+        BootAccessibility.BootTimes.boot();
+        BootAccessibility.ensureEnabled(context);
+        // con il servizio di accessibilità collegato la home MG è già stata gestita appena comparsa:
+        // il controllo periodico resta solo come riserva
+        if (BootAccessibility.connected) {
+            Diag.putQuiet("avvio.riserva", "non necessaria (accessibilità attiva)");
+            return;
+        }
         if (running) return;   // il secondo broadcast (BOOT_COMPLETED dopo LOCKED) non ne avvia un altro
         running = true;
         PendingResult pending = goAsync();
@@ -92,21 +123,22 @@ public final class BootWatcher extends BroadcastReceiver {
                     Diag.putQuiet("avvio.ultimoPrimoPiano", top + " dopo " + (now / 1000) + " s");
                 }
                 if (MG_HOME.equals(top)) {
+                    BootAccessibility.BootTimes.mgHome(now);
                     if (!mgSeen) {
                         mgSeen = true;
                         Diag.put("avvio.primoPiano", top + " dopo " + (now / 1000) + " s dall'accensione");
                     }
                     oursSince = -1;
-                    long until = prefs(ctx).getLong("homeOriginaleFinoA", 0);
-                    if (System.currentTimeMillis() < until) {
+                    if (originalOpenedOnPurpose(ctx)) {
                         finish("no (home MG aperta apposta)");
                         return;
                     }
                     if (restarts < MAX_RESTARTS) {
                         restarts++;
-                        openOurs();
+                        openOurs(ctx, restarts, "riserva");
                     }
                 } else if (ctx.getPackageName().equals(top)) {
+                    BootAccessibility.BootTimes.ours(now);
                     if (oursSince < 0) oursSince = now;
                     if (now - oursSince >= OURS_STABLE_MS) {
                         finish(restarts > 0 ? "sì" : "no (già in primo piano)");
@@ -132,19 +164,6 @@ public final class BootWatcher extends BroadcastReceiver {
             } catch (Throwable e) {
                 Diag.error("avvio.primoPiano", e.toString());
                 return null;
-            }
-        }
-
-        private void openOurs() {
-            try {
-                Intent i = new Intent(Intent.ACTION_MAIN)
-                        .addCategory(Intent.CATEGORY_HOME)
-                        .setComponent(new ComponentName(ctx.getPackageName(), ctx.getPackageName() + ".MainActivity"))
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                ctx.startActivity(i);
-                Diag.put("avvio.homeRipresa", "riaperto il launcher (tentativo " + restarts + ")");
-            } catch (Throwable e) {
-                Diag.error("avvio.homeRipresa", e.toString());
             }
         }
 

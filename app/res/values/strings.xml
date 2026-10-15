@@ -135,6 +135,8 @@
     <string name="app_radio" formatted="false">Radio</string>
     <string name="app_music" formatted="false">Music</string>
     <string name="app_files" formatted="false">Files and videos</string>
+    <string name="a11y_label" formatted="false">MG4 Launcher · quick start</string>
+    <string name="a11y_desc" formatted="false">Brings the launcher to the front when the car switches on. It only sees which app is in front, no content.</string>
     <string name="app_android_settings" formatted="false">Android settings</string>
     <string name="app_android_files" formatted="false">Android files</string>
     <string name="app_settings" formatted="false">Settings</string>

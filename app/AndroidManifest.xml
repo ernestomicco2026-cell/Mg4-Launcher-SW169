@@ -12,6 +12,8 @@
     <!-- avvio all'accensione e riconferma della home predefinita -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SET_PREFERRED_APPLICATIONS" />
+    <!-- attiva da solo il servizio di accessibilità dell'avvio rapido (concesso dalla firma platform) -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
     <!-- aggiornamento da GitHub senza conferma (permesso di sistema, concesso dalla firma platform) -->
     <uses-permission android:name="android.permission.INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -70,6 +72,21 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <!-- avvio rapido: vede solo quale app va in primo piano (nessun contenuto delle finestre) -->
+        <service
+            android:name=".svc.BootAccessibility"
+            android:label="@string/a11y_label"
+            android:directBootAware="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/boot_accessibility" />
+        </service>
 
         <receiver
             android:name=".svc.TokenReceiver"

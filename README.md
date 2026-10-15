@@ -220,12 +220,18 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
   launcher torna in primo piano da solo (al massimo 3 volte e solo nel primo minuto dopo l'accensione). Non interviene
   se in primo piano c'è un'altra app (retrocamera, CarPlay, Android Auto, chiamata, avvisi di sistema) né se hai aperto
   apposta la home MG dalle impostazioni. Se sulla tua auto il problema non c'è, il controllo non fa nulla.
+- **Avvio più rapido**: il launcher attiva da solo un piccolo servizio di accessibilità ("MG4 Launcher · avvio
+  rapido") che Android collega subito all'avvio del sistema, prima del segnale di avvio completato (che arriva circa
+  30 secondi dopo l'accensione). Così il launcher torna davanti appena compare la home MG, invece di aspettare.
+  Il servizio vede solo quale app è in primo piano, nessun contenuto, e lavora solo nel primo minuto dopo
+  l'accensione o il risveglio dello schermo; gli altri servizi di accessibilità già attivi restano com'erano.
+  Il controllo della prima versione resta come riserva se il servizio non è attivo.
 - All'avvio il launcher riconferma di essere la home predefinita, nel caso un aggiornamento di sistema l'abbia azzerata.
 - **Impostazioni Android** e **File Android** in fondo alle app dell'auto (pagina App), con nomi e icone diversi da
   quelli MG; ciascuna compare solo se l'auto ha davvero quell'app. Le Impostazioni e i File MG restano come prima.
 - Pagina App: il titolo della sezione è tornato "AUTO" (nella 0.2.6 compariva "Auto").
-- Diagnostica: nuove voci per l'avvio (accensione, app in primo piano, ripresa della home, home predefinita) e per
-  le app di sistema.
+- Diagnostica: nuove voci per l'avvio (accensione, app in primo piano, ripresa della home, home predefinita, tempi
+  dell'avvio, servizio di accessibilità) e per le app di sistema.
 
 #### 0.2.6 — 14 ottobre 2026
 - **Nuove impostazioni**: menu delle sezioni a sinistra (Auto, Home, Aspetto, Guida, Sistema) e contenuto a destra,
@@ -455,11 +461,18 @@ that does not work.
   switching on). It does nothing if another app is in front (reversing camera, CarPlay, Android Auto, call, system
   notices) or if you opened the MG home on purpose from the settings. If your car doesn't have the problem, the check
   does nothing.
+- **Faster start**: the launcher turns on a small accessibility service by itself ("MG4 Launcher · quick start"),
+  which Android connects right at system start-up, before the boot-completed signal (which arrives about 30 seconds
+  after switching on). The launcher then comes back to the front as soon as the MG home appears, instead of waiting.
+  The service only sees which app is in front, no content, and only works in the first minute after switching on or
+  waking the screen; any other accessibility services already on stay as they were. The first check remains as a
+  fallback if the service is not active.
 - At start-up the launcher confirms it is the default home, in case a system update reset it.
 - **Android settings** and **Android files** at the end of the car's apps (Apps page), with names and icons different
   from the MG ones; each appears only if the car really has that app. The MG Settings and Files stay as before.
 - Apps page: the section title is "CAR" again (0.2.6 showed "Car").
-- Diagnostics: new entries for start-up (switch-on, app in front, home recovery, default home) and for the system apps.
+- Diagnostics: new entries for start-up (switch-on, app in front, home recovery, default home, start-up timings,
+  accessibility service) and for the system apps.
 
 #### 0.2.6 — 14 October 2026
 - **New settings**: section menu on the left (Car, Home, Appearance, Driving, System) and content on the right,

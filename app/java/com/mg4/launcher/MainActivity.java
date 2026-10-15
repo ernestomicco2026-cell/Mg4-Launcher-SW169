@@ -113,7 +113,11 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         registerReceiver(packages, new IntentFilter(Intent.ACTION_USER_UNLOCKED));
         root.postDelayed(saveDiag, 15000);
         // riconferma che il launcher è la home predefinita (un aggiornamento di sistema può averla azzerata)
-        new Thread(() -> com.mg4.launcher.svc.HomeDefault.ensure(getApplicationContext()), "mg4-home").start();
+        new Thread(() -> {
+            com.mg4.launcher.svc.HomeDefault.ensure(getApplicationContext());
+            // servizio di accessibilità per l'avvio rapido: attivato una volta e poi resta attivo
+            com.mg4.launcher.svc.BootAccessibility.ensureEnabled(getApplicationContext());
+        }, "mg4-home").start();
     }
 
     /** Ogni 15 s salva la diagnostica su file: adb pull /sdcard/Android/data/com.mg4.launcher/files/diagnostica.txt */
@@ -145,6 +149,7 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
     protected void onResume() {
         super.onResume();
         goFullscreen();
+        com.mg4.launcher.svc.BootAccessibility.BootTimes.ours(android.os.SystemClock.elapsedRealtime());
     }
 
     @Override

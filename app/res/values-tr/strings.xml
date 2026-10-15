@@ -135,6 +135,8 @@
     <string name="app_radio" formatted="false">Radyo</string>
     <string name="app_music" formatted="false">Müzik</string>
     <string name="app_files" formatted="false">Dosyalar ve videolar</string>
+    <string name="a11y_label" formatted="false">MG4 Launcher · hızlı başlatma</string>
+    <string name="a11y_desc" formatted="false">Araç çalıştığında launcher\'ı öne getirir. Yalnızca öndeki uygulamayı görür, içerik görmez.</string>
     <string name="app_android_settings" formatted="false">Android ayarları</string>
     <string name="app_android_files" formatted="false">Android dosyaları</string>
     <string name="app_settings" formatted="false">Ayarlar</string>

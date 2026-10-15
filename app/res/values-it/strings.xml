@@ -135,6 +135,8 @@
     <string name="app_radio" formatted="false">Radio</string>
     <string name="app_music" formatted="false">Musica</string>
     <string name="app_files" formatted="false">File e video</string>
+    <string name="a11y_label" formatted="false">MG4 Launcher · avvio rapido</string>
+    <string name="a11y_desc" formatted="false">Riporta il launcher in primo piano all\'accensione dell\'auto. Vede solo quale app è in primo piano, nessun contenuto.</string>
     <string name="app_android_settings" formatted="false">Impostazioni Android</string>
     <string name="app_android_files" formatted="false">File Android</string>
     <string name="app_settings" formatted="false">Impostazioni</string>
