@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Concluído</string>
     <string name="edit_desc" formatted="false">Escolha que apps instaladas mostrar</string>
     <string name="launcher_settings" formatted="false">Definições do launcher</string>
-    <string name="sec_car" formatted="false">Carro</string>
+    <string name="sec_car" formatted="false">CARRO</string>
     <string name="sec_installed" formatted="false">INSTALADAS POR SI</string>
     <string name="tap_toggle" formatted="false">toque para mostrar ou ocultar</string>
     <string name="app_vehicle" formatted="false">Veículo</string>
@@ -135,6 +135,8 @@
     <string name="app_radio" formatted="false">Rádio</string>
     <string name="app_music" formatted="false">Música</string>
     <string name="app_files" formatted="false">Ficheiros e vídeos</string>
+    <string name="app_android_settings" formatted="false">Definições do Android</string>
+    <string name="app_android_files" formatted="false">Ficheiros do Android</string>
     <string name="app_settings" formatted="false">Definições</string>
     <string name="app_sos" formatted="false">Chamada SOS</string>
     <string name="upd_checking" formatted="false">A verificar no GitHub…</string>
@@ -172,15 +174,16 @@
     <string name="upd_banner_later" formatted="false">Mais tarde</string>
     <string name="upd_banner_update" formatted="false">Atualizar</string>
     <string name="set_menu_title" formatted="false">Definições</string>
-    <string name="sec_car_sub" formatted="false">Cor, tejadilho</string>
-    <string name="sec_home" formatted="false">Início</string>
-    <string name="sec_home_sub" formatted="false">Bateria, pneus, temperaturas</string>
-    <string name="sec_look" formatted="false">Aspeto</string>
-    <string name="sec_look_sub" formatted="false">Tema, tamanho, idioma</string>
-    <string name="sec_drive" formatted="false">Condução</string>
-    <string name="sec_drive_sub" formatted="false">Posição de condução, início MG</string>
-    <string name="sec_system" formatted="false">Sistema</string>
-    <string name="sec_system_sub" formatted="false">Atualizações, registos, diagnóstico</string>
+    <string name="set_sec_car" formatted="false">Carro</string>
+    <string name="set_sec_car_sub" formatted="false">Cor, tejadilho</string>
+    <string name="set_sec_home" formatted="false">Início</string>
+    <string name="set_sec_home_sub" formatted="false">Bateria, pneus, temperaturas</string>
+    <string name="set_sec_look" formatted="false">Aspeto</string>
+    <string name="set_sec_look_sub" formatted="false">Tema, tamanho, idioma</string>
+    <string name="set_sec_drive" formatted="false">Condução</string>
+    <string name="set_sec_drive_sub" formatted="false">Posição de condução, início MG</string>
+    <string name="set_sec_system" formatted="false">Sistema</string>
+    <string name="set_sec_system_sub" formatted="false">Atualizações, registos, diagnóstico</string>
     <string name="set_bodywork" formatted="false">CARROÇARIA</string>
     <string name="set_black_roof_sub" formatted="false">Como as versões com tejadilho em contraste</string>
     <string name="set_home_card" formatted="false">PAINEL DO CARRO</string>

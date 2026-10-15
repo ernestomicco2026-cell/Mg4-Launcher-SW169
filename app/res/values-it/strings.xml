@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Fine</string>
     <string name="edit_desc" formatted="false">Scegli quali app installate mostrare</string>
     <string name="launcher_settings" formatted="false">Impostazioni del launcher</string>
-    <string name="sec_car" formatted="false">Auto</string>
+    <string name="sec_car" formatted="false">AUTO</string>
     <string name="sec_installed" formatted="false">INSTALLATE DA TE</string>
     <string name="tap_toggle" formatted="false">tocca per mostrare o nascondere</string>
     <string name="app_vehicle" formatted="false">Veicolo</string>
@@ -135,6 +135,8 @@
     <string name="app_radio" formatted="false">Radio</string>
     <string name="app_music" formatted="false">Musica</string>
     <string name="app_files" formatted="false">File e video</string>
+    <string name="app_android_settings" formatted="false">Impostazioni Android</string>
+    <string name="app_android_files" formatted="false">File Android</string>
     <string name="app_settings" formatted="false">Impostazioni</string>
     <string name="app_sos" formatted="false">Chiamata SOS</string>
     <string name="upd_checking" formatted="false">Controllo su GitHub…</string>
@@ -172,15 +174,16 @@
     <string name="upd_banner_later" formatted="false">Più tardi</string>
     <string name="upd_banner_update" formatted="false">Aggiorna</string>
     <string name="set_menu_title" formatted="false">Impostazioni</string>
-    <string name="sec_car_sub" formatted="false">Colore, tetto</string>
-    <string name="sec_home" formatted="false">Home</string>
-    <string name="sec_home_sub" formatted="false">Batteria, pneumatici, temperature</string>
-    <string name="sec_look" formatted="false">Aspetto</string>
-    <string name="sec_look_sub" formatted="false">Tema, dimensione, lingua</string>
-    <string name="sec_drive" formatted="false">Guida</string>
-    <string name="sec_drive_sub" formatted="false">Posizione di guida, home MG</string>
-    <string name="sec_system" formatted="false">Sistema</string>
-    <string name="sec_system_sub" formatted="false">Aggiornamenti, log, diagnostica</string>
+    <string name="set_sec_car" formatted="false">Auto</string>
+    <string name="set_sec_car_sub" formatted="false">Colore, tetto</string>
+    <string name="set_sec_home" formatted="false">Home</string>
+    <string name="set_sec_home_sub" formatted="false">Batteria, pneumatici, temperature</string>
+    <string name="set_sec_look" formatted="false">Aspetto</string>
+    <string name="set_sec_look_sub" formatted="false">Tema, dimensione, lingua</string>
+    <string name="set_sec_drive" formatted="false">Guida</string>
+    <string name="set_sec_drive_sub" formatted="false">Posizione di guida, home MG</string>
+    <string name="set_sec_system" formatted="false">Sistema</string>
+    <string name="set_sec_system_sub" formatted="false">Aggiornamenti, log, diagnostica</string>
     <string name="set_bodywork" formatted="false">CARROZZERIA</string>
     <string name="set_black_roof_sub" formatted="false">Come le versioni con tetto a contrasto</string>
     <string name="set_home_card" formatted="false">RIQUADRO AUTO</string>

@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Bitti</string>
     <string name="edit_desc" formatted="false">Gösterilecek yüklü uygulamaları seçin</string>
     <string name="launcher_settings" formatted="false">Başlatıcı ayarları</string>
-    <string name="sec_car" formatted="false">Araç</string>
+    <string name="sec_car" formatted="false">ARAÇ</string>
     <string name="sec_installed" formatted="false">SİZİN YÜKLEDİKLERİNİZ</string>
     <string name="tap_toggle" formatted="false">göstermek veya gizlemek için dokunun</string>
     <string name="app_vehicle" formatted="false">Araç</string>
@@ -135,6 +135,8 @@
     <string name="app_radio" formatted="false">Radyo</string>
     <string name="app_music" formatted="false">Müzik</string>
     <string name="app_files" formatted="false">Dosyalar ve videolar</string>
+    <string name="app_android_settings" formatted="false">Android ayarları</string>
+    <string name="app_android_files" formatted="false">Android dosyaları</string>
     <string name="app_settings" formatted="false">Ayarlar</string>
     <string name="app_sos" formatted="false">SOS araması</string>
     <string name="upd_checking" formatted="false">GitHub denetleniyor…</string>
@@ -172,15 +174,16 @@
     <string name="upd_banner_later" formatted="false">Sonra</string>
     <string name="upd_banner_update" formatted="false">Güncelle</string>
     <string name="set_menu_title" formatted="false">Ayarlar</string>
-    <string name="sec_car_sub" formatted="false">Renk, tavan</string>
-    <string name="sec_home" formatted="false">Ana ekran</string>
-    <string name="sec_home_sub" formatted="false">Batarya, lastikler, sıcaklıklar</string>
-    <string name="sec_look" formatted="false">Görünüm</string>
-    <string name="sec_look_sub" formatted="false">Tema, boyut, dil</string>
-    <string name="sec_drive" formatted="false">Sürüş</string>
-    <string name="sec_drive_sub" formatted="false">Direksiyon konumu, MG ana ekranı</string>
-    <string name="sec_system" formatted="false">Sistem</string>
-    <string name="sec_system_sub" formatted="false">Güncellemeler, günlükler, tanılama</string>
+    <string name="set_sec_car" formatted="false">Araç</string>
+    <string name="set_sec_car_sub" formatted="false">Renk, tavan</string>
+    <string name="set_sec_home" formatted="false">Ana ekran</string>
+    <string name="set_sec_home_sub" formatted="false">Batarya, lastikler, sıcaklıklar</string>
+    <string name="set_sec_look" formatted="false">Görünüm</string>
+    <string name="set_sec_look_sub" formatted="false">Tema, boyut, dil</string>
+    <string name="set_sec_drive" formatted="false">Sürüş</string>
+    <string name="set_sec_drive_sub" formatted="false">Direksiyon konumu, MG ana ekranı</string>
+    <string name="set_sec_system" formatted="false">Sistem</string>
+    <string name="set_sec_system_sub" formatted="false">Güncellemeler, günlükler, tanılama</string>
     <string name="set_bodywork" formatted="false">KAROSER</string>
     <string name="set_black_roof_sub" formatted="false">Kontrast tavanlı versiyonlar gibi</string>
     <string name="set_home_card" formatted="false">ARAÇ PANELİ</string>

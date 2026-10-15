@@ -44,8 +44,8 @@ public final class SettingsView extends FrameLayout {
 
     private static final int SEC_CAR = 0, SEC_HOME = 1, SEC_LOOK = 2, SEC_DRIVE = 3, SEC_SYSTEM = 4;
     private static final int[] SEC_ICON = {R.drawable.ic_car, R.drawable.ic_home, R.drawable.ic_palette, R.drawable.ic_steering, R.drawable.ic_gear};
-    private static final int[] SEC_NAME = {R.string.sec_car, R.string.sec_home, R.string.sec_look, R.string.sec_drive, R.string.sec_system};
-    private static final int[] SEC_SUB = {R.string.sec_car_sub, R.string.sec_home_sub, R.string.sec_look_sub, R.string.sec_drive_sub, R.string.sec_system_sub};
+    private static final int[] SEC_NAME = {R.string.set_sec_car, R.string.set_sec_home, R.string.set_sec_look, R.string.set_sec_drive, R.string.set_sec_system};
+    private static final int[] SEC_SUB = {R.string.set_sec_car_sub, R.string.set_sec_home_sub, R.string.set_sec_look_sub, R.string.set_sec_drive_sub, R.string.set_sec_system_sub};
     /** Spazio in alto a sinistra per la spia luci del sistema (come nella home). */
     private static final int SYSTEM_LIGHT_INSET = 64;
     private static final long QUIET_CHECK_MS = 30 * 60_000L;

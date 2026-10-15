@@ -2,7 +2,7 @@
 
 🇮🇹 [Italiano](#italiano) · 🇬🇧 [English](#english)
 
-**Ultima versione / Latest version: [0.2.6](releases/MG4Launcher-SWI69-0.2.6.apk)**
+**Ultima versione / Latest version: [0.2.7](releases/MG4Launcher-SWI69-0.2.7.apk)**
 
 <a href="https://www.paypal.com/pool/9tv7fQ36nA?sr=wccr"><img alt="Sostieni il progetto con PayPal · Support the project with PayPal" src="https://img.shields.io/badge/Sostieni%20il%20progetto-PayPal-0070BA?style=for-the-badge&logo=paypal&logoColor=white"></a>
 
@@ -19,13 +19,15 @@
 > The MG / MG4 names only identify the compatible car (SWI69 infotainment). Install and use it at your own risk.
 
 ---
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.6-notte.png" />
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.6-giorno.png" />
-<img width="1920" alt="Home MG4 Launcher SWI69 0.2.6 – guida a destra" src="screenshots/MG4Launcher-SWI69-0.2.6-guida-a-destra.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.7 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.7-notte.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.7 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.7-giorno.png" />
+<img width="1920" alt="Home MG4 Launcher SWI69 0.2.7 – guida a destra" src="screenshots/MG4Launcher-SWI69-0.2.7-guida-a-destra.png" />
+<img width="1920" alt="App MG4 Launcher SWI69 0.2.7 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.7-app-notte.png" />
+<img width="1920" alt="App MG4 Launcher SWI69 0.2.7 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.7-app-giorno.png" />
 <img width="1920" alt="Impostazioni MG4 Launcher SWI69 0.2.6 – tema notte" src="screenshots/MG4Launcher-SWI69-0.2.6-impostazioni-notte.png" />
 <img width="1920" alt="Impostazioni MG4 Launcher SWI69 0.2.6 – tema giorno" src="screenshots/MG4Launcher-SWI69-0.2.6-impostazioni-giorno.png" />
 
-<sub>Anteprima della grafica 0.2.6 (home di notte, di giorno e con guida a destra; nuove impostazioni di notte e di giorno): i valori sono di esempio · Preview of the 0.2.6 design (home at night, by day and with right-hand drive; new settings at night and by day): values are examples.</sub>
+<sub>Anteprima della grafica 0.2.7 (home di notte, di giorno e con guida a destra; pagina App con Impostazioni e File di Android; impostazioni di notte e di giorno): i valori e le app installate sono di esempio · Preview of the 0.2.7 design (home at night, by day and with right-hand drive; Apps page with Android settings and files; settings at night and by day): values and installed apps are examples.</sub>
 
 ---
 
@@ -105,6 +107,7 @@ Se lo provi su un'altra versione, le segnalazioni sono benvenute: con l'invio de
   **fendinebbia anteriori** (verde, solo se l'auto li ha), Telefono, Radio, Impostazioni.
 - **App**: scorri la home verso sinistra per le app dell'auto e quelle che installi tu,
   con le icone tutte nello stesso stile; scorri verso destra per tornare. Con **Modifica** scegli quali app installate mostrare.
+  In fondo alle app dell'auto ci sono anche **Impostazioni Android** e **File Android** (solo se presenti sull'auto).
 - **Dimensione comandi** (Normale / Grande / Molto grande): ingrandisce pulsanti, icone e testi dei pulsanti
   in proporzione, per usarli meglio guidando.
 - **Guida a destra o a sinistra**: automatica dalla configurazione dell'auto o scelta nelle impostazioni; con la
@@ -139,7 +142,7 @@ Ci sono due modi per installarlo: da chiavetta USB, se riesci ad aprire un file 
 
 Serve poter aprire un file manager sull'infotainment.
 
-1. Copia `MG4Launcher-SWI69-0.2.6.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
+1. Copia `MG4Launcher-SWI69-0.2.7.apk` su una chiavetta USB formattata **FAT32** o **exFAT**.
 2. Inserisci la chiavetta nell'auto, apri il file manager e tocca l'APK.
 3. Se Android avvisa che non può installare app da questa fonte: tocca **Impostazioni**, attiva
    **Consenti da questa fonte** per il file manager e torna indietro.
@@ -156,7 +159,7 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
 
 1. Installa:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.6.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.7.apk
    ```
 2. Rendilo la home predefinita:
    ```bash
@@ -211,6 +214,18 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
 
 
 ### Versioni
+
+#### 0.2.7 — 19 ottobre 2026
+- **Il launcher parte all'accensione**: se all'avvio il sistema apre la home MG originale al posto del launcher, il
+  launcher torna in primo piano da solo (al massimo 3 volte e solo nel primo minuto dopo l'accensione). Non interviene
+  se in primo piano c'è un'altra app (retrocamera, CarPlay, Android Auto, chiamata, avvisi di sistema) né se hai aperto
+  apposta la home MG dalle impostazioni. Se sulla tua auto il problema non c'è, il controllo non fa nulla.
+- All'avvio il launcher riconferma di essere la home predefinita, nel caso un aggiornamento di sistema l'abbia azzerata.
+- **Impostazioni Android** e **File Android** in fondo alle app dell'auto (pagina App), con nomi e icone diversi da
+  quelli MG; ciascuna compare solo se l'auto ha davvero quell'app. Le Impostazioni e i File MG restano come prima.
+- Pagina App: il titolo della sezione è tornato "AUTO" (nella 0.2.6 compariva "Auto").
+- Diagnostica: nuove voci per l'avvio (accensione, app in primo piano, ripresa della home, home predefinita) e per
+  le app di sistema.
 
 #### 0.2.6 — 14 ottobre 2026
 - **Nuove impostazioni**: menu delle sezioni a sinistra (Auto, Home, Aspetto, Guida, Sistema) e contenuto a destra,
@@ -348,7 +363,8 @@ it should work on **every version with the Color Radio**. Reports from other ver
   (on = inverted colours), compact mini player, **rear fog light** (amber icon when on) and **front fog lights**
   (green, only if fitted), Phone, Radio, Settings.
 - **Apps**: swipe the home screen left for the car's apps and the ones you install; swipe right to go back.
-  Use **Modifica** (Edit) to choose which installed apps to show.
+  Use **Modifica** (Edit) to choose which installed apps to show. At the end of the car's apps there are also
+  **Android settings** and **Android files** (only if present on the car).
 - **Control size** (Normal / Large / Extra large): scales buttons, icons and button labels proportionally,
   for easier use while driving.
 - **Right- or left-hand drive**: automatic from the car configuration or chosen in the settings; with right-hand
@@ -380,7 +396,7 @@ There are two ways to install it: from a USB stick, if you can open a file manag
 
 You need to be able to open a file manager on the infotainment.
 
-1. Copy `MG4Launcher-SWI69-0.2.6.apk` to a USB stick formatted as **FAT32** or **exFAT**.
+1. Copy `MG4Launcher-SWI69-0.2.7.apk` to a USB stick formatted as **FAT32** or **exFAT**.
 2. Plug it into the car, open the file manager and tap the APK.
 3. If Android says it cannot install apps from this source: tap **Settings**, enable
    **Allow from this source** for the file manager and go back.
@@ -396,7 +412,7 @@ The MG firmware may block normal app installs; the `-f` option allows it.
 
 1. Install it:
    ```bash
-   adb install -r -f MG4Launcher-SWI69-0.2.6.apk
+   adb install -r -f MG4Launcher-SWI69-0.2.7.apk
    ```
 2. Make it the default home:
    ```bash
@@ -432,6 +448,18 @@ Settings → **Diagnostica servizi auto** shows the raw values read from each ca
 that does not work.
 
 ### Changelog
+
+#### 0.2.7 — 19 October 2026
+- **The launcher starts when the car switches on**: if at start-up the system opens the original MG home instead of the
+  launcher, the launcher comes back to the front by itself (at most 3 times, and only in the first minute after
+  switching on). It does nothing if another app is in front (reversing camera, CarPlay, Android Auto, call, system
+  notices) or if you opened the MG home on purpose from the settings. If your car doesn't have the problem, the check
+  does nothing.
+- At start-up the launcher confirms it is the default home, in case a system update reset it.
+- **Android settings** and **Android files** at the end of the car's apps (Apps page), with names and icons different
+  from the MG ones; each appears only if the car really has that app. The MG Settings and Files stay as before.
+- Apps page: the section title is "CAR" again (0.2.6 showed "Car").
+- Diagnostics: new entries for start-up (switch-on, app in front, home recovery, default home) and for the system apps.
 
 #### 0.2.6 — 14 October 2026
 - **New settings**: section menu on the left (Car, Home, Appearance, Driving, System) and content on the right,

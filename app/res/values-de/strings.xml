@@ -125,7 +125,7 @@
     <string name="done" formatted="false">Fertig</string>
     <string name="edit_desc" formatted="false">Wähle, welche installierten Apps angezeigt werden</string>
     <string name="launcher_settings" formatted="false">Launcher-Einstellungen</string>
-    <string name="sec_car" formatted="false">Auto</string>
+    <string name="sec_car" formatted="false">FAHRZEUG</string>
     <string name="sec_installed" formatted="false">VON DIR INSTALLIERT</string>
     <string name="tap_toggle" formatted="false">tippen zum Ein- oder Ausblenden</string>
     <string name="app_vehicle" formatted="false">Fahrzeug</string>
@@ -135,6 +135,8 @@
     <string name="app_radio" formatted="false">Radio</string>
     <string name="app_music" formatted="false">Musik</string>
     <string name="app_files" formatted="false">Dateien und Videos</string>
+    <string name="app_android_settings" formatted="false">Android-Einstellungen</string>
+    <string name="app_android_files" formatted="false">Android-Dateien</string>
     <string name="app_settings" formatted="false">Einstellungen</string>
     <string name="app_sos" formatted="false">SOS-Notruf</string>
     <string name="upd_checking" formatted="false">Prüfe GitHub…</string>
@@ -172,15 +174,16 @@
     <string name="upd_banner_later" formatted="false">Später</string>
     <string name="upd_banner_update" formatted="false">Aktualisieren</string>
     <string name="set_menu_title" formatted="false">Einstellungen</string>
-    <string name="sec_car_sub" formatted="false">Farbe, Dach</string>
-    <string name="sec_home" formatted="false">Startseite</string>
-    <string name="sec_home_sub" formatted="false">Batterie, Reifen, Temperaturen</string>
-    <string name="sec_look" formatted="false">Darstellung</string>
-    <string name="sec_look_sub" formatted="false">Design, Größe, Sprache</string>
-    <string name="sec_drive" formatted="false">Fahren</string>
-    <string name="sec_drive_sub" formatted="false">Lenkradposition, MG-Startseite</string>
-    <string name="sec_system" formatted="false">System</string>
-    <string name="sec_system_sub" formatted="false">Updates, Logs, Diagnose</string>
+    <string name="set_sec_car" formatted="false">Auto</string>
+    <string name="set_sec_car_sub" formatted="false">Farbe, Dach</string>
+    <string name="set_sec_home" formatted="false">Startseite</string>
+    <string name="set_sec_home_sub" formatted="false">Batterie, Reifen, Temperaturen</string>
+    <string name="set_sec_look" formatted="false">Darstellung</string>
+    <string name="set_sec_look_sub" formatted="false">Design, Größe, Sprache</string>
+    <string name="set_sec_drive" formatted="false">Fahren</string>
+    <string name="set_sec_drive_sub" formatted="false">Lenkradposition, MG-Startseite</string>
+    <string name="set_sec_system" formatted="false">System</string>
+    <string name="set_sec_system_sub" formatted="false">Updates, Logs, Diagnose</string>
     <string name="set_bodywork" formatted="false">KAROSSERIE</string>
     <string name="set_black_roof_sub" formatted="false">Wie die Versionen mit Kontrastdach</string>
     <string name="set_home_card" formatted="false">FAHRZEUGBEREICH</string>

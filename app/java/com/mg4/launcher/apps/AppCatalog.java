@@ -116,7 +116,71 @@ public final class AppCatalog {
                 }
             }
         }
+        addAndroidSystemApps(out);
         return out;
+    }
+
+    /** Gestori file di Android da cercare sull'auto, in quest'ordine. */
+    private static final String[] FILE_MANAGERS = {"com.android.documentsui", "com.mediatek.filemanager", "com.android.fileexplorer"};
+
+    /**
+     * In fondo alle app dell'auto: "Impostazioni Android" e "File Android", ciascuna solo se l'attività esiste davvero.
+     * HIDDEN_PREFIX resta com'è (i pacchetti com.android. non compaiono tra le app installate).
+     */
+    private void addAndroidSystemApps(List<App> out) {
+        String settingsDiag = "assente", filesDiag = "assente";
+        try {
+            // solo le impostazioni di Android (com.android.settings), non quelle MG che sono già tra le app dell'auto
+            Intent li = new Intent(android.provider.Settings.ACTION_SETTINGS).setPackage("com.android.settings");
+            if (pm.resolveActivity(li, 0) == null) li = pm.getLaunchIntentForPackage("com.android.settings");
+            if (li == null) {
+                ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.Settings");
+                if (exists(cn)) li = new Intent(Intent.ACTION_MAIN).setComponent(cn);
+            }
+            if (li != null) {
+                out.add(new App(label("@app_android_settings"), null, li, iconFor(ctx, "android_settings"), false, "com.android.settings"));
+                settingsDiag = "ok";
+            }
+        } catch (Exception e) {
+            settingsDiag = "errore " + e.getClass().getSimpleName();
+        }
+        try {
+            Intent files = fileManagerIntent();
+            if (files != null) {
+                String pkg = files.getComponent() != null ? files.getComponent().getPackageName() : String.valueOf(files.getPackage());
+                out.add(new App(label("@app_android_files"), null, files, iconFor(ctx, "folder"), false, pkg));
+                filesDiag = pkg;
+            }
+        } catch (Exception e) {
+            filesDiag = "errore " + e.getClass().getSimpleName();
+        }
+        Diag.put("app.sistema", "impostazioni " + settingsDiag + ", file " + filesDiag);
+    }
+
+    /** Gestore file di Android: prima i pacchetti noti, poi qualsiasi attività che apre documenti. */
+    private Intent fileManagerIntent() {
+        for (String p : FILE_MANAGERS) {
+            Intent li = pm.getLaunchIntentForPackage(p);
+            if (li != null) return li;
+            if ("com.android.documentsui".equals(p)) {
+                // DocumentsUI senza icona nel launcher: si apre sulla memoria interna in modalità esplorazione
+                Intent view = new Intent(Intent.ACTION_VIEW)
+                        .setDataAndType(android.net.Uri.parse("content://com.android.externalstorage.documents/root/primary"),
+                                "vnd.android.document/root")
+                        .setPackage(p);
+                if (pm.resolveActivity(view, 0) != null) return view;
+                ComponentName la = new ComponentName(p, "com.android.documentsui.LauncherActivity");
+                if (exists(la)) return new Intent(Intent.ACTION_MAIN).setComponent(la);
+            }
+        }
+        for (String action : new String[]{Intent.ACTION_OPEN_DOCUMENT, Intent.ACTION_GET_CONTENT}) {
+            Intent pick = new Intent(action).addCategory(Intent.CATEGORY_OPENABLE).setType("*/*");
+            ResolveInfo ri = pm.resolveActivity(pick, 0);
+            if (ri != null && ri.activityInfo != null && !"android".equals(ri.activityInfo.packageName)) {
+                return pick.setPackage(ri.activityInfo.packageName);
+            }
+        }
+        return null;
     }
 
     /** Navigatori di terze parti installati sull'auto (Waze, Google Maps, OsmAnd, ...). */

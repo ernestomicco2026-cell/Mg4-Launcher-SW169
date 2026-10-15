@@ -112,6 +112,8 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
         // all'avvio dell'auto le app utente compaiono solo dopo lo sblocco dell'utente Android
         registerReceiver(packages, new IntentFilter(Intent.ACTION_USER_UNLOCKED));
         root.postDelayed(saveDiag, 15000);
+        // riconferma che il launcher è la home predefinita (un aggiornamento di sistema può averla azzerata)
+        new Thread(() -> com.mg4.launcher.svc.HomeDefault.ensure(getApplicationContext()), "mg4-home").start();
     }
 
     /** Ogni 15 s salva la diagnostica su file: adb pull /sdcard/Android/data/com.mg4.launcher/files/diagnostica.txt */
@@ -402,6 +404,8 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
 
     @Override
     public void openOriginalHome() {
+        // aperta apposta: per un po' il controllo all'accensione non riporta in primo piano il launcher
+        com.mg4.launcher.svc.BootWatcher.userOpenedOriginal(this);
         try {
             startActivity(new Intent(Intent.ACTION_MAIN)
                     .setComponent(new ComponentName(MgApps.HOME_PKG, MgApps.HOME_CLS))
