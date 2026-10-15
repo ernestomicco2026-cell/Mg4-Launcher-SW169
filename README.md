@@ -167,6 +167,11 @@ Il firmware MG può bloccare l'installazione normale delle app: l'opzione `-f` l
    ```
    In alternativa premi il tasto Home: Android chiede quale home usare.
 
+> **Se premendo Home Android non chiede quale home usare** (su alcune SWI69 il tasto apre direttamente la home
+> MG): non serve fare altro, il launcher ora si sostituisce da solo alla home MG ogni volta che compare.
+> Se hai un'app che rimappa i tasti (es. **MG4 Control**), controlla che il tasto Home non sia assegnato alla
+> home MG.
+
 Con entrambi i metodi il launcher parte poi da solo all'accensione dell'auto, come la home originale,
 e gli aggiornamenti successivi si fanno dalle impostazioni del launcher, senza chiavetta né computer.
 
@@ -226,12 +231,18 @@ Se è inserita una chiavetta USB il file finisce anche lì, nella stessa cartell
   Il servizio vede solo quale app è in primo piano, nessun contenuto, e lavora solo nel primo minuto dopo
   l'accensione o il risveglio dello schermo; gli altri servizi di accessibilità già attivi restano com'erano.
   Il controllo della prima versione resta come riserva se il servizio non è attivo.
+- **Home MG aperta dal tasto Home**: su alcune SWI69 il tasto Home (o un'app che rimappa i tasti, come MG4 Control)
+  apre la home MG per nome, ignorando la home predefinita. Ora, con il launcher impostato come home, il servizio
+  sostituisce la home MG ogni volta che compare, non solo all'accensione. Non interviene se l'hai aperta apposta
+  dalle impostazioni del launcher né se davanti c'è un'altra app; se la home MG ricompare più di 3 volte in
+  10 secondi si ferma per 2 minuti. Senza il servizio attivo resta solo il controllo all'accensione.
 - All'avvio il launcher riconferma di essere la home predefinita, nel caso un aggiornamento di sistema l'abbia azzerata.
 - **Impostazioni Android** e **File Android** in fondo alle app dell'auto (pagina App), con nomi e icone diversi da
   quelli MG; ciascuna compare solo se l'auto ha davvero quell'app. Le Impostazioni e i File MG restano come prima.
 - Pagina App: il titolo della sezione è tornato "AUTO" (nella 0.2.6 compariva "Auto").
 - Diagnostica: nuove voci per l'avvio (accensione, app in primo piano, ripresa della home, home predefinita, tempi
-  dell'avvio, servizio di accessibilità) e per le app di sistema.
+  dell'avvio, servizio di accessibilità, home MG sostituita dal tasto Home, home predefinita, app che rimappano i
+  tasti) e per le app di sistema.
 
 #### 0.2.6
 - **Nuove impostazioni**: menu delle sezioni a sinistra (Auto, Home, Aspetto, Guida, Sistema) e contenuto a destra,
@@ -426,6 +437,11 @@ The MG firmware may block normal app installs; the `-f` option allows it.
    ```
    Or press the Home button: Android asks which home app to use.
 
+> **If pressing Home doesn't ask which home to use** (on some SWI69 the button opens the MG home directly):
+> nothing else is needed, the launcher now replaces the MG home by itself whenever it appears.
+> If you have an app that remaps the buttons (e.g. **MG4 Control**), check that the Home button isn't assigned to
+> the MG home.
+
 Either way, the launcher then starts by itself when the car switches on, like the original home,
 and later updates are installed from the launcher settings, with no USB stick or computer.
 
@@ -467,12 +483,18 @@ that does not work.
   The service only sees which app is in front, no content, and only works in the first minute after switching on or
   waking the screen; any other accessibility services already on stay as they were. The first check remains as a
   fallback if the service is not active.
+- **MG home opened by the Home button**: on some SWI69 the Home button (or an app that remaps buttons, such as
+  MG4 Control) opens the MG home by name, ignoring the default home. Now, with the launcher set as home, the service
+  replaces the MG home every time it appears, not only at switch-on. It does nothing if you opened it on purpose from
+  the launcher settings or if another app is in front; if the MG home comes back more than 3 times in 10 seconds it
+  stops for 2 minutes. Without the service only the switch-on check remains.
 - At start-up the launcher confirms it is the default home, in case a system update reset it.
 - **Android settings** and **Android files** at the end of the car's apps (Apps page), with names and icons different
   from the MG ones; each appears only if the car really has that app. The MG Settings and Files stay as before.
 - Apps page: the section title is "CAR" again (0.2.6 showed "Car").
 - Diagnostics: new entries for start-up (switch-on, app in front, home recovery, default home, start-up timings,
-  accessibility service) and for the system apps.
+  accessibility service, MG home replaced from the Home button, default home, button-remapping apps) and for the
+  system apps.
 
 #### 0.2.6
 - **New settings**: section menu on the left (Car, Home, Appearance, Driving, System) and content on the right,

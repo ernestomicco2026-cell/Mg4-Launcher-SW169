@@ -117,6 +117,8 @@ public final class MainActivity extends Activity implements HomeView.Host, AppsV
             com.mg4.launcher.svc.HomeDefault.ensure(getApplicationContext());
             // servizio di accessibilità per l'avvio rapido: attivato una volta e poi resta attivo
             com.mg4.launcher.svc.BootAccessibility.ensureEnabled(getApplicationContext());
+            com.mg4.launcher.svc.BootAccessibility.resolvedHome(getApplicationContext());
+            com.mg4.launcher.svc.BootAccessibility.reportKeyApps(getApplicationContext());
         }, "mg4-home").start();
     }
 
